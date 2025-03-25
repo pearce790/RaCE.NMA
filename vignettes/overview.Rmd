@@ -1,0 +1,38 @@
+---
+title: "RaCE.NMA: Rank-Clustered Estimation for Network Meta-Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  rmarkdown.html_vignette.check_title = FALSE
+)
+```
+
+This package implements the Rank-Clustered Estimation for Network Meta-Analysis of Pearce and Zhou (2025+).
+
+For more details on how to use this package, see the [Tutorial (forthcoming)](link) and [Reference](https://pearce790.github.io/RaCE.NMA/reference/index.html) pages on this website. 
+
+The package is currently in beta testing. You may install the package from Github using the following code:
+```{r, eval=FALSE}
+## Beta (Github) version
+# install.packages("devtools") # uncomment if you haven't installed 'devtools' before
+devtools::install_github("pearce790/RaCE.NMA")
+```
+
+After installation, load the package with the following code:
+```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
+devtools::install_github("pearce790/RaCE.NMA")
+```
+```{r}
+library(RaCE.NMA)
+```
+
+# Acknowledgements and Funding
+
+This project is partially supported by NIH Grant R21LM014534. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
