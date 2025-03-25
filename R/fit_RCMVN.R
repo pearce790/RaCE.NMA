@@ -14,7 +14,8 @@
 #' @return A list of 4 elements: \code{omega}, a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of approximate posterior draws of the object-specific worth parameters, omega; \code{nu} a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of the unique parameter values corresponding to the jth partition cluster in posterior draw i, \code{g} a a (\code{num_iters}x\code{nu_reps})x\code{J} matrix indicating the cluster membership of object j in posterior draw i, and \code{K} a vector of the number of non-empty partition clusters in each posterior draw.
 #'
 #' @examples
-#' fit_RCBTL(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu=0.5, sigma0=5, tau=0.5, nu0 = NULL, num_iters = 5000, nu_reps = 2)
+#' fit_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu=0.5, sigma0=5, tau=0.5,
+#'           nu0 = NULL, num_iters = 5000, nu_reps = 2)
 #' @export
 fit_RCMVN <-  function(ybar, s, mu, sigma0, tau, nu0 = NULL, num_iters = 5000, nu_reps = 2){
   J <- length(ybar)
@@ -38,7 +39,7 @@ fit_RCMVN <-  function(ybar, s, mu, sigma0, tau, nu0 = NULL, num_iters = 5000, n
                                       sigma0=sigma0, s=s, tau=tau)
     g <- g_curr$g
     K <- g_curr$K
-    
+
     ## Update nu
     nu_curr <- matrix(data = NA, nrow = nu_reps, ncol = K)
     for(k in 1:K){
@@ -49,7 +50,7 @@ fit_RCMVN <-  function(ybar, s, mu, sigma0, tau, nu0 = NULL, num_iters = 5000, n
       nu_curr[,k] <- rnorm(nu_reps,mean=post_mean,sd=post_sd)
     }
     nu <- nu_curr[nu_reps,]
-    
+
     ## Save results; update counter
     g_samples <- rbind(g_samples, matrix(rep(g, nu_reps), ncol = J, byrow = T))
     K_samples <- c(K_samples, rep(K, nu_reps))

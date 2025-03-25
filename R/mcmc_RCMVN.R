@@ -4,6 +4,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select
+#' @import stats
 #' @import utils
 #'
 #' @param ybar A vector of estimated average relative treatment effects based on a previous NMA. The jth entry is the effect of treatment j.
