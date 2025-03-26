@@ -4,32 +4,41 @@
 \alias{fit_RCMVN}
 \title{Fit a Bayesian Rank-Clustered Estimation model for Network Meta-Analysis (RaCE-NMA). Recommended for internal use only; use mcmc_RCMVN instead.}
 \usage{
-fit_RCMVN(ybar, s, mu, sigma0, tau, nu0 = NULL, num_iters = 5000, nu_reps = 2)
+fit_RCMVN(
+  mu_hat,
+  sigma_hat,
+  mu0,
+  sigma0,
+  tau = min(diff(sort(mu_hat)))/2,
+  nu0 = NULL,
+  num_iters = 5000,
+  nu_reps = 2
+)
 }
 \arguments{
-\item{ybar}{A vector of estimated average relative treatment effects based on a previous NMA. The jth entry is the effect of treatment j.}
+\item{mu_hat}{A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j.}
 
-\item{s}{A vector of the assumed standard deviation of each treatment. The jth entry is the standard deviation of treatment j.}
+\item{sigma_hat}{A vector of the estimated standard deviations of each intervention. The jth entry is the standard deviation of intervention j.}
 
-\item{mu}{The hyperparameter mu_0, usually specified as the grand mean of the average treatment effects.}
+\item{mu0}{The hyperparameter mu0, usually specified as the grand mean of the average intervention effects.}
 
 \item{sigma0}{The hyperparameter sigma_0, usually a large number as to be minimally informative.}
 
 \item{tau}{The standard deviation of the Metropolis Hastings proposal distribution.}
 
-\item{nu0}{A numeric vector for the initialization of worth parameters, omega, in the MCMC algorithm. Default to \code{NULL}, indicating random initialization.}
+\item{nu0}{A numeric vector for the initialization of intervention-specific mean parameters, mu, in the MCMC algorithm. Default to \code{NULL}, indicating random initialization.}
 
 \item{num_iters}{A numeric indicating the total number of outer MCMC iterations (i.e., the number of times the partition is updated in the Gibbs sampler).}
 
 \item{nu_reps}{A numeric indicating the number of times each worth parameter is drawn per update of the parameter partition. There will be a total of \code{num_iters}x\code{nu_reps} samples from the posterior.}
 }
 \value{
-A list of 4 elements: \code{omega}, a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of approximate posterior draws of the object-specific worth parameters, omega; \code{nu} a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of the unique parameter values corresponding to the jth partition cluster in posterior draw i, \code{g} a a (\code{num_iters}x\code{nu_reps})x\code{J} matrix indicating the cluster membership of object j in posterior draw i, and \code{K} a vector of the number of non-empty partition clusters in each posterior draw.
+A list of 4 elements: \code{mu}, a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of approximate posterior draws of the intervention-specific worth parameters, mu; \code{nu} a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of the unique parameter values corresponding to the jth partition cluster in posterior draw i, \code{g} a a (\code{num_iters}x\code{nu_reps})x\code{J} matrix indicating the cluster membership of object j in posterior draw i, and \code{K} a vector of the number of non-empty partition clusters in each posterior draw.
 }
 \description{
 This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis.
 }
 \examples{
-fit_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu=0.5, sigma0=5, tau=0.5,
+fit_RCMVN(mu_hat=c(0,0,1,1), sigma_hat=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,
           nu0 = NULL, num_iters = 5000, nu_reps = 2)
 }

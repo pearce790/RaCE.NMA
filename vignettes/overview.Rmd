@@ -26,9 +26,6 @@ devtools::install_github("pearce790/RaCE.NMA")
 ```
 
 After installation, load the package with the following code:
-```{r echo=FALSE,results='hide',message=FALSE,warning=FALSE}
-devtools::install_github("pearce790/RaCE.NMA")
-```
 ```{r}
 library(RaCE.NMA)
 ```
