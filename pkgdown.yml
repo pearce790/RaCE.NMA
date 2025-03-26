@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   overview: overview.html
-last_built: 2025-03-25T18:03Z
+last_built: 2025-03-26T22:27Z
 urls:
   reference: https://pearce790.github.io/RaCE.NMA/reference
   article: https://pearce790.github.io/RaCE.NMA/articles

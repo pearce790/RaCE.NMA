@@ -42,23 +42,32 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_RCMVN</span><span class="op">(</span><span class="va">ybar</span>, <span class="va">s</span>, <span class="va">mu</span>, <span class="va">sigma0</span>, <span class="va">tau</span>, nu0 <span class="op">=</span> <span class="cn">NULL</span>, num_iters <span class="op">=</span> <span class="fl">5000</span>, nu_reps <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_RCMVN</span><span class="op">(</span></span>
+<span>  <span class="va">mu_hat</span>,</span>
+<span>  <span class="va">sigma_hat</span>,</span>
+<span>  <span class="va">mu0</span>,</span>
+<span>  <span class="va">sigma0</span>,</span>
+<span>  tau <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">mu_hat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>,</span>
+<span>  nu0 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  num_iters <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  nu_reps <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-ybar">ybar<a class="anchor" aria-label="anchor" href="#arg-ybar"></a></dt>
-<dd><p>A vector of estimated average relative treatment effects based on a previous NMA. The jth entry is the effect of treatment j.</p></dd>
+<dl><dt id="arg-mu-hat">mu_hat<a class="anchor" aria-label="anchor" href="#arg-mu-hat"></a></dt>
+<dd><p>A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j.</p></dd>
 
 
-<dt id="arg-s">s<a class="anchor" aria-label="anchor" href="#arg-s"></a></dt>
-<dd><p>A vector of the assumed standard deviation of each treatment. The jth entry is the standard deviation of treatment j.</p></dd>
+<dt id="arg-sigma-hat">sigma_hat<a class="anchor" aria-label="anchor" href="#arg-sigma-hat"></a></dt>
+<dd><p>A vector of the estimated standard deviations of each intervention. The jth entry is the standard deviation of intervention j.</p></dd>
 
 
-<dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
-<dd><p>The hyperparameter mu_0, usually specified as the grand mean of the average treatment effects.</p></dd>
+<dt id="arg-mu-">mu0<a class="anchor" aria-label="anchor" href="#arg-mu-"></a></dt>
+<dd><p>The hyperparameter mu0, usually specified as the grand mean of the average intervention effects.</p></dd>
 
 
 <dt id="arg-sigma-">sigma0<a class="anchor" aria-label="anchor" href="#arg-sigma-"></a></dt>
@@ -70,7 +79,7 @@
 
 
 <dt id="arg-nu-">nu0<a class="anchor" aria-label="anchor" href="#arg-nu-"></a></dt>
-<dd><p>A numeric vector for the initialization of worth parameters, omega, in the MCMC algorithm. Default to <code>NULL</code>, indicating random initialization.</p></dd>
+<dd><p>A numeric vector for the initialization of intervention-specific mean parameters, mu, in the MCMC algorithm. Default to <code>NULL</code>, indicating random initialization.</p></dd>
 
 
 <dt id="arg-num-iters">num_iters<a class="anchor" aria-label="anchor" href="#arg-num-iters"></a></dt>
@@ -83,14 +92,14 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of 4 elements: <code>omega</code>, a (<code>num_iters</code>x<code>nu_reps</code>)x<code>J</code> matrix of approximate posterior draws of the object-specific worth parameters, omega; <code>nu</code> a (<code>num_iters</code>x<code>nu_reps</code>)x<code>J</code> matrix of the unique parameter values corresponding to the jth partition cluster in posterior draw i, <code>g</code> a a (<code>num_iters</code>x<code>nu_reps</code>)x<code>J</code> matrix indicating the cluster membership of object j in posterior draw i, and <code>K</code> a vector of the number of non-empty partition clusters in each posterior draw.</p>
+    <p>A list of 4 elements: <code>mu</code>, a (<code>num_iters</code>x<code>nu_reps</code>)x<code>J</code> matrix of approximate posterior draws of the intervention-specific worth parameters, mu; <code>nu</code> a (<code>num_iters</code>x<code>nu_reps</code>)x<code>J</code> matrix of the unique parameter values corresponding to the jth partition cluster in posterior draw i, <code>g</code> a a (<code>num_iters</code>x<code>nu_reps</code>)x<code>J</code> matrix indicating the cluster membership of object j in posterior draw i, and <code>K</code> a vector of the number of non-empty partition clusters in each posterior draw.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fit_RCMVN</span><span class="op">(</span>ybar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, s<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span><span class="op">)</span>, mu<span class="op">=</span><span class="fl">0.5</span>, sigma0<span class="op">=</span><span class="fl">5</span>, tau<span class="op">=</span><span class="fl">0.5</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">fit_RCMVN</span><span class="op">(</span>mu_hat<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, sigma_hat<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span><span class="op">)</span>, mu0<span class="op">=</span><span class="fl">0.5</span>, sigma0<span class="op">=</span><span class="fl">5</span>, tau<span class="op">=</span><span class="fl">0.5</span>,</span></span>
 <span class="r-in"><span>          nu0 <span class="op">=</span> <span class="cn">NULL</span>, num_iters <span class="op">=</span> <span class="fl">5000</span>, nu_reps <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $omega</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $mu</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   [,1]          [,2]      [,3]      [,4]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     [1,]  1.150181e-01 -2.452767e-02 0.9715352 1.0626857</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     [2,] -1.819454e-01 -2.421516e-02 0.9444412 1.2062613</span>
