@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 This package implements the Rank-Clustered Estimation for Network Meta-Analysis of Pearce and Zhou (2025+).
 
-For more details on how to use this package, see the [Tutorial (forthcoming)](link) and [Reference](https://pearce790.github.io/RaCE.NMA/reference/index.html) pages on this website. 
+For more details on how to use this package, see the [Tutorial](https://pearce790.github.io/RaCE.NMA/tutorial.html) and [Reference](https://pearce790.github.io/RaCE.NMA/reference/index.html) pages on this website. 
 
 The package is currently in beta testing. You may install the package from Github using the following code:
 ```{r, eval=FALSE}

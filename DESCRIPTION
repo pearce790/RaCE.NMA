@@ -14,6 +14,6 @@ Imports:
     utils,
     magrittr,
     dplyr
-Suggests: knitr, rmarkdown, devtools
+Suggests: knitr, rmarkdown, devtools, ggplot2, reshape2
 VignetteBuilder: knitr
 URL: https://pearce790.github.io/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA/
