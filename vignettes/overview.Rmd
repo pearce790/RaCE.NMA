@@ -1,5 +1,5 @@
 ---
-title: "RaCE.NMA: Rank-Clustered Estimation for Network Meta-Analysis"
+title: "Overview"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{overview}
