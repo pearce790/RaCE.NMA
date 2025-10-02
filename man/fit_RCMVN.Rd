@@ -45,5 +45,6 @@ A list of 4 elements: \code{mu}, a (\code{num_iters}x\code{nu_reps})x\code{J} ma
 This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis.
 }
 \examples{
-fit_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5, nu0 = NULL, num_iters = 5000, nu_reps = 2)
+fit_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,
+          nu0 = NULL, num_iters = 5000, nu_reps = 2)
 }

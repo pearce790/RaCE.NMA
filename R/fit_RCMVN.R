@@ -2,6 +2,10 @@
 #'
 #' This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis.
 #'
+#' @import invgamma
+#' @import mvtnorm
+#' @import reshape2
+#'
 #' @param posterior A matrix of posterior draws of relative intervention effects based on a previous NMA. The (i,j) is the ith draw of the effect of intervention j.
 #' @param ybar A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j. Ignored if \code{posterior} is supplied.
 #' @param cov A variance covariance matrix of relative intervention effects based on a previous NMA. The (i,j) entry is the covariane between intervention i and j's effects. Ignored if \code{posterior} is supplied.
@@ -15,7 +19,8 @@
 #' @return A list of 4 elements: \code{mu}, a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of approximate posterior draws of the intervention-specific worth parameters, mu; \code{nu} a (\code{num_iters}x\code{nu_reps})x\code{J} matrix of the unique parameter values corresponding to the jth partition cluster in posterior draw i, \code{g} a a (\code{num_iters}x\code{nu_reps})x\code{J} matrix indicating the cluster membership of object j in posterior draw i, and \code{K} a vector of the number of non-empty partition clusters in each posterior draw.
 #'
 #' @examples
-#' fit_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5, nu0 = NULL, num_iters = 5000, nu_reps = 2)
+#' fit_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,
+#'           nu0 = NULL, num_iters = 5000, nu_reps = 2)
 #' @export
 fit_RCMVN <-  function(posterior=NULL, ybar=NULL, cov=NULL, s=NULL, mu0=NULL, sigma0=NULL, tau, nu0, num_iters, nu_reps){
 
