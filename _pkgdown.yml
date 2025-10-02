@@ -1,4 +1,44 @@
 url: https://pearce790.github.io/RaCE.NMA/
 template:
-  bootstrap: 5
+  params:
+    bootswatch: flatly
+navbar:
+  structure:
+    left:
+    - home
+    - tutorial
+    - reference
+    right: github
+  components:
+    home:
+      text: Overview
+      href: articles/overview.html
+    tutorial:
+      text: Tutorial
+      href: articles/tutorial.html
+    articles:
+      text: ~
+      menu: ~
+reference:
+- title: Model Estimation Function
+  desc: Primary function to estimate RaCE NMA models
+  contents: mcmc_RCMVN
+- title: Model Plotting and Assessment Functions
+  desc: Functions that allow for plotting results of RaCE NMA models or assessing
+    MCMC chains.
+  contents:
+  - createtrace_omega
+  - createtrace_K
+  - create_violinplot
+  - create_forestplot
+  - create_cumulativeranking
+  - create_clustermatrix
+  - calculate_Rhat
+- title: Helper Functions
+  desc: Functions used during model-fitting that are not needed by the user, but are
+    provided for completeness and reproducibility.
+  contents:
+  - sample_partition_independence
+  - sample_partition_correlation
+  - fit_RCMVN
 
