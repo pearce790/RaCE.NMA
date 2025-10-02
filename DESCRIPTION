@@ -1,19 +1,26 @@
 Package: RaCE.NMA
 Title: Rank-Clustered Estimation for Network Meta-Analysis
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R: c(
     person("Michael", "Pearce", , "michaelpearce@reed.edu", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-9313-271X"))
+           comment = c(ORCID = "0000-0002-9313-271X")),
+    person("Shouhao", "Zhou", , "szhou1@pennstatehealth.psu.edu", role = c("aut"),
+            comment = c(ORCID = "0000-0002-8124-5047")))
 Description: This package implemented the RaCE-NMA model for post-hoc rank-clustering of treatments or interventions in network meta-analyses.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports:
     stats,
     utils,
     magrittr,
-    dplyr
-Suggests: knitr, rmarkdown, devtools, ggplot2, reshape2
+    dplyr,
+    invgamma,
+    mvtnorm,
+    coda,
+    reshape2,
+    ggplot2
+Suggests: knitr, rmarkdown, devtools
 VignetteBuilder: knitr
 URL: https://pearce790.github.io/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA/

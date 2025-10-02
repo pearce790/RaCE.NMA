@@ -2,7 +2,8 @@
 
 export(fit_RCMVN)
 export(mcmc_RCMVN)
-export(sample_partition_normal)
+export(sample_partition_correlation)
+export(sample_partition_independence)
 import(stats)
 import(utils)
 importFrom(dplyr,select)

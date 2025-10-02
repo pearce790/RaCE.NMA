@@ -44,26 +44,14 @@ ggplot(as.data.frame(melt(data)),aes(x=factor(Var2),y=value))+
 Now, let's fit the RaCE model to our data.
 
 ```{r}
-mcmc <- mcmc_RCMVN(mu_hat = mu_hat, sigma_hat = sigma_hat, # data
-                   mu0 = mean(mu_hat), sigma0 = sqrt(10)*var(mu_hat), #hyperparameters
-                   nu0 = mu_hat, 
-                   tau = 1, num_iters = 20000, nu_reps = 2, # algorithm parameters
-                   chains = 4,burn_prop = 0.5, thin = 1, suppressPrint = TRUE)
+
 ```
 
 
 First, we ensure the chains have converged by assessing trace plots of $K$ and $\mu_j$.
 
 ```{r}
-ggplot(mcmc,aes(x=iteration,y=K,group=chain,color=chain))+
-  geom_line(alpha=0.5) + scale_color_viridis_d() + theme_minimal() +
-  labs(x="Iteration",y="Number of Rank-Clusters, K", color="Chain") +
-  theme(panel.grid.minor = element_blank())
-ggplot(data = melt(mcmc[,c("chain","iteration",paste0("mu",1:length(mu_hat)))],id.vars = c(1,2)),
-       aes(x=iteration,y=value,color=chain,group=chain)) +
-  geom_line(alpha=0.5) + scale_color_viridis_d() + 
-  facet_wrap(~variable) + theme_minimal() + labs(x="Iteration",y="Value",color="Chain") +
-  theme(panel.grid.minor = element_blank())
+
 ```
 
 ## Inference
@@ -71,20 +59,7 @@ ggplot(data = melt(mcmc[,c("chain","iteration",paste0("mu",1:length(mu_hat)))],i
 
 
 ```{r}
-J <- length(mu_hat)
-posterior_equal <- matrix(NA,nrow=J,ncol=J)
-for(i in 1:(J-1)){for(j in (i+1):J){posterior_equal[i,j] <- mean(mcmc[,paste0("G",i)] == mcmc[,paste0("G",j)])}}
 
-post_ranks <- apply(t(apply(mcmc[,paste0("mu",1:J)],1,function(omega){rank(omega,ties.method="min")})),2,
-                    function(rank){unlist(lapply(1:J,function(j){mean(rank==j)}))})
-
-ggplot(melt(post_ranks),aes(x=factor(Var2,levels=paste0("mu",1:J),labels=paste0(1:J)),y=Var1,fill=value))+
-  geom_tile()+scale_y_continuous(breaks=1:4,limits=c(.5,4.5))+
-  scale_fill_gradient(low="white",high="black",limits=c(0,1))+
-  labs(x="Treatment",y="Rank",fill="Probability")+theme_minimal()+
-  theme(panel.grid = element_blank(),legend.position = "bottom")+
-  geom_text(aes(x=factor(Var2,levels=paste0("mu",1:J),labels=paste0(1:J)),y=Var1,label=round(value,2)),
-            color=ifelse(melt(post_ranks)$value>0.4,"white","black"))
 
 
 ```

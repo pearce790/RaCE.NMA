@@ -5,28 +5,34 @@
 \title{Fit a Bayesian Rank-Clustered Estimation model for Network Meta-Analysis (RaCE-NMA). Recommended for internal use only; use mcmc_RCMVN instead.}
 \usage{
 fit_RCMVN(
-  mu_hat,
-  sigma_hat,
-  mu0,
-  sigma0,
-  tau = min(diff(sort(mu_hat)))/2,
-  nu0 = NULL,
-  num_iters = 5000,
-  nu_reps = 2
+  posterior = NULL,
+  ybar = NULL,
+  cov = NULL,
+  s = NULL,
+  mu0 = NULL,
+  sigma0 = NULL,
+  tau,
+  nu0,
+  num_iters,
+  nu_reps
 )
 }
 \arguments{
-\item{mu_hat}{A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j.}
+\item{posterior}{A matrix of posterior draws of relative intervention effects based on a previous NMA. The (i,j) is the ith draw of the effect of intervention j.}
 
-\item{sigma_hat}{A vector of the estimated standard deviations of each intervention. The jth entry is the standard deviation of intervention j.}
+\item{ybar}{A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j. Ignored if \code{posterior} is supplied.}
 
-\item{mu0}{The hyperparameter mu0, usually specified as the grand mean of the average intervention effects.}
+\item{cov}{A variance covariance matrix of relative intervention effects based on a previous NMA. The (i,j) entry is the covariane between intervention i and j's effects. Ignored if \code{posterior} is supplied.}
 
-\item{sigma0}{The hyperparameter sigma_0, usually a large number as to be minimally informative.}
+\item{s}{A vector of the estimated standard deviations of each intervention. The jth entry is the standard deviation of intervention j. Ignored if \code{posterior} is supplied.}
 
-\item{tau}{The standard deviation of the Metropolis Hastings proposal distribution.}
+\item{mu0}{The hyperparameter mu0. If \code{NULL}, set to mean(ybar).}
 
-\item{nu0}{A numeric vector for the initialization of intervention-specific mean parameters, mu, in the MCMC algorithm. Default to \code{NULL}, indicating random initialization.}
+\item{sigma0}{The hyperparameter sigma_0. If \code{NULL}, set to sqrt(10*var(ybar)) which aims to be minimally informative.}
+
+\item{tau}{The standard deviation of the Metropolis Hastings proposal distribution. If \code{NULL}, set to min(|ybar_i-ybar_j|).}
+
+\item{nu0}{A numeric vector for the initialization of worth parameters, mu, in the MCMC algorithm. Default to \code{NULL}, indicating random initialization.}
 
 \item{num_iters}{A numeric indicating the total number of outer MCMC iterations (i.e., the number of times the partition is updated in the Gibbs sampler).}
 
@@ -39,6 +45,5 @@ A list of 4 elements: \code{mu}, a (\code{num_iters}x\code{nu_reps})x\code{J} ma
 This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis.
 }
 \examples{
-fit_RCMVN(mu_hat=c(0,0,1,1), sigma_hat=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,
-          nu0 = NULL, num_iters = 5000, nu_reps = 2)
+fit_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5, nu0 = NULL, num_iters = 5000, nu_reps = 2)
 }
