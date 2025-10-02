@@ -4,7 +4,6 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select
-#' @import stats
 #' @import utils
 #'
 #' @param posterior A matrix of posterior draws of relative intervention effects based on a previous NMA. The (i,j) is the ith draw of the effect of intervention j.

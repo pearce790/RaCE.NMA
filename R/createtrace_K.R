@@ -4,7 +4,6 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select
-#' @import stats
 #' @import utils
 #'
 #' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.

@@ -5,6 +5,14 @@
 #' @import invgamma
 #' @import mvtnorm
 #' @import reshape2
+#' @importFrom stats dnorm
+#' @importFrom stats na.exclude
+#' @importFrom stats quantile
+#' @importFrom stats rbinom
+#' @importFrom stats rnorm
+#' @importFrom stats runif
+#' @importFrom stats var
+#'
 #'
 #' @param posterior A matrix of posterior draws of relative intervention effects based on a previous NMA. The (i,j) is the ith draw of the effect of intervention j.
 #' @param ybar A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j. Ignored if \code{posterior} is supplied.
