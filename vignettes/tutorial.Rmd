@@ -25,15 +25,14 @@ library(ggplot2)  # creating nice figures
 
 ## Exploratory Data Analysis
 
-```{r}
+```{r fig.asp=0.5}
 mu_hat <- c(-1, 0, 1, 0)
 sigma_hat <- c(0.1, 0.1, 0.1, 1)
+posterior <- matrix(rnorm(10000,mean=mu_hat,sd=sigma_hat),ncol=4,byrow=T)
 
-
-data <- t(matrix(rnorm(10000,mean=mu_hat,sd=sigma_hat),nrow=4))
-ggplot(as.data.frame(melt(data)),aes(x=factor(Var2),y=value))+
+ggplot(melt(posterior),aes(y=factor(Var2),x=value))+
   geom_violin()+theme_bw()+theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+
-  labs(x="Treatment",y="Posterior Relative Intervention Effect")
+  labs(y="Treatment",x="Posterior Relative Intervention Effect")
 ```
 
 
@@ -44,23 +43,32 @@ ggplot(as.data.frame(melt(data)),aes(x=factor(Var2),y=value))+
 Now, let's fit the RaCE model to our data.
 
 ```{r}
-
+mcmc <- mcmc_RCMVN(posterior = posterior)
 ```
 
 
-First, we ensure the chains have converged by assessing trace plots of $K$ and $\mu_j$.
+Before proceeding, we ensure the chains have converged by assessing trace plots of $K$ and $\mu_j$ and by calculating the $\hat{R}$ of each $\mu_j$ parameter.
 
 ```{r}
-
+createtrace_omega(mcmc)
+createtrace_K(mcmc)
+calculate_Rhat(mcmc)
 ```
 
 ## Inference
 
+Often, we are most interested in creating a clustering probability matrix and a cumulative ranking curve. We create these plots in the code chunks below.
 
-
-```{r}
-
-
-
+```{r fig.asp=0.6}
+create_clustermatrix(mcmc, label_ranks = 1:4)
+```
+```{r fig.asp=0.4}
+create_cumulativeranking(mcmc)
 ```
 
+The package also includes functions to produce violin and forest plots of model posteriors.
+
+```{r}
+create_violinplot(mcmc)
+create_forestplot(mcmc)
+```
