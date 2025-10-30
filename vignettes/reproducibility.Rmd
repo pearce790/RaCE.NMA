@@ -170,7 +170,6 @@ We first load the posteriors from Wang et al. (2022) and calculate the mean and 
 
 ```{r}
 data("WangPosteriors")
-# load("WangPosteriors.rda")
 wang_posterior <- mcmc.df[,4:13] # posteriors of non-baseline treatments
 ybar <- c(0, apply(wang_posterior,2,mean)) # calculating mean relative treatment effects
 cov <- cov(wang_posterior) # calculating covariance of relative treatment effects

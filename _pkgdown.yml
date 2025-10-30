@@ -16,6 +16,9 @@ navbar:
     tutorial:
       text: Tutorial
       href: articles/tutorial.html
+    reproducibility:
+      text: Reproducibility
+      href: articles/reproducibility.html
     articles:
       text: ~
       menu: ~
