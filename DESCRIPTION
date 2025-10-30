@@ -19,7 +19,9 @@ Imports:
     mvtnorm,
     coda,
     reshape2,
-    ggplot2
+    ggplot2,
+    cowplot,
+    gridExtra
 Suggests: knitr, rmarkdown, devtools
 VignetteBuilder: knitr
 URL: https://pearce790.github.io/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA/

@@ -60,5 +60,6 @@ A (\code{chains}x\code{num_iters}/\code{thin})x(3J+3) matrix of posterior draws,
 This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis. The function has input parameters to permit drawing multiple MCMC chains, as well as chain thinning and burn-in.
 }
 \examples{
-mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+chains <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+head(chains)
 }

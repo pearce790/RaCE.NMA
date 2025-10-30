@@ -25,7 +25,8 @@
 #' @return A (\code{chains}x\code{num_iters}/\code{thin})x(3J+3) matrix of posterior draws, one row per posterior sample of mu, nu, and g, with additional columns indicating the MCMC chain index, iteration index, and number of non-empty partition clusters K of each posterior sample.
 #'
 #' @examples
-#' mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+#' chains <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+#' head(chains)
 #' @export
 mcmc_RCMVN <- function(posterior = NULL, ybar = NULL, cov = NULL, s = NULL, mu0 = NULL, sigma0 = NULL, tau = NULL, nu0 = NULL,
                        num_iters = 5000, nu_reps = 3, chains=2, burn_prop=0.5, thin=1, seed=NULL, suppressPrint=FALSE){
