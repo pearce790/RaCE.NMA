@@ -53,7 +53,7 @@ grid.arrange(g1a,g1b,g1c,nrow=1)
 
 The following code reproduces Figure 2: First, we perform a simulation study. Second, we create the figure.
 
-```{r cache=TRUE}
+```{r}
 ## Perform simulation study
 set.seed(1)
 results <- matrix(NA,nrow=0,ncol=6)
@@ -69,7 +69,7 @@ for(iter in 1:20){
         }
         
         mcmc <- mcmc_RCMVN(ybar=ybar,s=rep(s,J),mu=mean(ybar),sigma0=max(1,4*sd(ybar)),nu0=ybar,
-                           tau=1,num_iters=5000,nu_reps=2,chains=4,burn_prop=0.5,thin=3,suppressPrint = TRUE)
+                           tau=1,num_iters=3000,nu_reps=2,chains=4,burn_prop=0.5,thin=3,suppressPrint = TRUE)
         
         equal <- posterior_equal <- matrix(NA,nrow=J,ncol=J)
         for(i in 1:(J-1)){for(j in (i+1):J){
@@ -123,8 +123,7 @@ ggplot(data.frame(name=1:J,mean=ybar,lower_CI=ybar-1.96*s,upper_CI=ybar+1.96*s),
 The following code reproduces Table 1: First, we fit the RaCE model to the simulated data. Second, we calculate and display the values in Table 1.
 
 ```{r}
-# For expediency, we set num_iters=500. To exactly reproduce values in the paper, set num_iters=50000
-mcmc <- mcmc_RCMVN(ybar=ybar,s=s,num_iters=500,nu_reps=2,chains=4,burn_prop=0.5,thin=1,suppressPrint = TRUE)
+mcmc <- mcmc_RCMVN(ybar=ybar,s=s,num_iters=50000,nu_reps=2,chains=4,burn_prop=0.5,thin=1,suppressPrint = TRUE)
 
 posterior_equal <- matrix(NA,nrow=J,ncol=J)
 for(i in 1:(J-1)){for(j in (i+1):J){
