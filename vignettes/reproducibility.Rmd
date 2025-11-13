@@ -197,7 +197,7 @@ Next, we fit the RaCE model to estimated relative treatment effects from Wang et
 
 ```{r}
 mcmc <- mcmc_RCMVN(ybar=ybar, cov=cov, mu0=mean(ybar), sigma0= sqrt(10*var(ybar)),
-                   num_iters=500,nu_reps=5,chains=4,seed=1,suppressPrint=TRUE)
+                   num_iters=50000,nu_reps=5,chains=4,seed=1,suppressPrint=TRUE)
 ```
 
 The following code chunk reproduces Figure 6, Figure 7, and Table 2: First, we calculate the values underpinning each graphic. Then, we create each in turn.
