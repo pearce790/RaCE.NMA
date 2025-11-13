@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_violinplot.R
 \name{create_violinplot}
 \alias{create_violinplot}
-\title{Create posterior violin plots for the omega parameters in RaCE NMA models}
+\title{Create posterior violin plots for the mu parameters in RaCE NMA models}
 \usage{
 create_violinplot(mcmc, names = NULL)
 }
@@ -12,10 +12,10 @@ create_violinplot(mcmc, names = NULL)
 \item{names}{A vector of intervention names (optional)}
 }
 \value{
-A ggplot of posterior violin plots for the omega parameters.
+A ggplot of posterior violin plots for the mu parameters.
 }
 \description{
-This function creates posterior violin plots for the omega parameters in the form of a ggplot.
+This function creates posterior violin plots for the mu parameters in the form of a ggplot.
 }
 \examples{
 mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)

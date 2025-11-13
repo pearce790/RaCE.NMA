@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_forestplot.R
 \name{create_forestplot}
 \alias{create_forestplot}
-\title{Create posterior forest plots for the omega parameters in RaCE NMA models}
+\title{Create posterior forest plots for the mu parameters in RaCE NMA models}
 \usage{
 create_forestplot(mcmc, names = NULL, limits = 0.95)
 }
@@ -14,10 +14,10 @@ create_forestplot(mcmc, names = NULL, limits = 0.95)
 \item{limits}{A numeric indicating the desired credible level to be displayed, as a proportion. Defaults to 0.95.}
 }
 \value{
-A ggplot of posterior forest plots for the omega parameter.
+A ggplot of posterior forest plots for the mu parameter.
 }
 \description{
-This function creates posterior forest plots for the omega parameters in the form of a ggplot.
+This function creates posterior forest plots for the mu parameters in the form of a ggplot.
 }
 \examples{
 mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)

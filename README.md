@@ -1,14 +1,16 @@
 RaCE.NMA
 -----
 
-The ``RaCE.NMA`` R package implements the the Rank-Clustering Estimation model for Network Meta-Analysis proposed by [Pearce and Zhou (2025+)](forthcoming).
+The ``RaCE.NMA`` R package implements the the Rank-Clustering Estimation model for Network Meta-Analysis proposed by [Pearce and Zhou (2025)](https://doi.org/10.1017/rsm.2025.10049).
 
 Where can I learn more? 
 -----
 
-To learn more about the rank-clustering methodology implemented in this package, check out our [arXiv preprint](forthcoming)!
+To learn more about the methodology implemented by this package, check out our [paper](https://doi.org/10.1017/rsm.2025.10049) published in *Research Synthesis Methods*.
 
-For information on how to download the `RaCE.NMA` package from Github, see the [Overview](https://pearce790.github.io/RaCE.NMA/articles/overview.html) tab. After, check out the [Reference](https://pearce790.github.io/rankclust/reference/index.html) tab for details on the package's use.
+For instructions on downloading the `RaCE.NMA` R package from Github, see the [Overview](https://pearce790.github.io/RaCE.NMA/articles/overview.html) tab. 
+
+After downloading, check out the [Reproducibility](https://pearce790.github.io/RaCE.NMA/articles/reproducibility.html) tab for code to replicate our paper, as well as the [Tutorial](https://pearce790.github.io/RaCE.NMA/articles/tutorial.html) and [Reference](https://pearce790.github.io/rankclust/reference/index.html) tabs for further information on the package's use.
 
 Acknowledgements and Funding
 -----

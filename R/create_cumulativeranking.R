@@ -15,18 +15,18 @@
 #' @export
 create_cumulativeranking <- function(mcmc,names=NULL){
   J <- (ncol(mcmc)-3)/3
-  posterior_omega <- mcmc[,grep("omega",names(mcmc))]
-  posterior_ranks <- t(apply(posterior_omega,1,function(omega){rank(omega,ties.method = "min")}))
+  posterior_mu <- mcmc[,grep("mu",names(mcmc))]
+  posterior_ranks <- t(apply(posterior_mu,1,function(mu){rank(mu,ties.method = "min")}))
   posterior_meanorder <- order(apply(posterior_ranks,2,mean))
   posterior_rank_cumulative_probability <- melt(apply(posterior_ranks,2,function(ranks){
     unlist(lapply(1:J,function(j){mean(ranks<=j)}))}))
   if(is.null(names)){
     posterior_rank_cumulative_probability$Var2 <- factor(posterior_rank_cumulative_probability$Var2,
-                                                         levels=paste0("omega",posterior_meanorder),
+                                                         levels=paste0("mu",posterior_meanorder),
                                                          labels=paste0("Treatment ",posterior_meanorder))
   }else{
     posterior_rank_cumulative_probability$Var2 <- factor(posterior_rank_cumulative_probability$Var2,
-                                                         levels=paste0("omega",posterior_meanorder),
+                                                         levels=paste0("mu",posterior_meanorder),
                                                          labels=names[posterior_meanorder])
   }
   g <- ggplot(posterior_rank_cumulative_probability,aes(x=Var1,y=value,group=Var2,color=Var2))+

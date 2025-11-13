@@ -14,14 +14,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-This package implements the Rank-Clustered Estimation for Network Meta-Analysis of Pearce and Zhou (2025).
+This package implements the Rank-Clustered Estimation for Network Meta-Analysis of [Pearce and Zhou (2025)](https://doi.org/10.1017/rsm.2025.10049).
 
-For more details on how to use this package, see the [Tutorial](https://pearce790.github.io/RaCE.NMA/tutorial.html) and [Reference](https://pearce790.github.io/RaCE.NMA/reference/index.html) pages on this website. For code to reproduce the analyses presented
-in our paper, see the [Reproducibility](https://pearce790.github.io/RaCE.NMA/articles/reproducibility.html) page.
+For more details on how to use this package, see the [Tutorial](https://pearce790.github.io/RaCE.NMA/tutorial.html) and [Reference](https://pearce790.github.io/RaCE.NMA/reference/index.html) tabs on this website. For code to reproduce the analyses presented
+in our paper, see the [Reproducibility](https://pearce790.github.io/RaCE.NMA/articles/reproducibility.html) tab.
 
 The package is currently in beta testing. You may install the package from Github using the following code:
 ```{r, eval=FALSE}
-## Beta (Github) version
 # install.packages("devtools") # uncomment if you haven't installed 'devtools' before
 devtools::install_github("pearce790/RaCE.NMA")
 ```

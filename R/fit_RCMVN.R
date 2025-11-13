@@ -143,11 +143,11 @@ fit_RCMVN <-  function(posterior=NULL, ybar=NULL, cov=NULL, s=NULL, mu0=NULL, si
     nu_samples[curr:(curr + nu_reps - 1), 1:K] <- nu_curr
     curr <- curr + nu_reps
   }
-  omega_samples <- matrix(unlist(lapply(1:nrow(nu_samples),
+  mu_samples <- matrix(unlist(lapply(1:nrow(nu_samples),
                                         function(iter) {
                                           nu_samples[iter, g_samples[iter, ]]
                                         })), nrow = nrow(nu_samples), byrow = T)
-  return(list(omega = omega_samples,
+  return(list(mu = mu_samples,
               nu = nu_samples,
               g = g_samples,
               K = K_samples))

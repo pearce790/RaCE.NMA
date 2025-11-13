@@ -1,13 +1,13 @@
-#' Create posterior violin plots for the omega parameters in RaCE NMA models
+#' Create posterior violin plots for the mu parameters in RaCE NMA models
 #'
-#' This function creates posterior violin plots for the omega parameters in the form of a ggplot.
+#' This function creates posterior violin plots for the mu parameters in the form of a ggplot.
 #'
 #' @import ggplot2
 #'
 #' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
 #' @param names A vector of intervention names (optional)
 #'
-#' @return A ggplot of posterior violin plots for the omega parameters.
+#' @return A ggplot of posterior violin plots for the mu parameters.
 #'
 #' @examples
 #' mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
@@ -15,19 +15,19 @@
 #' @export
 create_violinplot <- function(mcmc,names=NULL){
 
-  posterior_omega <- mcmc[,grep("omega",names(mcmc))]
-  posterior_omega_order <- order(apply(posterior_omega,2,mean))
-  suppressMessages(posterior_omega <- melt(posterior_omega))
+  posterior_mu <- mcmc[,grep("mu",names(mcmc))]
+  posterior_mu_order <- order(apply(posterior_mu,2,mean))
+  suppressMessages(posterior_mu <- melt(posterior_mu))
   if(is.null(names)){
-    posterior_omega$variable <- factor(posterior_omega$variable,
-                                       levels=paste0("omega",posterior_omega_order),
-                                       labels=paste0("Treatment",posterior_omega_order))
+    posterior_mu$variable <- factor(posterior_mu$variable,
+                                       levels=paste0("mu",posterior_mu_order),
+                                       labels=paste0("Treatment",posterior_mu_order))
   }else{
-    posterior_omega$variable <- factor(posterior_omega$variable,
-                                       levels=paste0("omega",posterior_omega_order),
-                                       labels=names[posterior_omega_order])
+    posterior_mu$variable <- factor(posterior_mu$variable,
+                                       levels=paste0("mu",posterior_mu_order),
+                                       labels=names[posterior_mu_order])
   }
-  g <- ggplot(posterior_omega,aes(y=variable,x=value))+
+  g <- ggplot(posterior_mu,aes(y=variable,x=value))+
     geom_violin()+theme_minimal()+
     scale_y_discrete(limits=rev)+
     theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+

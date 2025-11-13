@@ -21,7 +21,7 @@ calculate_Rhat <- function(mcmc,names=NULL,confidence=0.95,multivariate=FALSE){
   thin <- diff(mcmc$iteration[1:2])
   mcmc_list <- list()
   for(chain_iter in 1:max(as.numeric(mcmc$chain))){
-    tmp <- mcmc[as.numeric(mcmc$chain)==chain_iter,c(grep("omega",names(mcmc)))]
+    tmp <- mcmc[as.numeric(mcmc$chain)==chain_iter,c(grep("mu",names(mcmc)))]
     if(!is.null(names)){names(tmp) <- names}
     mcmc_list[[chain_iter]] <- as.mcmc(tmp,start=start_iter,end=end_iter,thin=thin)
   }

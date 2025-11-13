@@ -6,9 +6,9 @@ navbar:
   structure:
     left:
     - home
+    - reproducibility
     - tutorial
     - reference
-    - reproducibility
     right: github
   components:
     home:
@@ -31,7 +31,7 @@ reference:
   desc: Functions that allow for plotting results of RaCE NMA models or assessing
     MCMC chains.
   contents:
-  - createtrace_omega
+  - createtrace_mu
   - createtrace_K
   - create_violinplot
   - create_forestplot

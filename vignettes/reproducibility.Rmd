@@ -136,10 +136,10 @@ round(posterior_equal,2)
 The following code reproduces Figure 4: First, we calculate the posterior rank-clustering probability under a traditional model (i.e., assumption of distinct ranks). Second, we calculate the posterior rank-clustering probability based on the RaCE model. Third, we produce the figure.
 
 ```{r fig.asp-0.5}
-post_ranks_traditional <- apply(t(apply(data,1,function(omega){rank(omega)})),2,
+post_ranks_traditional <- apply(t(apply(data,1,function(mu){rank(mu)})),2,
                                 function(rank){unlist(lapply(1:J,function(j){mean(rank==j)}))})
 
-post_ranks <- apply(t(apply(mcmc[,paste0("omega",1:J)],1,function(omega){rank(omega,ties.method="min")})),2,
+post_ranks <- apply(t(apply(mcmc[,paste0("mu",1:J)],1,function(mu){rank(mu,ties.method="min")})),2,
                     function(rank){unlist(lapply(1:J,function(j){mean(rank==j)}))})
 
 g4a<-ggplot(melt(post_ranks_traditional),aes(x=Var1,y=factor(Var2),fill=value))+
@@ -150,13 +150,13 @@ g4a<-ggplot(melt(post_ranks_traditional),aes(x=Var1,y=factor(Var2),fill=value))+
   theme(panel.grid = element_blank(),legend.position = "bottom")+
   geom_text(aes(x=Var1,y=factor(Var2),label=round(value,2)),
             color=ifelse(melt(post_ranks_traditional)$value>0.4,"white","black"))
-g4b<-ggplot(melt(post_ranks),aes(x=Var1,y=factor(Var2,levels=paste0("omega",1:J),labels=paste0(1:J)),fill=value))+
+g4b<-ggplot(melt(post_ranks),aes(x=Var1,y=factor(Var2,levels=paste0("mu",1:J),labels=paste0(1:J)),fill=value))+
   geom_tile()+scale_y_discrete(limits=rev)+
   scale_x_continuous(breaks=1:4,limits=c(.5,4.5))+
   scale_fill_gradient(low="white",high="black",limits=c(0,1))+
   labs(x="Rank",y="Treatment",fill="Probability")+theme_minimal()+
   theme(panel.grid = element_blank(),legend.position = "bottom")+
-  geom_text(aes(x=Var1,y=factor(Var2,levels=paste0("omega",1:J),labels=paste0(1:J)),label=round(value,2)),
+  geom_text(aes(x=Var1,y=factor(Var2,levels=paste0("mu",1:J),labels=paste0(1:J)),label=round(value,2)),
             color=ifelse(melt(post_ranks_traditional)$value>0.4,"white","black"))
 plot_grid(plot_grid(g4a+theme(legend.position = "none"), g4b+theme(legend.position = "none"), 
                     labels = c('A', 'B'), label_size = 12),
@@ -208,13 +208,13 @@ The following code chunk reproduces Figure 6, Figure 7, and Table 2: First, we c
 # Calculation of values underpinning each graphic
 
 ## results based on RaCE model
-mcmc_ranks <- as.data.frame(t(apply(mcmc[,4:14],1,function(omega){rank(omega,ties.method="min")})))
+mcmc_ranks <- as.data.frame(t(apply(mcmc[,4:14],1,function(mu){rank(mu,ties.method="min")})))
 mcmc_ranks_probs <- as.data.frame(apply(mcmc_ranks,2,function(ranks){unlist(lapply(1:11,function(j){mean(ranks==j)}))}))
 mcmc_ranks_cumprobs <- as.data.frame(apply(mcmc_ranks_probs,2,cumsum))
 names(mcmc_ranks) <- names(mcmc_ranks_probs) <- names(mcmc_ranks_cumprobs) <- treatments
 
 ## results based on traditional analysis
-wang_ranks <- as.data.frame(t(apply(cbind(0,wang_posterior),1,function(omega){rank(omega,ties.method="min")})))
+wang_ranks <- as.data.frame(t(apply(cbind(0,wang_posterior),1,function(mu){rank(mu,ties.method="min")})))
 wang_ranks_probs <- as.data.frame(apply(wang_ranks,2,function(ranks){unlist(lapply(1:11,function(j){mean(ranks==j)}))}))
 wang_ranks_cumprobs <- as.data.frame(apply(wang_ranks_probs,2,cumsum))
 names(wang_ranks) <- names(wang_ranks_probs) <- names(wang_ranks_cumprobs) <- treatments
@@ -268,7 +268,7 @@ The following code chunk reproduces the Figures 8--10 (Appendix B).
 createtrace_K(mcmc)+
   scale_x_continuous(breaks=seq(125000,250000,by=25000),
                      labels=paste0(c(125, 150, 175,200,225,250),"k"))
-createtrace_omega(mcmc,names=treatments)+
+createtrace_mu(mcmc,names=treatments)+
   scale_x_continuous(breaks=seq(125000,250000,by=25000),
                      labels=paste0(c(125, 150, 175,200,225,250),"k"))
 create_forestplot(mcmc,names=treatments)

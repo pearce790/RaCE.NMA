@@ -44,11 +44,11 @@ mcmc_RCMVN <- function(posterior = NULL, ybar = NULL, cov = NULL, s = NULL, mu0 
     counter <<- counter + 1
     res <- fit_RCMVN(posterior=posterior, ybar=ybar, cov=cov, s=s, mu0 = mu0, sigma0 = sigma0,
                      tau = tau, nu0 = nu0, num_iters = num_iters, nu_reps = nu_reps)
-    nreps <- nrow(res$omega)
+    nreps <- nrow(res$mu)
     keep_reps <- seq(ceiling(burn_prop * nreps) + 1, nreps,by = thin)
-    tmp <- as.data.frame(cbind(res$omega[keep_reps, , drop=FALSE], res$nu[keep_reps, ,drop=FALSE],
+    tmp <- as.data.frame(cbind(res$mu[keep_reps, , drop=FALSE], res$nu[keep_reps, ,drop=FALSE],
                                res$g[keep_reps, ,drop=FALSE],res$K[keep_reps], keep_reps))
-    names(tmp) <- c(paste0("omega", 1:J), paste0("nu", 1:ncol(res$nu)), paste0("G", 1:J), "K", "iteration")
+    names(tmp) <- c(paste0("mu", 1:J), paste0("nu", 1:ncol(res$nu)), paste0("G", 1:J), "K", "iteration")
     return(tmp)
   }, simplify = FALSE)
   mcmc <- do.call(rbind, mcmc)

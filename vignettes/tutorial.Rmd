@@ -50,7 +50,7 @@ mcmc <- mcmc_RCMVN(posterior = posterior)
 Before proceeding, we ensure the chains have converged by assessing trace plots of $K$ and $\mu_j$ and by calculating the $\hat{R}$ of each $\mu_j$ parameter.
 
 ```{r}
-createtrace_omega(mcmc)
+createtrace_mu(mcmc)
 createtrace_K(mcmc)
 calculate_Rhat(mcmc)
 ```
