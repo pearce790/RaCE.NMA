@@ -1,11 +1,11 @@
 pandoc: 3.1.11
-pkgdown: 2.1.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   overview: overview.html
   reproducibility: reproducibility.html
   tutorial: tutorial.html
-last_built: 2025-10-30T17:04Z
+last_built: 2025-11-13T18:47Z
 urls:
   reference: https://pearce790.github.io/RaCE.NMA/reference
   article: https://pearce790.github.io/RaCE.NMA/articles
