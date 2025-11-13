@@ -10,7 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  rmarkdown.html_vignette.check_title = FALSE
+  warning = FALSE
 )
 ```
 
@@ -53,7 +53,7 @@ grid.arrange(g1a,g1b,g1c,nrow=1)
 
 The following code reproduces Figure 2: First, we perform a simulation study. Second, we create the figure.
 
-```{r}
+```{r cache=TRUE}
 ## Perform simulation study
 set.seed(1)
 results <- matrix(NA,nrow=0,ncol=6)
@@ -68,9 +68,8 @@ for(iter in 1:20){
           while(length(unique(ybar))<K){ybar <- sample(1:K,J,replace=T)}
         }
         
-        # For expediency, we set num_iters=50. To exactly reproduce values in the paper, set num_iters=5000
         mcmc <- mcmc_RCMVN(ybar=ybar,s=rep(s,J),mu=mean(ybar),sigma0=max(1,4*sd(ybar)),nu0=ybar,
-                           tau=1,num_iters=50,nu_reps=2,chains=4,burn_prop=0.5,thin=3,suppressPrint = TRUE)
+                           tau=1,num_iters=5000,nu_reps=2,chains=4,burn_prop=0.5,thin=3,suppressPrint = TRUE)
         
         equal <- posterior_equal <- matrix(NA,nrow=J,ncol=J)
         for(i in 1:(J-1)){for(j in (i+1):J){
