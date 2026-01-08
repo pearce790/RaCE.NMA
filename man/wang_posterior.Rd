@@ -12,6 +12,6 @@ wang_posterior
 }
 \description{
 The dataset includes relative treatment effects for 10 non-baseline treatments across 60k posterior
-draws based on an NMA study by Wang et. al (202).
+draws based on an NMA study by Wang et. al (2022).
 }
 \keyword{datasets}
