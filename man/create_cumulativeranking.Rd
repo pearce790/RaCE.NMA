@@ -4,9 +4,11 @@
 \alias{create_cumulativeranking}
 \title{Create a cumulative ranking plot in RaCE NMA models}
 \usage{
-create_cumulativeranking(mcmc, names = NULL)
+create_cumulativeranking(data = NULL, mcmc = NULL, names = NULL)
 }
 \arguments{
+\item{data}{A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.}
+
 \item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
 
 \item{names}{A vector of intervention names (optional)}
@@ -19,5 +21,5 @@ This function creates a cumulative ranking plot in the form of a ggplot.
 }
 \examples{
 mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
-create_cumulativeranking(mcmc,names=paste0("Treatment ",1:4))
+create_cumulativeranking(mcmc=mcmc,names=paste0("Treatment ",1:4))
 }

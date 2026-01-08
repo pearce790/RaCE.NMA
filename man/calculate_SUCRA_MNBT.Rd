@@ -7,7 +7,7 @@
 calculate_SUCRA_MNBT(data = NULL, mcmc = NULL, confidence = 0.5, names = NULL)
 }
 \arguments{
-\item{data}{A NxJ matrix of data to display as a forest plot, where N is the number of observations and J the number of treatments. This feature is designed for use to display a forest plot of results from a standard NMA study.}
+\item{data}{A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.}
 
 \item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
 

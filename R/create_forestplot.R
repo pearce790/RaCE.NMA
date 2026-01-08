@@ -42,7 +42,7 @@ create_forestplot <- function(data=NULL,mcmc=NULL,names=NULL,limits=0.95,order_b
         geom_point()+geom_linerange()+theme_minimal()+
         scale_y_discrete(limits=rev)+
         theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+
-        labs(y=element_blank(),x="Posterior")
+        labs(y=NULL,x="Posterior")
     }
   }
   if(!is.null(mcmc)){
@@ -72,7 +72,7 @@ create_forestplot <- function(data=NULL,mcmc=NULL,names=NULL,limits=0.95,order_b
       geom_point()+geom_linerange()+theme_minimal()+
       scale_y_discrete(limits=rev)+
       theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+
-      labs(y=element_blank(),x="Relative Treatment Effect")
+      labs(y=NULL,x="Relative Treatment Effect")
   }
   return(g)
 }

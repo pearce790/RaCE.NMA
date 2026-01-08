@@ -5,7 +5,7 @@
 #'
 #' @import dplyr
 #'
-#' @param data A NxJ matrix of data to display as a forest plot, where N is the number of observations and J the number of treatments. This feature is designed for use to display a forest plot of results from a standard NMA study.
+#' @param data A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.
 #' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
 #' @param confidence The \code{confidence} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to 0.95.
 #' @param names A vector of intervention names (optional)

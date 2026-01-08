@@ -40,13 +40,13 @@ s <- 0.3
 g1b<-ggplot()+scale_x_continuous(limits=c(-3*s,1+3*s))+
   stat_function(fun = dnorm, args = list(mean = 0, sd =s))+
   stat_function(fun = dnorm, args = list(mean = 1, sd =s))+
-  theme_bw()+labs(x="Posterior Intervention Effects",y=element_blank(),title=expression(hat(sigma)~"=0.3"))+
+  theme_bw()+labs(x="Posterior Intervention Effects",y=NULL,title=expression(hat(sigma)~"=0.3"))+
   theme(panel.grid.minor = element_blank(),panel.grid.major.y = element_blank())
 s <- 0.5
 g1c<-ggplot()+scale_x_continuous(limits=c(-3*s,1+3*s))+
   stat_function(fun = dnorm, args = list(mean = 0, sd =s))+
   stat_function(fun = dnorm, args = list(mean = 1, sd =s))+
-  theme_bw()+labs(x=" ",y=element_blank(),title=expression(hat(sigma)~"=0.5"))+
+  theme_bw()+labs(x=" ",y=NULL,title=expression(hat(sigma)~"=0.5"))+
   theme(panel.grid.minor = element_blank(),panel.grid.major.y = element_blank())
 grid.arrange(g1a,g1b,g1c,nrow=1)
 ```
@@ -69,7 +69,8 @@ for(iter in 1:20){
         }
         
         mcmc <- mcmc_RCMVN(ybar=ybar,s=rep(s,J),mu=mean(ybar),sigma0=max(1,4*sd(ybar)),nu0=ybar,
-                           tau=1,num_iters=3000,nu_reps=2,chains=4,burn_prop=0.5,thin=3,suppressPrint = TRUE)
+                           tau=1,num_iters=30,nu_reps=2,chains=4, #FIX:3000
+                           burn_prop=0.5,thin=3,suppressPrint=TRUE)
         
         equal <- posterior_equal <- matrix(NA,nrow=J,ncol=J)
         for(i in 1:(J-1)){for(j in (i+1):J){
@@ -99,7 +100,7 @@ ggplot(results_melt,aes(x=factor(K),y=value,color=factor(variable,labels=c("Rank
   geom_boxplot(outlier.alpha=0.5,position="identity")+theme_bw()+
   scale_color_manual(values=c("skyblue","darkblue"))+
   labs(x="Number of Rank-Clusters, K",y="Posterior Rank-Clustering Probability",
-       color=element_blank())+
+       color=NULL)+
   theme(legend.position = "bottom",panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank())
 ```
@@ -116,13 +117,15 @@ s <- c(.1,.1,.1,1)
 set.seed(2)
 data <- matrix(data = rnorm(10000*4,mean=ybar,sd=s), ncol = 4, byrow = TRUE)
 
-create_forestplot(data=data,order_by_average = FALSE)
+create_forestplot(data = data, order_by_average = FALSE)
 ```
 
 The following code reproduces Table 1: First, we fit the RaCE model to the simulated data. Second, we calculate and display the values in Table 1.
 
 ```{r}
-mcmc <- mcmc_RCMVN(ybar=ybar,s=s,num_iters=50000,nu_reps=2,chains=4,burn_prop=0.5,thin=1,suppressPrint = TRUE)
+mcmc <- mcmc_RCMVN(ybar = ybar, s = s, 
+                   num_iters = 500, nu_reps = 2, chains = 4, #FIX:50000
+                   burn_prop = 0.5,thin = 1,suppressPrint = TRUE)
 
 posterior_equal <- matrix(NA,nrow=J,ncol=J)
 for(i in 1:(J-1)){for(j in (i+1):J){
@@ -190,68 +193,40 @@ create_forestplot(data=wang_posterior,names=treatments[-1])
 Next, we fit the RaCE model to estimated relative treatment effects from Wang et al. (2022).
 
 ```{r}
-mcmc <- mcmc_RCMVN(ybar=ybar, cov=cov, mu0=mean(ybar), sigma0= sqrt(10*var(ybar)),
-                   num_iters=50000,nu_reps=5,chains=4,seed=1,suppressPrint=TRUE)
+mcmc <- mcmc_RCMVN(ybar = ybar, cov = cov, 
+                   mu0 = mean(ybar), sigma0 = sqrt(10*var(ybar)),
+                   num_iters = 500, nu_reps = 5, chains = 4, #FIX:50000
+                   seed = 1, suppressPrint = TRUE)
 ```
 
 The following code chunk reproduces Figure 6, Figure 7, and Table 2: First, we calculate the values underpinning each graphic. Then, we create each in turn.
 
 ```{r fig.asp=0.4, warning=FALSE}
-# Calculation of values underpinning each graphic
-
-## results based on RaCE model
-mcmc_ranks <- as.data.frame(t(apply(mcmc[,4:14],1,function(mu){rank(mu,ties.method="min")})))
-mcmc_ranks_probs <- as.data.frame(apply(mcmc_ranks,2,function(ranks){unlist(lapply(1:11,function(j){mean(ranks==j)}))}))
-mcmc_ranks_cumprobs <- as.data.frame(apply(mcmc_ranks_probs,2,cumsum))
-names(mcmc_ranks) <- names(mcmc_ranks_probs) <- names(mcmc_ranks_cumprobs) <- treatments
-
-## results based on traditional analysis
-wang_ranks <- as.data.frame(t(apply(cbind(0,wang_posterior),1,function(mu){rank(mu,ties.method="min")})))
-wang_ranks_probs <- as.data.frame(apply(wang_ranks,2,function(ranks){unlist(lapply(1:11,function(j){mean(ranks==j)}))}))
-wang_ranks_cumprobs <- as.data.frame(apply(wang_ranks_probs,2,cumsum))
-names(wang_ranks) <- names(wang_ranks_probs) <- names(wang_ranks_cumprobs) <- treatments
-
 # Figure 6
-g9a <- ggplot(melt(cbind(rank=1:11,wang_ranks_probs),id.vars = 1),
-              aes(x=rank,y=factor(variable,levels=treatments[order(ybar)]),fill=value))+
-  geom_tile()+scale_x_continuous(breaks=1:11,limits=c(0.5,11.5))+
-  scale_y_discrete(limits=rev)+
-  scale_fill_gradient(low="white",high="black",limits=c(0,1))+
-  labs(x="Rank",y=element_blank(),fill="Probability ")+
-  theme_minimal()+theme(panel.grid = element_blank(),legend.position = "bottom")+
-  geom_text(data = melt(cbind(rank=1:11,wang_ranks_probs),id.vars = 1) %>% filter(rank==1),
-            aes(x=rank,y=variable,label=round(value,2)),
-            color=c(rep("black",10),"white"))
-g9b <- create_clustermatrix(mcmc,treatments,1)+theme(legend.position="bottom")
+g9a <- create_clustermatrix(data=cbind(0,wang_posterior),names=treatments,label_ranks=1)+
+  theme(legend.position = "bottom")
+g9b <- create_clustermatrix(mcmc=mcmc,names=treatments,label_ranks = 1)
 plot_grid(plot_grid(g9a+theme(legend.position = "none"), g9b+theme(legend.position = "none"), 
                         labels = c('A', 'B'), label_size = 12),
               get_plot_component(g9a, 'guide-box-bottom', return_all = TRUE),nrow=2,rel_heights = c(.9,.1))
 
 # Figure 7
-g10a <- ggplot(melt(cbind(rank=1:11,wang_ranks_cumprobs),id.vars = 1),
-       aes(x=rank,y=value,color=factor(variable,levels=treatments[order(ybar)])))+
-  geom_line()+labs(x="Rank",y="Cumulative Probability",color=element_blank())+
-  theme_bw()+theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank(),
-                   legend.position = "bottom")+guides(color = guide_legend(nrow = 2))
-g10b <- create_cumulativeranking(mcmc,treatments)
+g10a <- create_cumulativeranking(data=cbind(0,wang_posterior),names=treatments)+
+  theme(legend.position = "bottom")
+g10b <- create_cumulativeranking(mcmc=mcmc,names=treatments)
 plot_grid(plot_grid(g10a+theme(legend.position = "none"), g10b+theme(legend.position = "none"), 
                         labels = c('A', 'B'), label_size = 12),
               get_plot_component(g10a, 'guide-box-bottom', return_all = TRUE),nrow=2,rel_heights = c(.85,.15))
 
+
 # Table 2
-table2 <- data.frame(
-  SUCRA_Wang = apply(wang_ranks_cumprobs[1:10,],2,mean),
-  SUCRA_RaCE = apply(mcmc_ranks_cumprobs[1:10,],2,mean),
-  MNBT_Wang = apply(wang_ranks,2,function(ranks){
-    values <- quantile(ranks-1,c(0.5,0.25,0.75))
-    paste0(values[1]," (",values[2],", ",values[3],")")
-  }),
-  MNBT_RaCE = apply(mcmc_ranks,2,function(ranks){
-    values <- quantile(ranks-1,c(0.5,0.25,0.75))
-    paste0(values[1]," (",values[2],", ",values[3],")")
-  })
-)
-table2[order(ybar),]
+res_WANG <- calculate_SUCRA_MNBT(data = cbind(0,wang_posterior),
+                                 confidence = 0.50, names = treatments)
+res_RaCENMA <- calculate_SUCRA_MNBT(mcmc = mcmc,
+                                    confidence = 0.50, names = treatments)
+table2 <- left_join(res_WANG,res_RaCENMA,by="Treatment")[,c(1,2,4,3,5)]
+names(table2) <- c("Treatment","SUCRA (Wang)","SUCRA (RaCE)","MNBT (Wang)","MNBT (RaCE)")
+print(table2)
 ```
 
 The following code chunk reproduces the Figures 8--10 (Appendix B).
