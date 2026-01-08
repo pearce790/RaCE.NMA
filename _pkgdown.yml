@@ -33,7 +33,6 @@ reference:
   contents:
   - createtrace_mu
   - createtrace_K
-  - create_violinplot
   - create_forestplot
   - create_cumulativeranking
   - create_clustermatrix

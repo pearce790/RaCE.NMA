@@ -36,31 +36,25 @@ library(ggplot2)  # creating nice figures
 Throughout this tutorial, we use a dataset displaying the results of a previous NMA study provided by Wang et. al (2022). The data is loaded below:
 
 ```{r}
-data("WangPosteriors")
-wang_posterior <- mcmc.df[,4:13] # posteriors of non-baseline treatments
-wang_ybar <- c(0, apply(wang_posterior,2,mean)) # calculating mean relative treatment effects
-wang_cov <- cov(wang_posterior) # calculating covariance of relative treatment effects
-wang_cov <- cbind(c(min(apply(wang_posterior,2,var))/10, rep(0,10)), # updating covariance for baseline treatments
-             rbind(0,wang_cov) )
-wang_s <- sqrt(diag(wang_cov))
-treatments <- c("R-CHOP","R-CHOP-R","R-Benda","R-Benda-R","R-Benda-R4",
-              "R-CVP","R-CVP-R","R-2(Len)","G-CVP-G","G-CHOP-G","G-Benda-G")
+data("wang_posterior") # loads posterior of non-baseline treatments
+
+# define assumed mean and variance for baseline treatment (R-CHOP)
+ybar_baseline <- 0
+var_baseline <- min(apply(wang_posterior,2,var))/10
+
+# calculate summary statistics, ybar and cov, for all treatments
+ybar <- c( ybar_baseline, apply(wang_posterior,2,mean) )
+cov <- cbind( c(var_baseline, rep(0, 10) ),
+              rbind(0, cov(wang_posterior)) )
+
+# store treatment names
+treatments <- c("R-CHOP", names(wang_posterior))
 ```
 
 The following forest plot displays the relative treatment effects of the 11 treatments in the study, as estimated by Wang et. al (2022).
 
 ```{r fig.asp=0.5}
-forestplot_data <- data.frame(
-  name=treatments, 
-  mean=wang_ybar,
-  lower_CI=c(-1.96*sqrt(min(apply(wang_posterior,2,var))/10),apply(wang_posterior,2,function(x){quantile(x,0.025)})),
-  upper_CI=c(1.96*sqrt(min(apply(wang_posterior,2,var))/10),apply(wang_posterior,2,function(x){quantile(x,0.975)}))
-)[-1,] # excluding baseline treatment
-forestplot_data$name <- factor(forestplot_data$name,levels=forestplot_data$name[order(forestplot_data$mean)])
-ggplot(forestplot_data, aes(y=name, x=mean, xmin=lower_CI, xmax=upper_CI) ) +
-  geom_point() + geom_linerange() +
-  scale_y_discrete(limits=rev) + labs(y="Treatment",x="Posterior") + 
-  theme_bw() + theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())
+create_forestplot(wang_posterior,names=treatments[-1])
 ```
 
 ## 1. Model Estimation
@@ -151,9 +145,4 @@ create_clustermatrix(mcmc_results, names = treatments, label_ranks = 1)
 create_cumulativeranking(mcmc_results, names=treatments)
 ```
 
-The package also includes functions to produce violin plots of model posteriors.
 
-```{r fig.asp=0.5, warning=FALSE}
-create_violinplot(mcmc_results,names=treatments)
-create_forestplot(mcmc_results,names=treatments)
-```

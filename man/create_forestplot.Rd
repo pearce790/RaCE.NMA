@@ -2,24 +2,34 @@
 % Please edit documentation in R/create_forestplot.R
 \name{create_forestplot}
 \alias{create_forestplot}
-\title{Create posterior forest plots for the mu parameters in RaCE NMA models}
+\title{Create posterior forest plots for relative treatment effect estimates from a standard or RaCE NMA study}
 \usage{
-create_forestplot(mcmc, names = NULL, limits = 0.95)
+create_forestplot(
+  data = NULL,
+  mcmc = NULL,
+  names = NULL,
+  limits = 0.95,
+  order_by_average = TRUE
+)
 }
 \arguments{
+\item{data}{A NxJ matrix of data to display as a forest plot, where N is the number of observations and J the number of treatments. This feature is designed for use to display a forest plot of results from a standard NMA study.}
+
 \item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
 
 \item{names}{A vector of intervention names (optional)}
 
 \item{limits}{A numeric indicating the desired credible level to be displayed, as a proportion. Defaults to 0.95.}
+
+\item{order_by_average}{A boolean indicating if plot should order treatments by their average treatment effect.}
 }
 \value{
 A ggplot of posterior forest plots for the mu parameter.
 }
 \description{
-This function creates posterior forest plots for the mu parameters in the form of a ggplot.
+This function creates posterior forest plots for relative treatment effect estimates from a standard or RaCE NMA study.
 }
 \examples{
 mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
-create_forestplot(mcmc,names=paste0("Treatment ",1:4))
+create_forestplot(mcmc=mcmc,names=paste0("Treatment ",1:4))
 }

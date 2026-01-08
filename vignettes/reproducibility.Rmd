@@ -77,7 +77,10 @@ for(iter in 1:20){
           posterior_equal[i,j] <- mean(mcmc[,paste0("G",i)] == mcmc[,paste0("G",j)]) # assess if treatments are rank-clustered
         }}
         
-        results <- rbind(results,c(iter,J,K,s,mean(posterior_equal[equal==1],na.rm=T),mean(posterior_equal[equal==0],na.rm=T)))
+        results <- rbind(
+          results,
+          c(iter,J,K,s,mean(posterior_equal[equal==1],na.rm=T),mean(posterior_equal[equal==0],na.rm=T))
+        )
       }
     }
   }
@@ -113,11 +116,7 @@ s <- c(.1,.1,.1,1)
 set.seed(2)
 data <- matrix(data = rnorm(10000*4,mean=ybar,sd=s), ncol = 4, byrow = TRUE)
 
-ggplot(data.frame(name=1:J,mean=ybar,lower_CI=ybar-1.96*s,upper_CI=ybar+1.96*s),
-       aes(y=factor(name),x=mean,xmin=lower_CI,xmax=upper_CI))+
-  geom_point()+geom_linerange()+scale_y_discrete(limits=rev)+
-  theme_bw()+theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+
-  labs(y="Treatment",x="Posterior")
+create_forestplot(data=data,order_by_average = FALSE)
 ```
 
 The following code reproduces Table 1: First, we fit the RaCE model to the simulated data. Second, we calculate and display the values in Table 1.
@@ -167,30 +166,25 @@ plot_grid(plot_grid(g4a+theme(legend.position = "none"), g4b+theme(legend.positi
 We first load the posteriors from Wang et al. (2022) and calculate the mean and covariances of the relative treatment effects.
 
 ```{r}
-data("WangPosteriors")
-wang_posterior <- mcmc.df[,4:13] # posteriors of non-baseline treatments
-ybar <- c(0, apply(wang_posterior,2,mean)) # calculating mean relative treatment effects
-cov <- cov(wang_posterior) # calculating covariance of relative treatment effects
-cov <- cbind(c(min(apply(wang_posterior,2,var))/10, rep(0,10)), # updating covariance for baseline treatments
-             rbind(0,cov) )
-treatments <- c("R-CHOP","R-CHOP-R","R-Benda","R-Benda-R","R-Benda-R4",
-              "R-CVP","R-CVP-R","R-2(Len)","G-CVP-G","G-CHOP-G","G-Benda-G")
+data("wang_posterior") # loads posterior of non-baseline treatments
+
+# define assumed mean and variance for baseline treatment (R-CHOP)
+ybar_baseline <- 0
+var_baseline <- min(apply(wang_posterior,2,var))/10
+
+# calculate summary statistics, ybar and cov, for all treatments
+ybar <- c( ybar_baseline, apply(wang_posterior,2,mean) )
+cov <- cbind( c(var_baseline, rep(0, 10) ),
+              rbind(0, cov(wang_posterior)) )
+
+# store treatment names
+treatments <- c("R-CHOP", names(wang_posterior))
 ```
 
 The following code chunk reproduces Figure 5.
 
-```{r fig.asp = 0.4}
-forestplot_data <- data.frame(
-  name=treatments, 
-  mean=ybar,
-  lower_CI=c(-1.96*sqrt(min(apply(wang_posterior,2,var))/10),apply(wang_posterior,2,function(x){quantile(x,0.025)})),
-  upper_CI=c(1.96*sqrt(min(apply(wang_posterior,2,var))/10),apply(wang_posterior,2,function(x){quantile(x,0.975)}))
-)[-1,] # excluding baseline treatment
-forestplot_data$name <- factor(forestplot_data$name,levels=forestplot_data$name[order(forestplot_data$mean)])
-ggplot(forestplot_data, aes(y=name, x=mean, xmin=lower_CI, xmax=upper_CI) ) +
-  geom_point() + geom_linerange() +
-  scale_y_discrete(limits=rev) + labs(y="Treatment",x="Posterior") + 
-  theme_bw() + theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())
+```{r fig.asp = 0.4, warning=FALSE}
+create_forestplot(data=wang_posterior,names=treatments[-1])
 ```
 
 Next, we fit the RaCE model to estimated relative treatment effects from Wang et al. (2022).
@@ -202,7 +196,7 @@ mcmc <- mcmc_RCMVN(ybar=ybar, cov=cov, mu0=mean(ybar), sigma0= sqrt(10*var(ybar)
 
 The following code chunk reproduces Figure 6, Figure 7, and Table 2: First, we calculate the values underpinning each graphic. Then, we create each in turn.
 
-```{r fig.asp=0.4}
+```{r fig.asp=0.4, warning=FALSE}
 # Calculation of values underpinning each graphic
 
 ## results based on RaCE model
@@ -269,6 +263,6 @@ createtrace_K(mcmc)+
 createtrace_mu(mcmc,names=treatments)+
   scale_x_continuous(breaks=seq(125000,250000,by=25000),
                      labels=paste0(c(125, 150, 175,200,225,250),"k"))
-create_forestplot(mcmc,names=treatments)
+create_forestplot(mcmc=mcmc,names=treatments)
 ```
 
