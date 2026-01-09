@@ -37,6 +37,12 @@ reference:
   - create_cumulativeranking
   - create_clustermatrix
   - calculate_Rhat
+  - calculate_SUCRA_MNBT
+- title: Data
+  desc: Datasets for package demonstration and reproducibility
+  contents:
+  - wang_posterior
+  - toy_data
 - title: Helper Functions
   desc: Functions used during model-fitting that are not needed by the user, but are
     provided for completeness and reproducibility.
