@@ -2,7 +2,7 @@
 title: "Reproducibility"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Reproducibility}
+  %\VignetteIndexEntry{reproducibility}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

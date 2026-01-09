@@ -13,13 +13,13 @@ navbar:
   components:
     home:
       text: Overview
-      href: articles/Overview.html
+      href: articles/overview.html
     Tutorial:
       text: Tutorial
-      href: articles/Tutorial.html
+      href: articles/tutorial.html
     Reproducibility:
       text: Reproducibility
-      href: articles/Reproducibility.html
+      href: articles/reproducibility.html
     articles:
       text: ~
       menu: ~
