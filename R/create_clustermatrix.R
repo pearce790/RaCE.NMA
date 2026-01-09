@@ -62,7 +62,7 @@ create_clustermatrix <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL
       geom_tile()+scale_x_continuous(breaks=1:J,limits=c(0.5,J+0.5))+
       scale_y_discrete(limits=rev)+
       scale_fill_gradient(low="white",high="black",limits=c(0,1))+
-      labs(x="Rank",y=element_blank(),fill="Probability ")+
+      labs(x="Rank",y=NULL,fill="Probability ")+
       theme_minimal()+theme(panel.grid = element_blank(),legend.position = "right")
     if(!is.null(label_ranks)){
       rank_data <- posterior_rank_probability %>% filter(Var1 %in% label_ranks)

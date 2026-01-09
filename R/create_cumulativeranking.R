@@ -52,7 +52,7 @@ create_cumulativeranking <- function(data=NULL, mcmc=NULL, names=NULL){
       geom_line()+theme_minimal()+
       scale_x_continuous(breaks=1:J)+
       theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+
-      labs(x="Rank",y="Cumulative Probability",color=element_blank())
+      labs(x="Rank",y="Cumulative Probability",color=NULL)
   }
   return(g)
 }

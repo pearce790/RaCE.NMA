@@ -42,10 +42,11 @@ data("wang_posterior") # loads posterior of non-baseline treatments
 ybar_baseline <- 0
 var_baseline <- min(apply(wang_posterior,2,var))/10
 
-# calculate summary statistics, ybar and cov, for all treatments
-ybar <- c( ybar_baseline, apply(wang_posterior,2,mean) )
-cov <- cbind( c(var_baseline, rep(0, 10) ),
+# calculate summary statistics, ybar, cov, and s for all treatments
+wang_ybar <- c( ybar_baseline, apply(wang_posterior,2,mean) )
+wang_cov <- cbind( c(var_baseline, rep(0, 10) ),
               rbind(0, cov(wang_posterior)) )
+wang_s <- sqrt(diag(wang_cov))
 
 # store treatment names
 treatments <- c("R-CHOP", names(wang_posterior))
@@ -120,7 +121,7 @@ The following code demonstrates how one could specify some of these settings dir
 mcmc_results <- mcmc_RCMVN(
   ybar = wang_ybar, cov = wang_cov,
   mu0 = mean(wang_ybar), sigma0 = sqrt(10*var(wang_ybar)),
-  num_iters = 10000, nu_reps = 2, chains = 2, seed = 1 
+  num_iters = 500, nu_reps = 2, chains = 2, seed = 1  #FIX:10000
 )
 ```
 
@@ -136,13 +137,14 @@ calculate_Rhat(mcmc_results, names=treatments)
 
 ## 3. Inference and summary statistics
 
-Often, we are most interested in creating a clustering probability matrix and a cumulative ranking curve. We create these plots in the code chunks below.
+Often, we are most interested in creating a clustering probability matrix and a cumulative ranking curve. We create these plots and tables in the code chunks below.
 
-```{r fig.asp=0.6, warning=FALSE}
-create_clustermatrix(mcmc_results, names = treatments, label_ranks = 1)
+```{r fig.asp=0.6}
+create_clustermatrix(mcmc=mcmc_results, names = treatments, label_ranks = 1)
 ```
-```{r fig.asp=0.4, warning=FALSE}
-create_cumulativeranking(mcmc_results, names=treatments)
+```{r fig.asp=0.4}
+create_cumulativeranking(mcmc=mcmc_results, names=treatments)
 ```
-
-
+```{r}
+calculate_SUCRA_MNBT(mcmc=mcmc_results,names=treatments)
+```
