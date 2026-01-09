@@ -13,8 +13,8 @@
 #' @return A ggplot of posterior forest plots for the mu parameter.
 #'
 #' @examples
-#' mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
-#' create_forestplot(mcmc=mcmc,names=paste0("Treatment ",1:4))
+#' data("toy_data")
+#' create_forestplot(data=toy_data,names=paste0("Treatment ",1:4))
 #' @export
 create_forestplot <- function(data=NULL,mcmc=NULL,names=NULL,limits=0.95,order_by_average=TRUE){
   if(!is.null(data)){

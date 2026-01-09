@@ -14,7 +14,8 @@
 #' @return A ggplot of a posterior clustering matrix for the interventions.
 #'
 #' @examples
-#' mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+#' data("wang_posterior")
+#' mcmc <- mcmc_RCMVN(posterior=wang_posterior,num_iters=100)
 #' create_clustermatrix(mcmc=mcmc,names=paste0("Treatment ",1:4),label_ranks=c(1,3))
 #' @export
 create_clustermatrix <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){

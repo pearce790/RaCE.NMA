@@ -6,20 +6,20 @@ navbar:
   structure:
     left:
     - home
-    - reproducibility
-    - tutorial
+    - Reproducibility
+    - Tutorial
     - reference
     right: github
   components:
     home:
       text: Overview
-      href: articles/overview.html
-    tutorial:
+      href: articles/Overview.html
+    Tutorial:
       text: Tutorial
-      href: articles/tutorial.html
-    reproducibility:
+      href: articles/Tutorial.html
+    Reproducibility:
       text: Reproducibility
-      href: articles/reproducibility.html
+      href: articles/Reproducibility.html
     articles:
       text: ~
       menu: ~
