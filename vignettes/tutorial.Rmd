@@ -1,6 +1,11 @@
 ---
 title: "Tutorial"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true  
+number_sections: true  
 vignette: >
   %\VignetteIndexEntry{tutorial}
   %\VignetteEngine{knitr::rmarkdown}
@@ -16,7 +21,7 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-## Overview
+# Overview
 
 In this vignette, we provide a detailed tutorial of the key functionalities of the `RaCE.NMA` R package. The package has functions to complete three primary tasks in the analysis pipeline when utilizing the RaCE-NMA methodology:
 
@@ -32,7 +37,7 @@ library(reshape2) # data reformatting
 library(ggplot2)  # creating nice figures
 ```
 
-## Toy Data
+# Toy Data
 
 First, we use a "toy" dataset that can be seen in Simulation Study 2 of the paper. The data is included in the `RaCE.NMA` package and can be loaded using the following code:
 
@@ -178,7 +183,7 @@ The third function creates a table displaying the SUCRA value and the Median Num
 calculate_SUCRA_MNBT(mcmc=mcmc_results_toy, confidence = 0.5)
 ```
 
-## Real Data (Wang et. al [2022])
+# Real Data (Wang et. al [2022])
 
 Next, we demonstrate the package on a real NMA study provided by Wang et. al (2022) and analyzed as a Case Study in our paper. The data is included in the `RaCE.NMA` package and can be loaded using the following code:
 
