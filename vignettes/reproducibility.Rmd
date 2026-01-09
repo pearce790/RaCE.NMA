@@ -75,7 +75,7 @@ for(iter in 1:20){
         
         mcmc <- mcmc_RCMVN(ybar=ybar,s=rep(s,J),mu=mean(ybar),
                            sigma0=max(1,4*sd(ybar)),nu0=ybar,
-                           tau=1,num_iters=300,nu_reps=2,chains=4, #FIX:3000
+                           tau=1,num_iters=3000,nu_reps=2,chains=4,
                            burn_prop=0.5,thin=3,suppressPrint=TRUE)
         
         equal <- posterior_equal <- matrix(NA,nrow=J,ncol=J)
@@ -141,9 +141,9 @@ create_forestplot(data = data, order_by_average = FALSE)
 
 The following code reproduces Table 1: First, we fit the RaCE model to the simulated data. Second, we calculate and display the values in Table 1.
 
-```{r}
+```{r cache=TRUE}
 mcmc <- mcmc_RCMVN(ybar = ybar, s = s, 
-                   num_iters = 500, nu_reps = 2, chains = 4, #FIX:50000
+                   num_iters = 50000, nu_reps = 2, chains = 4, 
                    burn_prop = 0.5,thin = 1,suppressPrint = TRUE)
 
 posterior_equal <- matrix(NA,nrow=J,ncol=J)
@@ -228,7 +228,7 @@ Next, we fit the RaCE model to estimated relative treatment effects from Wang et
 ```{r}
 mcmc <- mcmc_RCMVN(ybar = ybar, cov = cov, 
                    mu0 = mean(ybar), sigma0 = sqrt(10*var(ybar)),
-                   num_iters = 500, nu_reps = 5, chains = 4, #FIX:50000
+                   num_iters = 50000, nu_reps = 5, chains = 4, 
                    seed = 1, suppressPrint = TRUE)
 ```
 

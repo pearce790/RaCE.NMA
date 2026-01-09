@@ -223,7 +223,7 @@ Now, we proceed through the analysis pipeline.
 mcmc_results_casestudy <- mcmc_RCMVN(
   ybar = ybar_wang, cov = cov_wang,
   mu0 = mean(ybar_wang), sigma0 = sqrt(10*var(ybar_wang)),
-  num_iters = 10000, nu_reps = 2, chains = 2, seed = 1
+  num_iters = 40000, nu_reps = 2, chains = 2, seed = 1
 )
 ```
 
