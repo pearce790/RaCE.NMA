@@ -432,7 +432,7 @@ the 11 treatments in the study, as estimated by Wang et. al (2022).</p>
 <code class="sourceCode R"><span><span class="va">mcmc_results_casestudy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span></span>
 <span>  ybar <span class="op">=</span> <span class="va">ybar_wang</span>, cov <span class="op">=</span> <span class="va">cov_wang</span>,</span>
 <span>  mu0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ybar_wang</span><span class="op">)</span>, sigma0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">ybar_wang</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  num_iters <span class="op">=</span> <span class="fl">10000</span>, nu_reps <span class="op">=</span> <span class="fl">2</span>, chains <span class="op">=</span> <span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">1</span></span>
+<span>  num_iters <span class="op">=</span> <span class="fl">40000</span>, nu_reps <span class="op">=</span> <span class="fl">2</span>, chains <span class="op">=</span> <span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Estimating chain 1 of 2."</span></span>
 <span><span class="co">#&gt; [1] "Estimating chain 2 of 2."</span></span></code></pre></div>
@@ -451,17 +451,17 @@ the 11 treatments in the study, as estimated by Wang et. al (2022).</p>
 <span><span class="co">#&gt; Potential scale reduction factors:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;            Point est. Upper C.I.</span></span>
-<span><span class="co">#&gt; R-CHOP           1.00       1.01</span></span>
-<span><span class="co">#&gt; R-CHOP-R         1.01       1.06</span></span>
-<span><span class="co">#&gt; R-Benda          1.02       1.09</span></span>
-<span><span class="co">#&gt; R-Benda-R        1.00       1.02</span></span>
-<span><span class="co">#&gt; R-Benda-R4       1.00       1.00</span></span>
-<span><span class="co">#&gt; R-CVP            1.08       1.30</span></span>
-<span><span class="co">#&gt; R-CVP-R          1.09       1.32</span></span>
-<span><span class="co">#&gt; R-2(Len)         1.16       1.55</span></span>
-<span><span class="co">#&gt; G-CVP-G          1.08       1.31</span></span>
-<span><span class="co">#&gt; G-CHOP-G         1.19       1.65</span></span>
-<span><span class="co">#&gt; G-Benda-G        1.16       1.55</span></span></code></pre></div>
+<span><span class="co">#&gt; R-CHOP           1.01       1.03</span></span>
+<span><span class="co">#&gt; R-CHOP-R         1.00       1.01</span></span>
+<span><span class="co">#&gt; R-Benda          1.01       1.03</span></span>
+<span><span class="co">#&gt; R-Benda-R        1.00       1.01</span></span>
+<span><span class="co">#&gt; R-Benda-R4       1.03       1.08</span></span>
+<span><span class="co">#&gt; R-CVP            1.02       1.05</span></span>
+<span><span class="co">#&gt; R-CVP-R          1.07       1.17</span></span>
+<span><span class="co">#&gt; R-2(Len)         1.05       1.20</span></span>
+<span><span class="co">#&gt; G-CVP-G          1.19       1.67</span></span>
+<span><span class="co">#&gt; G-CHOP-G         1.24       1.91</span></span>
+<span><span class="co">#&gt; G-Benda-G        1.16       1.56</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="inference-and-summary-statistics-1">3. Inference and summary statistics<a class="anchor" aria-label="anchor" href="#inference-and-summary-statistics-1"></a>
@@ -477,18 +477,18 @@ in the code chunks below.</p>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>,names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     Treatment    SUCRA MNBT (50% CI)</span></span>
-<span><span class="co">#&gt; 1   G-Benda-G 0.993630      0 (0, 0)</span></span>
-<span><span class="co">#&gt; 2  R-Benda-R4 0.942055      0 (0, 1)</span></span>
-<span><span class="co">#&gt; 3   R-Benda-R 0.924070      1 (0, 1)</span></span>
-<span><span class="co">#&gt; 4    R-2(Len) 0.663695      3 (3, 4)</span></span>
-<span><span class="co">#&gt; 5    G-CHOP-G 0.648690      3 (3, 4)</span></span>
-<span><span class="co">#&gt; 6     R-Benda 0.637975      3 (3, 4)</span></span>
-<span><span class="co">#&gt; 7    R-CHOP-R 0.636165      3 (3, 4)</span></span>
-<span><span class="co">#&gt; 8     R-CVP-R 0.284175      7 (7, 8)</span></span>
-<span><span class="co">#&gt; 9     G-CVP-G 0.279990      7 (7, 8)</span></span>
-<span><span class="co">#&gt; 10     R-CHOP 0.266110      7 (7, 8)</span></span>
-<span><span class="co">#&gt; 11      R-CVP 0.255875      7 (7, 8)</span></span></code></pre></div>
+<span><span class="co">#&gt;     Treatment     SUCRA MNBT (50% CI)</span></span>
+<span><span class="co">#&gt; 1   G-Benda-G 0.9922112      0 (0, 0)</span></span>
+<span><span class="co">#&gt; 2  R-Benda-R4 0.9397925      0 (0, 1)</span></span>
+<span><span class="co">#&gt; 3   R-Benda-R 0.9223138      1 (0, 2)</span></span>
+<span><span class="co">#&gt; 4     R-Benda 0.6585300      3 (3, 4)</span></span>
+<span><span class="co">#&gt; 5    R-CHOP-R 0.6570700      3 (3, 4)</span></span>
+<span><span class="co">#&gt; 6    G-CHOP-G 0.6445500      3 (3, 4)</span></span>
+<span><span class="co">#&gt; 7    R-2(Len) 0.6035275      3 (3, 6)</span></span>
+<span><span class="co">#&gt; 8     R-CVP-R 0.3005300      7 (7, 8)</span></span>
+<span><span class="co">#&gt; 9     G-CVP-G 0.2808388      7 (7, 8)</span></span>
+<span><span class="co">#&gt; 10     R-CHOP 0.2779125      7 (7, 8)</span></span>
+<span><span class="co">#&gt; 11      R-CVP 0.2687087      7 (7, 8)</span></span></code></pre></div>
 </div>
 </div>
   </div>

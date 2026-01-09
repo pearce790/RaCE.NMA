@@ -137,7 +137,7 @@ simulation study. Second, we create the figure.</p>
 <span>        </span>
 <span>        <span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span>ybar<span class="op">=</span><span class="va">ybar</span>,s<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">s</span>,<span class="va">J</span><span class="op">)</span>,mu<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ybar</span><span class="op">)</span>,</span>
 <span>                           sigma0<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">ybar</span><span class="op">)</span><span class="op">)</span>,nu0<span class="op">=</span><span class="va">ybar</span>,</span>
-<span>                           tau<span class="op">=</span><span class="fl">1</span>,num_iters<span class="op">=</span><span class="fl">300</span>,nu_reps<span class="op">=</span><span class="fl">2</span>,chains<span class="op">=</span><span class="fl">4</span>, <span class="co">#FIX:3000</span></span>
+<span>                           tau<span class="op">=</span><span class="fl">1</span>,num_iters<span class="op">=</span><span class="fl">3000</span>,nu_reps<span class="op">=</span><span class="fl">2</span>,chains<span class="op">=</span><span class="fl">4</span>,</span>
 <span>                           burn_prop<span class="op">=</span><span class="fl">0.5</span>,thin<span class="op">=</span><span class="fl">3</span>,suppressPrint<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span>        </span>
 <span>        <span class="va">equal</span> <span class="op">&lt;-</span> <span class="va">posterior_equal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="cn">NA</span>,nrow<span class="op">=</span><span class="va">J</span>,ncol<span class="op">=</span><span class="va">J</span><span class="op">)</span></span>
@@ -204,7 +204,7 @@ to the simulated data. Second, we calculate and display the values in
 Table 1.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span>ybar <span class="op">=</span> <span class="va">ybar</span>, s <span class="op">=</span> <span class="va">s</span>, </span>
-<span>                   num_iters <span class="op">=</span> <span class="fl">500</span>, nu_reps <span class="op">=</span> <span class="fl">2</span>, chains <span class="op">=</span> <span class="fl">4</span>, <span class="co">#FIX:50000</span></span>
+<span>                   num_iters <span class="op">=</span> <span class="fl">50000</span>, nu_reps <span class="op">=</span> <span class="fl">2</span>, chains <span class="op">=</span> <span class="fl">4</span>, </span>
 <span>                   burn_prop <span class="op">=</span> <span class="fl">0.5</span>,thin <span class="op">=</span> <span class="fl">1</span>,suppressPrint <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">posterior_equal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="cn">NA</span>,nrow<span class="op">=</span><span class="va">J</span>,ncol<span class="op">=</span><span class="va">J</span><span class="op">)</span></span>
@@ -213,9 +213,9 @@ Table 1.</p>
 <span><span class="op">}</span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">posterior_equal</span>,<span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
-<span><span class="co">## [1,]   NA    0    0 0.12</span></span>
-<span><span class="co">## [2,]   NA   NA    0 0.37</span></span>
-<span><span class="co">## [3,]   NA   NA   NA 0.24</span></span>
+<span><span class="co">## [1,]   NA    0    0 0.18</span></span>
+<span><span class="co">## [2,]   NA   NA    0 0.40</span></span>
+<span><span class="co">## [3,]   NA   NA   NA 0.19</span></span>
 <span><span class="co">## [4,]   NA   NA   NA   NA</span></span></code></pre></div>
 <p>The following code reproduces Figure 4: First, we calculate the
 posterior rank-clustering probability under a traditional model (i.e.,
@@ -293,7 +293,7 @@ from Wang et al. (2022).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span>ybar <span class="op">=</span> <span class="va">ybar</span>, cov <span class="op">=</span> <span class="va">cov</span>, </span>
 <span>                   mu0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ybar</span><span class="op">)</span>, sigma0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">ybar</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   num_iters <span class="op">=</span> <span class="fl">500</span>, nu_reps <span class="op">=</span> <span class="fl">5</span>, chains <span class="op">=</span> <span class="fl">4</span>, <span class="co">#FIX:50000</span></span>
+<span>                   num_iters <span class="op">=</span> <span class="fl">50000</span>, nu_reps <span class="op">=</span> <span class="fl">5</span>, chains <span class="op">=</span> <span class="fl">4</span>, </span>
 <span>                   seed <span class="op">=</span> <span class="fl">1</span>, suppressPrint <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The following code chunk reproduces Figure 6, Figure 7, and Table 2:
 First, we calculate the values underpinning each graphic. Then, we
@@ -330,17 +330,17 @@ create each in turn.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">table2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span>,<span class="st">"SUCRA (Wang)"</span>,<span class="st">"SUCRA (RaCE)"</span>,<span class="st">"MNBT (Wang)"</span>,<span class="st">"MNBT (RaCE)"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">table2</span><span class="op">)</span></span>
 <span><span class="co">##     Treatment SUCRA (Wang) SUCRA (RaCE) MNBT (Wang) MNBT (RaCE)</span></span>
-<span><span class="co">## 1   G-Benda-G   0.96674667      0.98302    0 (0, 1)    0 (0, 0)</span></span>
-<span><span class="co">## 2  R-Benda-R4   0.88424167      0.95020    1 (0, 1)    0 (0, 1)</span></span>
-<span><span class="co">## 3   R-Benda-R   0.81178500      0.92332    2 (2, 2)    1 (0, 1)</span></span>
-<span><span class="co">## 4    G-CHOP-G   0.66349833      0.62416    3 (3, 4)    3 (3, 5)</span></span>
-<span><span class="co">## 5    R-CHOP-R   0.51395000      0.62664    5 (4, 5)    3 (3, 4)</span></span>
-<span><span class="co">## 6    R-2(Len)   0.50069000      0.66214    5 (4, 6)    3 (3, 4)</span></span>
-<span><span class="co">## 7     R-Benda   0.48215000      0.63026    5 (4, 6)    3 (3, 4)</span></span>
-<span><span class="co">## 8     G-CVP-G   0.27813667      0.28324    7 (6, 8)    7 (7, 8)</span></span>
-<span><span class="co">## 9      R-CHOP   0.18591667      0.25988    8 (7, 9)    7 (7, 8)</span></span>
-<span><span class="co">## 10    R-CVP-R   0.15917167      0.27416    8 (8, 9)    7 (7, 8)</span></span>
-<span><span class="co">## 11      R-CVP   0.05371333      0.22688  10 (9, 10)    8 (7, 8)</span></span></code></pre></div>
+<span><span class="co">## 1   G-Benda-G   0.96674667    0.9923444    0 (0, 1)    0 (0, 0)</span></span>
+<span><span class="co">## 2  R-Benda-R4   0.88424167    0.9427304    1 (0, 1)    0 (0, 1)</span></span>
+<span><span class="co">## 3   R-Benda-R   0.81178500    0.9245186    2 (2, 2)    1 (0, 1)</span></span>
+<span><span class="co">## 4    G-CHOP-G   0.66349833    0.6473594    3 (3, 4)    3 (3, 4)</span></span>
+<span><span class="co">## 5    R-CHOP-R   0.51395000    0.6574624    5 (4, 5)    3 (3, 4)</span></span>
+<span><span class="co">## 6    R-2(Len)   0.50069000    0.6042736    5 (4, 6)    3 (3, 5)</span></span>
+<span><span class="co">## 7     R-Benda   0.48215000    0.6565974    5 (4, 6)    3 (3, 4)</span></span>
+<span><span class="co">## 8     G-CVP-G   0.27813667    0.2760538    7 (6, 8)    7 (7, 8)</span></span>
+<span><span class="co">## 9      R-CHOP   0.18591667    0.2787232    8 (7, 9)    7 (7, 8)</span></span>
+<span><span class="co">## 10    R-CVP-R   0.15917167    0.2958426    8 (8, 9)    7 (7, 7)</span></span>
+<span><span class="co">## 11      R-CVP   0.05371333    0.2644622  10 (9, 10)    7 (7, 8)</span></span></code></pre></div>
 <p>The following code chunk reproduces the Figures 8–10 (Appendix
 B).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
