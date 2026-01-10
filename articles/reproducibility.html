@@ -42,10 +42,10 @@
   <a href="../articles/overview.html">Overview</a>
 </li>
 <li>
-  <a href="../articles/reproducibility.html">Reproducibility</a>
+  <a href="../articles/tutorial.html">Tutorial</a>
 </li>
 <li>
-  <a href="../articles/tutorial.html">Tutorial</a>
+  <a href="../articles/reproducibility.html">Reproducibility</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -323,9 +323,9 @@ create each in turn.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Table 2</span></span>
 <span><span class="va">res_WANG</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">wang_posterior</span><span class="op">)</span>,</span>
-<span>                                 confidence <span class="op">=</span> <span class="fl">0.50</span>, names <span class="op">=</span> <span class="va">treatments</span><span class="op">)</span></span>
+<span>                                 credible <span class="op">=</span> <span class="fl">0.50</span>, names <span class="op">=</span> <span class="va">treatments</span><span class="op">)</span></span>
 <span><span class="va">res_RaCENMA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>mcmc <span class="op">=</span> <span class="va">mcmc</span>,</span>
-<span>                                    confidence <span class="op">=</span> <span class="fl">0.50</span>, names <span class="op">=</span> <span class="va">treatments</span><span class="op">)</span></span>
+<span>                                    credible <span class="op">=</span> <span class="fl">0.50</span>, names <span class="op">=</span> <span class="va">treatments</span><span class="op">)</span></span>
 <span><span class="va">table2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">res_WANG</span>,<span class="va">res_RaCENMA</span>,by<span class="op">=</span><span class="st">"Treatment"</span><span class="op">)</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">table2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment"</span>,<span class="st">"SUCRA (Wang)"</span>,<span class="st">"SUCRA (RaCE)"</span>,<span class="st">"MNBT (Wang)"</span>,<span class="st">"MNBT (RaCE)"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">table2</span><span class="op">)</span></span>
