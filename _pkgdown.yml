@@ -6,8 +6,8 @@ navbar:
   structure:
     left:
     - home
-    - Reproducibility
     - Tutorial
+    - Reproducibility
     - reference
     right: github
   components:

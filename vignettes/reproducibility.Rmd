@@ -255,9 +255,9 @@ plot_grid(plot_grid(g10a+theme(legend.position = "none"), g10b+theme(legend.posi
               get_plot_component(g10a, 'guide-box-bottom', return_all = TRUE),nrow=2,rel_heights = c(.85,.15))
 # Table 2
 res_WANG <- calculate_SUCRA_MNBT(data = cbind(0,wang_posterior),
-                                 confidence = 0.50, names = treatments)
+                                 credible = 0.50, names = treatments)
 res_RaCENMA <- calculate_SUCRA_MNBT(mcmc = mcmc,
-                                    confidence = 0.50, names = treatments)
+                                    credible = 0.50, names = treatments)
 table2 <- left_join(res_WANG,res_RaCENMA,by="Treatment")[,c(1,2,4,3,5)]
 names(table2) <- c("Treatment","SUCRA (Wang)","SUCRA (RaCE)","MNBT (Wang)","MNBT (RaCE)")
 print(table2)

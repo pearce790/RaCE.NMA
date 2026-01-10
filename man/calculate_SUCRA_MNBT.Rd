@@ -4,14 +4,14 @@
 \alias{calculate_SUCRA_MNBT}
 \title{Calculate SUCRA and MNBT based on MCMC draws in NMA or RaCE-NMA models}
 \usage{
-calculate_SUCRA_MNBT(data = NULL, mcmc = NULL, confidence = 0.5, names = NULL)
+calculate_SUCRA_MNBT(data = NULL, mcmc = NULL, credible = 0.5, names = NULL)
 }
 \arguments{
 \item{data}{A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.}
 
 \item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
 
-\item{confidence}{The \code{confidence} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to 0.95.}
+\item{credible}{The \code{credible} level for the interval estimate of MNBT. Defaults to 0.50.}
 
 \item{names}{A vector of intervention names (optional)}
 }

@@ -164,23 +164,26 @@ The $\hat{R}$ statistic is a standard convergence diagnostic statistic used to a
 
 The package contains three functions to visualize model results. We demonstrate each in turn:
 
-The first is to create a clustering probability matrix. In the matrix, each row represents a treatment and each column a rank level. The color of the corresponding cell is the estimated posterior probability that a treatment belongs to a specific rank.  The `label_ranks` input allows the user to specify which cells in the graphic are explicitly labels with a *numerical* probability (corresponding to the color shown).
+The first is to create a clustering probability matrix.  In the figure, each row represents a treatment and each column a rank level. The color of the corresponding cell is the estimated posterior probability that a treatment belongs to a specific rank. Note that the `label_ranks` input allows the user to specify which rank levels in the graphic are labeled with a *numerical* probability (corresponding to the color shown). See the figure and corresponding interpretation below.
 
 ```{r fig.asp=0.6}
 create_clustermatrix(mcmc=mcmc_results_toy, 
-                     label_ranks = c(1,2,3,4))
+                     label_ranks = 1:4)
 ```
 
-The second function creates a cumulative ranking probability curve for each treatment. In words, the plot displays the probability that each treatment is *at least* in a specific rank place.
+The model estimates a 0.97 probability that Treatment 1 is in first place. Simultaneously, the model estimates a 0.21 probability that Treatment 4 is in first place. Thus, there is some probability, based on the model, that Treatments 1 and 4 are simultaneously the "best" treatments. That being said, Treatment 4 has substantial uncertainty in its rank, which aligns with the high uncertainty in original relative treatment effect data. Treatment 2 has a 0.72 probability of being in second place and Treatment 4 has a 0.87 probability of being in fourth (last) place.
+
+
+The second function creates a cumulative ranking probability curve for each treatment. In words, the plot displays the probability that each treatment is *at least* in a specific rank place. For example, we see that Treatment 4 has a 0.80 probability of being in first or second place.
 
 ```{r fig.asp=0.4}
 create_cumulativeranking(mcmc=mcmc_results_toy)
 ```
 
-The third function creates a table displaying the SUCRA value and the Median Number of Better Treatments (MNBT) for each treatment (with a corresponding credible interval). The credible level may be specified using the `confidence` argument.
+The third function creates a table displaying the SUCRA value and the Median Number of Better Treatments (MNBT) for each treatment (with a corresponding credible interval). The credible level may be specified using the `credible` argument.
 
 ```{r}
-calculate_SUCRA_MNBT(mcmc=mcmc_results_toy, confidence = 0.5)
+calculate_SUCRA_MNBT(mcmc=mcmc_results_toy, credible = 0.5)
 ```
 
 # Real Data (Wang et. al [2022])
@@ -219,15 +222,18 @@ Now, we proceed through the analysis pipeline.
 
 ## 1. Model Estimation
 
+We fit the model below using 2 chains, each with $10{,}000\times 2$ MCMC iterations.
+
 ```{r cache=TRUE}
 mcmc_results_casestudy <- mcmc_RCMVN(
   ybar = ybar_wang, cov = cov_wang,
-  mu0 = mean(ybar_wang), sigma0 = sqrt(10*var(ybar_wang)),
-  num_iters = 40000, nu_reps = 2, chains = 2, seed = 1
+  num_iters = 10000, nu_reps = 2, chains = 2, seed = 1
 )
 ```
 
 ## 2. Model Assessment
+
+Next, we view trace plots and convergence diagnostics.
 
 ```{r}
 createtrace_mu(mcmc_results_casestudy, names=treatments)
@@ -235,9 +241,11 @@ createtrace_K(mcmc_results_casestudy)
 calculate_Rhat(mcmc_results_casestudy, names=treatments)
 ```
 
+We observe that chains have not run long enough (refer to the Reproducibility tab for a longer run of chains). However, for demonstration purposes we continue with the next stage of the analysis pipeline below.
+
 ## 3. Inference and summary statistics
 
-Often, we are most interested in creating a clustering probability matrix and a cumulative ranking curve. We create these plots and tables in the code chunks below.
+Disclaimer: The results below are based on chains which have not converged, but are shown for demonstration purposes. Please see the Reproducibility tab for accurate results based on this data.
 
 ```{r fig.asp=0.6}
 create_clustermatrix(mcmc=mcmc_results_casestudy, names = treatments, label_ranks = 1)
