@@ -11,10 +11,10 @@
 #' @return A ggplot of trace plots for the K parameter.
 #'
 #' @examples
-#' mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
-#' createtrace_K(mcmc)
+#' mcmc <- mcmc_raceNMA(mu_hat=c(0,0,1,1), s=c(.1,.1,.1,.1), seed=1)
+#' traceplot_K(mcmc)
 #' @export
-createtrace_K <- function(mcmc){
+traceplot_K <- function(mcmc){
   g <- ggplot(data=mcmc,aes(x=iteration,y=K,color=chain))+
     geom_line()+theme_minimal()+
     theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+

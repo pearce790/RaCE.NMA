@@ -6,16 +6,16 @@
 #'
 #' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
 #' @param names A vector of intervention names (optional)
-#' @param confidence The \code{confidence} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to 0.95.
+#' @param level The \code{level} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to 0.95.
 #' @param multivariate The \code{multivariate} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to FALSE.
 #'
 #' @return Gelman diagnostics for the inputted MCMC chains, in the format of the output of the \code{gelman.diag} function in the \code{coda} package.
 #'
 #' @examples
-#' mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+#' mcmc <- mcmc_raceNMA(mu_hat=c(0,0,1,1), s=c(.1,.1,.1,.1), seed=1)
 #' calculate_Rhat(mcmc,names=paste0("Treatment ",1:4))
 #' @export
-calculate_Rhat <- function(mcmc,names=NULL,confidence=0.95,multivariate=FALSE){
+calculate_Rhat <- function(mcmc,names=NULL,level=0.95,multivariate=FALSE){
   start_iter <- min(mcmc$iteration)
   end_iter <- max(mcmc$iteration)
   thin <- diff(mcmc$iteration[1:2])
@@ -26,5 +26,5 @@ calculate_Rhat <- function(mcmc,names=NULL,confidence=0.95,multivariate=FALSE){
     mcmc_list[[chain_iter]] <- as.mcmc(tmp,start=start_iter,end=end_iter,thin=thin)
   }
   mcmc_list <- as.mcmc.list(mcmc_list)
-  return(gelman.diag(mcmc_list,confidence=confidence,multivariate=multivariate))
+  return(gelman.diag(mcmc_list,confidence=level,multivariate=multivariate))
 }

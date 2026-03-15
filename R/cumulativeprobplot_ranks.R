@@ -11,10 +11,10 @@
 #' @return A ggplot of a cumulative ranking plot.
 #'
 #' @examples
-#' mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
-#' create_cumulativeranking(mcmc=mcmc,names=paste0("Treatment ",1:4))
+#' mcmc <- mcmc_raceNMA(mu_hat=c(0,0,1,1), s=c(.1,.1,.1,.1), seed=1)
+#' cumulativeprobplot_ranks(mcmc=mcmc,names=paste0("Treatment ",1:4))
 #' @export
-create_cumulativeranking <- function(data=NULL, mcmc=NULL, names=NULL){
+cumulativeprobplot_ranks <- function(data=NULL, mcmc=NULL, names=NULL){
   if(!is.null(data)){
     J <- ncol(data)
     if(is.null(names)){
@@ -30,7 +30,7 @@ create_cumulativeranking <- function(data=NULL, mcmc=NULL, names=NULL){
       geom_line()+theme_minimal()+
       scale_x_continuous(breaks=1:J)+
       theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+
-      labs(x="Rank",y="Cumulative Probability",color=NULL)
+      labs(x="Posterior Rank",y="Cumulative Probability",color=NULL)
   }
   if(!is.null(mcmc)){
     J <- (ncol(mcmc)-3)/3
@@ -52,7 +52,7 @@ create_cumulativeranking <- function(data=NULL, mcmc=NULL, names=NULL){
       geom_line()+theme_minimal()+
       scale_x_continuous(breaks=1:J)+
       theme(panel.grid.minor = element_blank(),panel.grid.major.x = element_blank())+
-      labs(x="Rank",y="Cumulative Probability",color=NULL)
+      labs(x="Posterior Rank (clustered)",y="Cumulative Probability",color=NULL)
   }
   return(g)
 }

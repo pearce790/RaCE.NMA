@@ -9,16 +9,16 @@
 #' @param data A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.
 #' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
 #' @param names A vector of intervention names (optional)
-#' @param label_ranks A vector containing rank levels for which posterior rank probabilities should be displayed within the clustering matrix. Defaults to \code{NULL}, indicating no probabilities are displayed as text.
+#' @param label_ranks A vector containing rank levels for which posterior rank probabilities should be displayed within the clustering matrix. Only non-zero probabilities are displayed. Defaults to \code{NULL}, indicating no probabilities are displayed as text.
 #'
 #' @return A ggplot of a posterior clustering matrix for the interventions.
 #'
 #' @examples
 #' data("wang_posterior")
-#' mcmc <- mcmc_RCMVN(posterior=wang_posterior,num_iters=100)
-#' create_clustermatrix(mcmc=mcmc,names=paste0("Treatment ",1:4),label_ranks=c(1,3))
+#' mcmc <- mcmc_raceNMA(posterior=wang_posterior,iter=2000)
+#' clusterplot_ranks(mcmc=mcmc,names=paste0("Treatment ",1:10),label_ranks=1:3)
 #' @export
-create_clustermatrix <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){
+clusterplot_ranks <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){
   if(!is.null(data)){
     J <- ncol(data)
     if(is.null(names)){
@@ -33,10 +33,12 @@ create_clustermatrix <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL
       geom_tile()+scale_x_continuous(breaks=1:J,limits=c(0.5,J+0.5))+
       scale_y_discrete(limits=rev)+
       scale_fill_gradient(low="white",high="black",limits=c(0,1))+
-      labs(x="Rank",y=NULL,fill="Probability ")+
+      labs(x="Posterior Rank (clustered)",y=NULL,fill="Probability ")+
       theme_minimal()+theme(panel.grid = element_blank(),legend.position = "right")
     if(!is.null(label_ranks)){
-      rank_data <- melt(as.matrix(data_ranks_probs)) %>% filter(Var1 %in% label_ranks)
+      rank_data <- melt(as.matrix(data_ranks_probs)) %>%
+        filter(Var1 %in% label_ranks) %>%
+        filter(round(value,2)>0)
       g<- g + geom_text(data=rank_data,
                         aes(x=Var1,y=Var2,label=round(value,2)),
                         color=ifelse(rank_data$value>0.5,"white","black"))
@@ -48,7 +50,7 @@ create_clustermatrix <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL
     posterior_ranks <- t(apply(posterior_mu,1,function(mu){rank(mu,ties.method = "min")}))
     posterior_meanorder <- order(apply(posterior_ranks,2,mean))
     posterior_rank_probability <- melt(apply(posterior_ranks,2,function(ranks){
-      unlist(lapply(1:J,function(j){mean(ranks==j)}))
+      sapply(1:J,function(j){mean(ranks==j)})
     }))
     if(is.null(names)){
       posterior_rank_probability$Var2 <- factor(posterior_rank_probability$Var2,
@@ -63,10 +65,12 @@ create_clustermatrix <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL
       geom_tile()+scale_x_continuous(breaks=1:J,limits=c(0.5,J+0.5))+
       scale_y_discrete(limits=rev)+
       scale_fill_gradient(low="white",high="black",limits=c(0,1))+
-      labs(x="Rank",y=NULL,fill="Probability ")+
+      labs(x="Posterior Rank (clustered)",y=NULL,fill="Probability ")+
       theme_minimal()+theme(panel.grid = element_blank(),legend.position = "right")
     if(!is.null(label_ranks)){
-      rank_data <- posterior_rank_probability %>% filter(Var1 %in% label_ranks)
+      rank_data <- posterior_rank_probability %>%
+        filter(Var1 %in% label_ranks) %>%
+        filter(round(value,2)>0)
       g<- g + geom_text(data=rank_data,
                         aes(x=Var1,y=Var2,label=round(value,2)),
                         color=ifelse(rank_data$value>0.5,"white","black"))

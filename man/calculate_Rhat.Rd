@@ -4,14 +4,14 @@
 \alias{calculate_Rhat}
 \title{Calculate Gelman Diagnostics for Fitted RaCE NMA Models}
 \usage{
-calculate_Rhat(mcmc, names = NULL, confidence = 0.95, multivariate = FALSE)
+calculate_Rhat(mcmc, names = NULL, level = 0.95, multivariate = FALSE)
 }
 \arguments{
 \item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
 
 \item{names}{A vector of intervention names (optional)}
 
-\item{confidence}{The \code{confidence} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to 0.95.}
+\item{level}{The \code{level} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to 0.95.}
 
 \item{multivariate}{The \code{multivariate} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to FALSE.}
 }
@@ -22,6 +22,6 @@ Gelman diagnostics for the inputted MCMC chains, in the format of the output of 
 This function applies MCMC outputs from the mcmc_RCMVN package to the gelman.diag function in the coda package.
 }
 \examples{
-mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+mcmc <- mcmc_raceNMA(mu_hat=c(0,0,1,1), s=c(.1,.1,.1,.1), seed=1)
 calculate_Rhat(mcmc,names=paste0("Treatment ",1:4))
 }

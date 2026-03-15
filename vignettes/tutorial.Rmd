@@ -51,7 +51,7 @@ The data contains $10{,}000$ rows and 4 columns. Each column represented a treat
 To visualize these posterior draws, we create a forest plot (with 95\% CIs) via the aptly-named `create_forestplot` function:
 
 ```{r fig.asp=0.45}
-create_forestplot(data = toy_data, limits = 0.95, 
+forestplot_muhat(data = toy_data, level = 0.95, 
                   order_by_average = FALSE)
 ```
 
@@ -72,30 +72,30 @@ The `RaCE.NMA` packages contains a primary model-fitting function, `mcmc_RCMVN`.
 If available, we recommend inputting the full posterior of the relative treatment effect from a previous NMA analysis into the `mcmc_RCMVN` function. In this case, the `posterior` argument should be provided an $N\times J$ matrix, where the (i,j) entry indicates the relative treatment effect of treatment $j$ in MCMC draw $i$. An example of this functionality is provided below:
 
 ```{r eval=F}
-mcmc_RCMVN(posterior = toy_data)
+mcmc_raceNMA(posterior = toy_data)
 ```
 
 In the above code, default settings are used for all other inputs. (We recommend against this practice.)
 
 Alternatively, one may provide summary statistics of the model posterior (instead of a full posterior itself). This is useful when applying the RaCE-NMA methodology to the results of a published paper post-hoc, when only summary statistics are available. In this setting, the user must provide two inputs:
 
-  + `ybar`: A vector of length $J$ (the number of treatments), where the $j$th entry displays the average relative treatment effect of treatment $j$
+  + `mu_hat`: A vector of length $J$ (the number of treatments), where the $j$th entry displays the average relative treatment effect of treatment $j$
   + `cov` or `s`: A $J\times J$ covariance matrix of relative treatment effects *or* a vector of length $J$ of treatment-specific standard deviations of relative treatment effects.
   
 An example of this functionality is provided below:
 ```{r eval=T}
-ybar_toy <- apply(toy_data, 2, mean)
+mu_hat_toy <- apply(toy_data, 2, mean)
 cov_toy <- cov(toy_data)
 s_toy <- apply(toy_data, 2, sd)
 ```
 ```{r eval=F}
-mcmc_RCMVN(ybar = ybar_toy, cov = cov_toy) # example with ybar and cov
-mcmc_RCMVN(ybar = ybar_toy, s   = s_toy  ) # example with ybar and s
+mcmc_raceNMA(mu_hat = mu_hat_toy, cov = cov_toy) # example with mu_hat and cov
+mcmc_raceNMA(mu_hat = mu_hat_toy, s   = s_toy  ) # example with mu_hat and s
 ```
   
 If duplicative inputs are provided, the function will always use those provided the "richest" information. Specifically,
 
-  + If `posterior` is provided, `ybar`, `cov`, and/or `s` will be ignored. 
+  + If `posterior` is provided, `mu_hat`, `cov`, and/or `s` will be ignored. 
   + If `cov` is provided, `s` is ignored. 
 
 
@@ -103,15 +103,15 @@ If duplicative inputs are provided, the function will always use those provided 
 
 Next, we may specify the following hyperparameters:
 
-  + `mu0`: The prior mean on the rank-clustered relative treatment effects. Defaults to `mean(ybar)`, which aims to be vague.
-  + `sigma0`: The prior standard deviation on the rank-clustered relative treatment effects. Defaults to `sqrt(10*var(ybar))`, which aims to be vague.
+  + `mu0`: The prior mean on the rank-clustered relative treatment effects. Defaults to `mean(mu_hat)`, which aims to be vague.
+  + `sigma0`: The prior standard deviation on the rank-clustered relative treatment effects. Defaults to `sqrt(10*var(mu_hat))`, which aims to be vague.
   
 The following code demonstrates how one could specify these hyperparameters directly in the estimation function:
 
 ```{r eval=F}
-mcmc_RCMVN(
+mcmc_raceNMA(
   posterior = toy_data, # results of a standard NMA model
-  mu0 = mean(ybar_toy), sigma0 = sqrt(10*var(ybar_toy)), # model hyperparameters
+  mu0 = mean(mu_hat_toy), sigma0 = sqrt(10*var(mu_hat_toy)), # model hyperparameters
 )
 ```
 
@@ -119,10 +119,10 @@ mcmc_RCMVN(
 
 Last, we may specify parameters that control how the MCMC chains are run:
 
-  + `tau`: The standard deviation of the Metropolis Hastings proposal distribution. Defaults to `min(|ybar_i-ybar_j|)`. 
+  + `tau`: The standard deviation of the Metropolis Hastings proposal distribution. Defaults to `min(|mu_hat_i-mu_hat_j|)`. 
   + `nu0`: How cluster-specific mean parameters are initialized. Defaults to `NULL`, which randomly samples from the prior distribution.
-  + `num_iters`: The number of times the rank-clustering structure is sampled in each MCMC chain. Defaults to $5{,}000$.
-  + `nu_reps`: The number of times each cluster-specific mean is sampled per sampling of the rank-clustering structure. Defaults to $3$. In total, there will be `num_iters`$\times$`nu_reps` samples from the posterior.
+  + `iter`: The number of times the rank-clustering structure is sampled in each MCMC chain. Defaults to $4{,}000$.
+  + `nu_iter`: The number of times each cluster-specific mean is sampled per sampling of the rank-clustering structure. Defaults to $5$. In total, there will be `iter`$\times$`nu_iter` samples from the posterior.
   + `chains`: The number of independent MCMC chains. Defaults to 2.
   + `burn_prop`: The proportion of MCMC samples in each chain to be removed as burn-in. Defaults to 0.5.
   + `thin`: A number indicating how often to thin samples. Defaults to 1, indicating no thinning.
@@ -131,10 +131,10 @@ Last, we may specify parameters that control how the MCMC chains are run:
 The following code demonstrates how one could specify some of these settings directly in the estimation function:
 
 ```{r cache=TRUE}
-mcmc_results_toy <- mcmc_RCMVN(
+mcmc_results_toy <- mcmc_raceNMA(
   posterior = toy_data, # results of a standard NMA model
-  mu0 = mean(ybar_toy), sigma0 = sqrt(10*var(ybar_toy)), # model hyperparameters
-  num_iters = 10000, nu_reps = 2, # MCMC settings
+  mu0 = mean(mu_hat_toy), sigma0 = sqrt(10*var(mu_hat_toy)), # model hyperparameters
+  iter = 10000, nu_iter = 2, # MCMC settings
   chains = 2, burn_prop = 0.5, thin = 1, seed = 1
 )
 ```
@@ -144,19 +144,19 @@ mcmc_results_toy <- mcmc_RCMVN(
 The package contains three functions to assess if the MCMC chains have converged and mixed. The first two produce trace plots of `mu` and `K`, the primary model parameters. The third calculates the $\hat{R}$ statistic for each `mu` parameter. We display and interpret each plot below.
 
 ```{r}
-createtrace_mu(mcmc_results_toy)
+traceplot_mu(mcmc_results_toy)
 ```
 
 We observe acceptable mixing and convergence in the trace plots for $\mu$. Ideally, the two chains would like similar to each other, with each exhibiting a "white noise pattern". This is certainly true for $\mu_1$, $\mu_2$, and $\mu_3$. For $\mu_4$, we notice some "jumps" in value across iterations. Based on our toy data, in which treatment 4 has extremely high uncertainty, we expect this type of behavior. Furthermore, since the chains both exhibit similar patterns, we are satisfied.
 
 ```{r}
-createtrace_K(mcmc_results_toy)
+traceplot_K(mcmc_results_toy)
 ```
 
 We again observe acceptable mixing and convergence in the trace plot for $K$. That is, the two chains are indistinguishable and exhibit a seemingly random pattern between the values $3$ and $4$.
 
 ```{r}
-calculate_Rhat(mcmc_results_toy, confidence = 0.9)
+calculate_Rhat(mcmc_results_toy, level = 0.9)
 ```
 The $\hat{R}$ statistic is a standard convergence diagnostic statistic used to assess MCMC chains. A standard rule of thumb is to ensure that $\hat{R}<1.1$. We see that the point estimate and 90% confidence intervals for all $\mu$ parameters are $\leq1.1$, indicating acceptable convergence.
 
@@ -164,11 +164,12 @@ The $\hat{R}$ statistic is a standard convergence diagnostic statistic used to a
 
 The package contains three functions to visualize model results. We demonstrate each in turn:
 
+Posterior rank probabilities for each intervention. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks.
+
 The first is to create a clustering probability matrix.  In the figure, each row represents a treatment and each column a rank level. The color of the corresponding cell is the estimated posterior probability that a treatment belongs to a specific rank. Note that the `label_ranks` input allows the user to specify which rank levels in the graphic are labeled with a *numerical* probability (corresponding to the color shown). See the figure and corresponding interpretation below.
 
-```{r fig.asp=0.6}
-create_clustermatrix(mcmc=mcmc_results_toy, 
-                     label_ranks = 1:4)
+```{r fig.asp=0.6, fig.cap="Posterior rank probabilities for each intervention. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks."}
+clusterplot_ranks(mcmc=mcmc_results_toy, label_ranks = 1:4)
 ```
 
 The model estimates a 0.97 probability that Treatment 1 is in first place. Simultaneously, the model estimates a 0.21 probability that Treatment 4 is in first place. Thus, there is some probability, based on the model, that Treatments 1 and 4 are simultaneously the "best" treatments. That being said, Treatment 4 has substantial uncertainty in its rank, which aligns with the high uncertainty in original relative treatment effect data. Treatment 2 has a 0.72 probability of being in second place and Treatment 4 has a 0.87 probability of being in fourth (last) place.
@@ -177,13 +178,13 @@ The model estimates a 0.97 probability that Treatment 1 is in first place. Simul
 The second function creates a cumulative ranking probability curve for each treatment. In words, the plot displays the probability that each treatment is *at least* in a specific rank place. For example, we see that Treatment 4 has a 0.80 probability of being in first or second place.
 
 ```{r fig.asp=0.4}
-create_cumulativeranking(mcmc=mcmc_results_toy)
+cumulativeprobplot_ranks(mcmc=mcmc_results_toy)
 ```
 
 The third function creates a table displaying the SUCRA value and the Median Number of Better Treatments (MNBT) for each treatment (with a corresponding credible interval). The credible level may be specified using the `credible` argument.
 
 ```{r}
-calculate_SUCRA_MNBT(mcmc=mcmc_results_toy, credible = 0.5)
+calculate_SUCRA_MNBT(mcmc=mcmc_results_toy, level = 0.5)
 ```
 
 # Real Data (Wang et. al [2022])
@@ -199,11 +200,11 @@ It is important to note that `wang_posterior` only includes relative treatment e
 
 ```{r}
 # define assumed mean and variance for baseline treatment (R-CHOP)
-ybar_baseline <- 0
+mu_hat_baseline <- 0
 var_baseline <- min(apply(wang_posterior,2,var))/10
 
-# calculate summary statistics, ybar and cov
-ybar_wang <- c( ybar_baseline, apply(wang_posterior,2,mean) )
+# calculate summary statistics, mu_hat and cov
+mu_hat_wang <- c( mu_hat_baseline, apply(wang_posterior,2,mean) )
 cov_wang <- cbind( c(var_baseline, rep(0, 10) ),
               rbind(0, cov(wang_posterior)) )
 
@@ -214,8 +215,8 @@ treatments <- c("R-CHOP", names(wang_posterior))
 The following forest plot displays the relative treatment effects of the 11 treatments in the study, as estimated by Wang et. al (2022).
 
 ```{r fig.asp=0.5}
-create_forestplot(data = cbind(0,wang_posterior), 
-                  names = treatments)
+forestplot_muhat(data = cbind(0,wang_posterior), 
+                 names = treatments)
 ```
 
 Now, we proceed through the analysis pipeline.
@@ -225,9 +226,9 @@ Now, we proceed through the analysis pipeline.
 We fit the model below using 2 chains, each with $10{,}000\times 2$ MCMC iterations.
 
 ```{r cache=TRUE}
-mcmc_results_casestudy <- mcmc_RCMVN(
-  ybar = ybar_wang, cov = cov_wang,
-  num_iters = 10000, nu_reps = 2, chains = 2, seed = 1
+mcmc_results_casestudy <- mcmc_raceNMA(
+  mu_hat = mu_hat_wang, cov = cov_wang,
+  iter = 10000, nu_iter = 2, chains = 2, seed = 1
 )
 ```
 
@@ -236,8 +237,8 @@ mcmc_results_casestudy <- mcmc_RCMVN(
 Next, we view trace plots and convergence diagnostics.
 
 ```{r}
-createtrace_mu(mcmc_results_casestudy, names=treatments)
-createtrace_K(mcmc_results_casestudy)
+traceplot_mu(mcmc_results_casestudy, names=treatments)
+traceplot_K(mcmc_results_casestudy)
 calculate_Rhat(mcmc_results_casestudy, names=treatments)
 ```
 
@@ -248,11 +249,11 @@ We observe that chains have not run long enough (refer to the Reproducibility ta
 Disclaimer: The results below are based on chains which have not converged, but are shown for demonstration purposes. Please see the Reproducibility tab for accurate results based on this data.
 
 ```{r fig.asp=0.6}
-create_clustermatrix(mcmc=mcmc_results_casestudy, names = treatments, label_ranks = 1)
+clusterplot_ranks(mcmc=mcmc_results_casestudy, names = treatments, label_ranks = 1)
 ```
 ```{r fig.asp=0.4}
-create_cumulativeranking(mcmc=mcmc_results_casestudy, names=treatments)
+cumulativeprobplot_ranks(mcmc=mcmc_results_casestudy, names=treatments)
 ```
 ```{r}
-calculate_SUCRA_MNBT(mcmc=mcmc_results_casestudy,names=treatments)
+calculate_SUCRA_MNBT(mcmc=mcmc_results_casestudy,names=treatments,level=0.50)
 ```

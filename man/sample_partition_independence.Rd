@@ -5,7 +5,7 @@
 \title{Partition sampling in Bayesian RaCE-NMA models (internal use only)}
 \usage{
 sample_partition_independence(
-  ybar,
+  mu_hat,
   J,
   nu,
   g,
@@ -19,7 +19,7 @@ sample_partition_independence(
 )
 }
 \arguments{
-\item{ybar}{A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j.}
+\item{mu_hat}{A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j.}
 
 \item{J}{A numeric indicating the total number of interventions being compared.}
 

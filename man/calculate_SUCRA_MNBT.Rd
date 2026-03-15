@@ -4,14 +4,14 @@
 \alias{calculate_SUCRA_MNBT}
 \title{Calculate SUCRA and MNBT based on MCMC draws in NMA or RaCE-NMA models}
 \usage{
-calculate_SUCRA_MNBT(data = NULL, mcmc = NULL, credible = 0.5, names = NULL)
+calculate_SUCRA_MNBT(data = NULL, mcmc = NULL, level = 0.5, names = NULL)
 }
 \arguments{
 \item{data}{A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.}
 
 \item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
 
-\item{credible}{The \code{credible} level for the interval estimate of MNBT. Defaults to 0.50.}
+\item{level}{The \code{level} level for the interval estimate of MNBT. Defaults to 0.50.}
 
 \item{names}{A vector of intervention names (optional)}
 }
@@ -23,6 +23,6 @@ This function creates a results table of SUCRA and Median Number of Better Treat
 MCMC draws from a standard NMA model or a fitted RaCE-NMA model.
 }
 \examples{
-mcmc <- mcmc_RCMVN(ybar=c(0,0,1,1), s=c(.1,.1,.1,.1), mu0=0.5, sigma0=5, tau=0.5,chains=2,seed=1)
+mcmc <- mcmc_raceNMA(mu_hat=c(0,0,1,1), s=c(.1,.1,.1,.1), seed=1)
 calculate_SUCRA_MNBT(mcmc=mcmc)
 }

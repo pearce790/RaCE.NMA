@@ -2,7 +2,7 @@
 #'
 #' This function implements a reversible jump MCMC procedure for updating the parameter partition in Bayesian Rank-Clustered Estimation for Network Meta-Analysis models in the case when we assume independence between treatment effects. For internal use only.
 #'
-#' @param ybar A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j.
+#' @param mu_hat A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j.
 #' @param J A numeric indicating the total number of interventions being compared.
 #' @param nu A vector indicating current values for nu in the Gibbs sampler.
 #' @param g A vector indicating current values for g in the Gibbs sampler.
@@ -17,7 +17,7 @@
 #' @return A list containing updated values for g, nu, and K.
 #'
 #' @export
-sample_partition_independence <- function (ybar, J, nu, g, K, mu0, sigma0, s, tau = tau, b_g = 0.5, d_g = 0.5){
+sample_partition_independence <- function (mu_hat, J, nu, g, K, mu0, sigma0, s, tau = tau, b_g = 0.5, d_g = 0.5){
   logprior_partition <- log(rep(1,J))
   S_g <- unlist(lapply(1:K, function(k) {sum(g == k)}))
   if (rbinom(1, 1, b_g) == 1) {
@@ -43,8 +43,8 @@ sample_partition_independence <- function (ybar, J, nu, g, K, mu0, sigma0, s, ta
         logprob_accept <- -Inf
       }else {
         logprob_accept <-
-          sum(unlist(lapply(1:J,function(j){dnorm(ybar[j], mean = nu_new[g_new[j]], sd = s[j],log=T)}))) -
-          sum(unlist(lapply(1:J,function(j){dnorm(ybar[j], mean = nu[g[j]], sd = s[j],log=T)}))) +
+          sum(unlist(lapply(1:J,function(j){dnorm(mu_hat[j], mean = nu_new[g_new[j]], sd = s[j],log=T)}))) -
+          sum(unlist(lapply(1:J,function(j){dnorm(mu_hat[j], mean = nu[g[j]], sd = s[j],log=T)}))) +
           sum(dnorm(nu_new[c(k, K+1)], mu0, sigma0, log=T)) - dnorm(nu[k], mu0, sigma0, log=T) +
           logprior_partition[K + 1] - logprior_partition[K] +
           log(d_g) + log(sum(S_g >= 2)) + log(2^(S_g[k]) - 2) - log(b_g) - log(K + 1 - 1) - log(2) -  dnorm(u,mean=0,sd=tau,log=T) +
@@ -83,8 +83,8 @@ sample_partition_independence <- function (ybar, J, nu, g, K, mu0, sigma0, s, ta
       }))
       K_new <- K-1
       logprob_accept <-
-        sum(unlist(lapply(1:J,function(j){dnorm(ybar[j], mean = nu_new[g_new[j]], sd = s[j],log=T)}))) -
-        sum(unlist(lapply(1:J,function(j){dnorm(ybar[j], mean = nu[g[j]], sd = s[j],log=T)}))) +
+        sum(unlist(lapply(1:J,function(j){dnorm(mu_hat[j], mean = nu_new[g_new[j]], sd = s[j],log=T)}))) -
+        sum(unlist(lapply(1:J,function(j){dnorm(mu_hat[j], mean = nu[g[j]], sd = s[j],log=T)}))) +
         dnorm(nu_new[which_merge[1]], mu0, sigma0, log=T) -
         sum(dnorm(nu[which_merge], mu0, sigma0, log=T)) +
         logprior_partition[K - 1] - logprior_partition[K] +

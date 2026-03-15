@@ -26,16 +26,16 @@ navbar:
 reference:
 - title: Model Estimation Function
   desc: Primary function to estimate RaCE NMA models
-  contents: mcmc_RCMVN
+  contents: mcmc_raceNMA
 - title: Model Plotting and Assessment Functions
   desc: Functions that allow for plotting results of RaCE NMA models or assessing
     MCMC chains.
   contents:
-  - createtrace_mu
-  - createtrace_K
-  - create_forestplot
-  - create_cumulativeranking
-  - create_clustermatrix
+  - traceplot_mu
+  - traceplot_K
+  - forestplot_muhat
+  - clusterplot_ranks
+  - cumulativeprobplot_ranks
   - calculate_Rhat
   - calculate_SUCRA_MNBT
 - title: Data
@@ -49,5 +49,5 @@ reference:
   contents:
   - sample_partition_independence
   - sample_partition_correlation
-  - fit_RCMVN
+  - fit_raceNMA
 

@@ -7,19 +7,19 @@
 #' @param data A NxJ matrix of data to display as a forest plot, where N is the number of observations and J the number of treatments. This feature is designed for use to display a forest plot of results from a standard NMA study.
 #' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
 #' @param names A vector of intervention names (optional)
-#' @param limits A numeric indicating the desired credible level to be displayed, as a proportion. Defaults to 0.95.
+#' @param level A numeric indicating the desired credible level to be displayed, as a proportion. Defaults to 0.95.
 #' @param order_by_average A boolean indicating if plot should order treatments by their average treatment effect.
 #'
 #' @return A ggplot of posterior forest plots for the mu parameter.
 #'
 #' @examples
 #' data("toy_data")
-#' create_forestplot(data=toy_data,names=paste0("Treatment ",1:4))
+#' forestplot_muhat(data=toy_data,names=paste0("Treatment ",1:4))
 #' @export
-create_forestplot <- function(data=NULL,mcmc=NULL,names=NULL,limits=0.95,order_by_average=TRUE){
+forestplot_muhat <- function(data=NULL,mcmc=NULL,names=NULL,level=0.95,order_by_average=TRUE){
   if(!is.null(data)){
     data_mean <- apply(data,2,mean)
-    data_quantiles <- apply(data,2,function(mu){quantile(mu,c((1-limits)/2,(1+limits)/2))})
+    data_quantiles <- apply(data,2,function(mu){quantile(mu,c((1-level)/2,(1+level)/2))})
     data_summary <- as.data.frame(t(rbind(data_mean,data_quantiles)))
     names(data_summary) <- c("mean","lower_CI","upper_CI")
 
@@ -49,7 +49,7 @@ create_forestplot <- function(data=NULL,mcmc=NULL,names=NULL,limits=0.95,order_b
     posterior_mu <- mcmc[,grep("mu",names(mcmc))]
     posterior_mu_mean <- apply(posterior_mu,2,mean)
     posterior_mu_quantiles <- apply(posterior_mu,2,function(mu){
-      quantile(mu,c((1-limits)/2,(1+limits)/2))
+      quantile(mu,c((1-level)/2,(1+level)/2))
     })
     if(order_by_average){
       posterior_mu_order <- order(posterior_mu_mean)

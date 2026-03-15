@@ -67,20 +67,20 @@ for(iter in 1:20){
     for(K in c(J/3,2*J/3,J)){
       for(s in c(0.1,0.3,0.5)){
         if(K==J){
-          ybar <- 1:K
+          mu_hat <- 1:K
         }else{
-          ybar <- sample(1:K,J,replace=T)
-          while(length(unique(ybar))<K){ybar <- sample(1:K,J,replace=T)}
+          mu_hat <- sample(1:K,J,replace=T)
+          while(length(unique(mu_hat))<K){mu_hat <- sample(1:K,J,replace=T)}
         }
         
-        mcmc <- mcmc_RCMVN(ybar=ybar,s=rep(s,J),mu=mean(ybar),
-                           sigma0=max(1,4*sd(ybar)),nu0=ybar,
-                           tau=1,num_iters=3000,nu_reps=2,chains=4,
-                           burn_prop=0.5,thin=3,suppressPrint=TRUE)
+        mcmc <- mcmc_raceNMA(mu_hat = mu_hat,s=rep(s,J),mu=mean(mu_hat),
+                             sigma0=max(1,4*sd(mu_hat)),nu0=mu_hat,
+                             tau=1,iter=3000,nu_iter=2,chains=4,
+                             burn_prop=0.5,thin=3,suppressPrint=TRUE)
         
         equal <- posterior_equal <- matrix(NA,nrow=J,ncol=J)
         for(i in 1:(J-1)){for(j in (i+1):J){
-          equal[i,j] <- ifelse(ybar[i]==ybar[j],1,0) # test if treatments are truly equal in mean
+          equal[i,j] <- ifelse(mu_hat[i]==mu_hat[j],1,0) # test if treatments are truly equal in mean
           posterior_equal[i,j] <- mean( # assess if treatments are rank-clustered
             mcmc[,paste0("G",i)] == mcmc[,paste0("G",j)]
             ) 
@@ -130,20 +130,20 @@ The following code reproduces Figure 3.
 
 ```{r fig.asp = 0.4}
 J <- 4
-ybar <- c(-1,0,1,0)
+mu_hat <- c(-1,0,1,0)
 s <- c(.1,.1,.1,1)
 
 set.seed(2)
-data <- matrix(data = rnorm(10000*4,mean=ybar,sd=s), ncol = 4, byrow = TRUE)
+data <- matrix(data = rnorm(10000*4,mean=mu_hat,sd=s), ncol = 4, byrow = TRUE)
 
-create_forestplot(data = data, order_by_average = FALSE)
+forestplot_muhat(data = data, order_by_average = FALSE)
 ```
 
 The following code reproduces Table 1: First, we fit the RaCE model to the simulated data. Second, we calculate and display the values in Table 1.
 
 ```{r cache=TRUE}
-mcmc <- mcmc_RCMVN(ybar = ybar, s = s, 
-                   num_iters = 50000, nu_reps = 2, chains = 4, 
+mcmc <- mcmc_raceNMA(mu_hat = mu_hat, s = s, 
+                   iter = 50000, nu_iter = 2, chains = 4, 
                    burn_prop = 0.5,thin = 1,suppressPrint = TRUE)
 
 posterior_equal <- matrix(NA,nrow=J,ncol=J)
@@ -205,11 +205,11 @@ We first load the posteriors from Wang et al. (2022) and calculate the mean and 
 data("wang_posterior") # loads posterior of non-baseline treatments
 
 # define assumed mean and variance for baseline treatment (R-CHOP)
-ybar_baseline <- 0
+mu_hat_baseline <- 0
 var_baseline <- min(apply(wang_posterior,2,var))/10
 
-# calculate summary statistics, ybar and cov, for all treatments
-ybar <- c( ybar_baseline, apply(wang_posterior,2,mean) )
+# calculate summary statistics, mu_hat and cov, for all treatments
+mu_hat <- c( mu_hat_baseline, apply(wang_posterior,2,mean) )
 cov <- cbind( c(var_baseline, rep(0, 10) ),
               rbind(0, cov(wang_posterior)) )
 
@@ -220,15 +220,15 @@ treatments <- c("R-CHOP", names(wang_posterior))
 The following code chunk reproduces Figure 5.
 
 ```{r fig.asp = 0.4, warning=FALSE}
-create_forestplot(data=wang_posterior,names=treatments[-1])
+forestplot_muhat(data=wang_posterior,names=treatments[-1])
 ```
 
 Next, we fit the RaCE model to estimated relative treatment effects from Wang et al. (2022).
 
 ```{r}
-mcmc <- mcmc_RCMVN(ybar = ybar, cov = cov, 
-                   mu0 = mean(ybar), sigma0 = sqrt(10*var(ybar)),
-                   num_iters = 50000, nu_reps = 5, chains = 4, 
+mcmc <- mcmc_raceNMA(mu_hat = mu_hat, cov = cov, 
+                   mu0 = mean(mu_hat), sigma0 = sqrt(10*var(mu_hat)),
+                   iter = 50000, nu_iter = 5, chains = 4, 
                    seed = 1, suppressPrint = TRUE)
 ```
 
@@ -236,28 +236,28 @@ The following code chunk reproduces Figure 6, Figure 7, and Table 2: First, we c
 
 ```{r fig.asp=0.45}
 # Figure 6
-g9a <- create_clustermatrix(data=cbind(0,wang_posterior),
+g9a <- clusterplot_ranks(data=cbind(0,wang_posterior),
                             names=treatments,label_ranks=1)+
   theme(legend.position = "bottom")
-g9b <- create_clustermatrix(mcmc=mcmc,names=treatments,label_ranks = 1)
+g9b <- clusterplot_ranks(mcmc=mcmc,names=treatments,label_ranks = 1)
 plot_grid(plot_grid(g9a+theme(legend.position = "none"), 
                     g9b+theme(legend.position = "none"), 
                     labels = c('A', 'B'), label_size = 12),
           get_plot_component(g9a, 'guide-box-bottom', return_all = TRUE),
           nrow=2,rel_heights = c(.9,.1))
 # Figure 7
-g10a <- create_cumulativeranking(data=cbind(0,wang_posterior),names=treatments)+
+g10a <- cumulativeprobplot_ranks(data=cbind(0,wang_posterior),names=treatments)+
   theme(legend.position = "bottom") +
   guides(color = guide_legend(nrow = 2))
-g10b <- create_cumulativeranking(mcmc=mcmc,names=treatments)
+g10b <- cumulativeprobplot_ranks(mcmc=mcmc,names=treatments)
 plot_grid(plot_grid(g10a+theme(legend.position = "none"), g10b+theme(legend.position = "none"), 
                         labels = c('A', 'B'), label_size = 12),
-              get_plot_component(g10a, 'guide-box-bottom', return_all = TRUE),nrow=2,rel_heights = c(.85,.15))
+              get_plot_component(g10a, 'guide-box-bottom', return_all = TRUE),
+          nrow=2,rel_heights = c(.85,.15) )
 # Table 2
 res_WANG <- calculate_SUCRA_MNBT(data = cbind(0,wang_posterior),
-                                 credible = 0.50, names = treatments)
-res_RaCENMA <- calculate_SUCRA_MNBT(mcmc = mcmc,
-                                    credible = 0.50, names = treatments)
+                                 level = 0.50, names = treatments)
+res_RaCENMA <- calculate_SUCRA_MNBT(mcmc = mcmc, level = 0.50, names = treatments)
 table2 <- left_join(res_WANG,res_RaCENMA,by="Treatment")[,c(1,2,4,3,5)]
 names(table2) <- c("Treatment","SUCRA (Wang)","SUCRA (RaCE)","MNBT (Wang)","MNBT (RaCE)")
 print(table2)
@@ -266,12 +266,12 @@ print(table2)
 The following code chunk reproduces the Figures 8--10 (Appendix B).
 
 ```{r fig.asp=0.4}
-createtrace_K(mcmc)+
+traceplot_K(mcmc)+
   scale_x_continuous(breaks=seq(125000,250000,by=25000),
                      labels=paste0(seq(125,250,by=25),"k"))
-createtrace_mu(mcmc,names=treatments)+
+traceplot_mu(mcmc,names=treatments)+
   scale_x_continuous(breaks=seq(125000,250000,by=25000),
                      labels=paste0(seq(125,250,by=25),"k"))
-create_forestplot(mcmc=mcmc,names=treatments)
+forestplot_muhat(mcmc=mcmc,names=treatments)
 ```
 
