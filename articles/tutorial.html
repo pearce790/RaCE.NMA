@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RaCE.NMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9100</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@ rank-clustering).</p>
 <p>To visualize these posterior draws, we create a forest plot (with 95%
 CIs) via the aptly-named <code>create_forestplot</code> function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_forestplot.html">create_forestplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">toy_data</span>, limits <span class="op">=</span> <span class="fl">0.95</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/forestplot_muhat.html">forestplot_muhat</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">toy_data</span>, level <span class="op">=</span> <span class="fl">0.95</span>, </span>
 <span>                  order_by_average <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
 <p>We observe that the first three treatments have narrow and
@@ -168,7 +168,7 @@ in MCMC draw
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>.
 An example of this functionality is provided below:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span>posterior <span class="op">=</span> <span class="va">toy_data</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span>posterior <span class="op">=</span> <span class="va">toy_data</span><span class="op">)</span></span></code></pre></div>
 <p>In the above code, default settings are used for all other inputs.
 (We recommend against this practice.)</p>
 <p>Alternatively, one may provide summary statistics of the model
@@ -178,7 +178,7 @@ post-hoc, when only summary statistics are available. In this setting,
 the user must provide two inputs:</p>
 <ul>
 <li>
-<code>ybar</code>: A vector of length
+<code>mu_hat</code>: A vector of length
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>J</mi><annotation encoding="application/x-tex">J</annotation></semantics></math>
 (the number of treatments), where the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>th
@@ -196,16 +196,16 @@ effects.</li>
 </ul>
 <p>An example of this functionality is provided below:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ybar_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">toy_data</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">mu_hat_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">toy_data</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span></span>
 <span><span class="va">cov_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">toy_data</span><span class="op">)</span></span>
 <span><span class="va">s_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">toy_data</span>, <span class="fl">2</span>, <span class="va">sd</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span>ybar <span class="op">=</span> <span class="va">ybar_toy</span>, cov <span class="op">=</span> <span class="va">cov_toy</span><span class="op">)</span> <span class="co"># example with ybar and cov</span></span>
-<span><span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span>ybar <span class="op">=</span> <span class="va">ybar_toy</span>, s   <span class="op">=</span> <span class="va">s_toy</span>  <span class="op">)</span> <span class="co"># example with ybar and s</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span>mu_hat <span class="op">=</span> <span class="va">mu_hat_toy</span>, cov <span class="op">=</span> <span class="va">cov_toy</span><span class="op">)</span> <span class="co"># example with mu_hat and cov</span></span>
+<span><span class="fu"><a href="../reference/mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span>mu_hat <span class="op">=</span> <span class="va">mu_hat_toy</span>, s   <span class="op">=</span> <span class="va">s_toy</span>  <span class="op">)</span> <span class="co"># example with mu_hat and s</span></span></code></pre></div>
 <p>If duplicative inputs are provided, the function will always use
 those provided the “richest” information. Specifically,</p>
 <ul>
-<li>If <code>posterior</code> is provided, <code>ybar</code>,
+<li>If <code>posterior</code> is provided, <code>mu_hat</code>,
 <code>cov</code>, and/or <code>s</code> will be ignored.</li>
 <li>If <code>cov</code> is provided, <code>s</code> is ignored.</li>
 </ul>
@@ -217,19 +217,19 @@ those provided the “richest” information. Specifically,</p>
 <ul>
 <li>
 <code>mu0</code>: The prior mean on the rank-clustered relative
-treatment effects. Defaults to <code>mean(ybar)</code>, which aims to be
-vague.</li>
+treatment effects. Defaults to <code>mean(mu_hat)</code>, which aims to
+be vague.</li>
 <li>
 <code>sigma0</code>: The prior standard deviation on the
 rank-clustered relative treatment effects. Defaults to
-<code>sqrt(10*var(ybar))</code>, which aims to be vague.</li>
+<code>sqrt(10*var(mu_hat))</code>, which aims to be vague.</li>
 </ul>
 <p>The following code demonstrates how one could specify these
 hyperparameters directly in the estimation function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span></span>
 <span>  posterior <span class="op">=</span> <span class="va">toy_data</span>, <span class="co"># results of a standard NMA model</span></span>
-<span>  mu0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ybar_toy</span><span class="op">)</span>, sigma0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">ybar_toy</span><span class="op">)</span><span class="op">)</span>, <span class="co"># model hyperparameters</span></span>
+<span>  mu0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mu_hat_toy</span><span class="op">)</span>, sigma0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">mu_hat_toy</span><span class="op">)</span><span class="op">)</span>, <span class="co"># model hyperparameters</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -241,21 +241,21 @@ run:</p>
 <li>
 <code>tau</code>: The standard deviation of the Metropolis Hastings
 proposal distribution. Defaults to
-<code>min(|ybar_i-ybar_j|)</code>.</li>
+<code>min(|mu_hat_i-mu_hat_j|)</code>.</li>
 <li>
 <code>nu0</code>: How cluster-specific mean parameters are
 initialized. Defaults to <code>NULL</code>, which randomly samples from
 the prior distribution.</li>
 <li>
-<code>num_iters</code>: The number of times the rank-clustering
-structure is sampled in each MCMC chain. Defaults to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">5{,}000</annotation></semantics></math>.</li>
+<code>iter</code>: The number of times the rank-clustering structure
+is sampled in each MCMC chain. Defaults to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">4{,}000</annotation></semantics></math>.</li>
 <li>
-<code>nu_reps</code>: The number of times each cluster-specific mean
+<code>nu_iter</code>: The number of times each cluster-specific mean
 is sampled per sampling of the rank-clustering structure. Defaults to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5</mn><annotation encoding="application/x-tex">5</annotation></semantics></math>.
 In total, there will be
-<code>num_iters</code><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>×</mo><annotation encoding="application/x-tex">\times</annotation></semantics></math><code>nu_reps</code>
+<code>iter</code><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>×</mo><annotation encoding="application/x-tex">\times</annotation></semantics></math><code>nu_iter</code>
 samples from the posterior.</li>
 <li>
 <code>chains</code>: The number of independent MCMC chains. Defaults
@@ -273,10 +273,10 @@ Defaults to 1, indicating no thinning.</li>
 <p>The following code demonstrates how one could specify some of these
 settings directly in the estimation function:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mcmc_results_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">mcmc_results_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span></span>
 <span>  posterior <span class="op">=</span> <span class="va">toy_data</span>, <span class="co"># results of a standard NMA model</span></span>
-<span>  mu0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ybar_toy</span><span class="op">)</span>, sigma0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">ybar_toy</span><span class="op">)</span><span class="op">)</span>, <span class="co"># model hyperparameters</span></span>
-<span>  num_iters <span class="op">=</span> <span class="fl">10000</span>, nu_reps <span class="op">=</span> <span class="fl">2</span>, <span class="co"># MCMC settings</span></span>
+<span>  mu0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mu_hat_toy</span><span class="op">)</span>, sigma0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">10</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">mu_hat_toy</span><span class="op">)</span><span class="op">)</span>, <span class="co"># model hyperparameters</span></span>
+<span>  iter <span class="op">=</span> <span class="fl">10000</span>, nu_iter <span class="op">=</span> <span class="fl">2</span>, <span class="co"># MCMC settings</span></span>
 <span>  chains <span class="op">=</span> <span class="fl">2</span>, burn_prop <span class="op">=</span> <span class="fl">0.5</span>, thin <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Estimating chain 1 of 2."</span></span>
@@ -294,7 +294,7 @@ third calculates the
 statistic for each <code>mu</code> parameter. We display and interpret
 each plot below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/createtrace_mu.html">createtrace_mu</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_mu.html">traceplot_mu</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
 <p>We observe acceptable mixing and convergence in the trace plots for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>.
@@ -311,7 +311,7 @@ data, in which treatment 4 has extremely high uncertainty, we expect
 this type of behavior. Furthermore, since the chains both exhibit
 similar patterns, we are satisfied.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/createtrace_K.html">createtrace_K</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_K.html">traceplot_K</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
 <p>We again observe acceptable mixing and convergence in the trace plot
 for
@@ -322,7 +322,7 @@ random pattern between the values
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_Rhat.html">calculate_Rhat</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span>, confidence <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_Rhat.html">calculate_Rhat</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span>, level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Potential scale reduction factors:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     Point est. Upper C.I.</span></span>
@@ -346,6 +346,11 @@ indicating acceptable convergence.</p>
 </h3>
 <p>The package contains three functions to visualize model results. We
 demonstrate each in turn:</p>
+<p>Posterior rank probabilities for each intervention. Ranks are
+displayed on the ordinal scale (1 = best). Interventions are grouped
+into rank clusters representing non-exclusive superiority sets; multiple
+interventions within the same cluster may share identical posterior
+ranks.</p>
 <p>The first is to create a clustering probability matrix. In the
 figure, each row represents a treatment and each column a rank level.
 The color of the corresponding cell is the estimated posterior
@@ -355,9 +360,16 @@ levels in the graphic are labeled with a <em>numerical</em> probability
 (corresponding to the color shown). See the figure and corresponding
 interpretation below.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_clustermatrix.html">create_clustermatrix</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span>, </span>
-<span>                     label_ranks <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/clusterplot_ranks.html">clusterplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span>, label_ranks <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="Posterior rank probabilities for each intervention. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks." width="700"><p class="caption">
+Posterior rank probabilities for each intervention. Ranks are displayed
+on the ordinal scale (1 = best). Interventions are grouped into rank
+clusters representing non-exclusive superiority sets; multiple
+interventions within the same cluster may share identical posterior
+ranks.
+</p>
+</div>
 <p>The model estimates a 0.97 probability that Treatment 1 is in first
 place. Simultaneously, the model estimates a 0.21 probability that
 Treatment 4 is in first place. Thus, there is some probability, based on
@@ -373,14 +385,14 @@ each treatment is <em>at least</em> in a specific rank place. For
 example, we see that Treatment 4 has a 0.80 probability of being in
 first or second place.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_cumulativeranking.html">create_cumulativeranking</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cumulativeprobplot_ranks.html">cumulativeprobplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="700"></p>
 <p>The third function creates a table displaying the SUCRA value and the
 Median Number of Better Treatments (MNBT) for each treatment (with a
 corresponding credible interval). The credible level may be specified
 using the <code>credible</code> argument.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span>, credible <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span>, level <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Treatment      SUCRA MNBT (50% CI)</span></span>
 <span><span class="co">#&gt; 1         1 0.98941667      0 (0, 0)</span></span>
 <span><span class="co">#&gt; 2         4 0.66381667      1 (1, 1)</span></span>
@@ -420,11 +432,11 @@ paper, we will need to define summary statistics that can be used when
 fitting the RaCE-NMA model.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define assumed mean and variance for baseline treatment (R-CHOP)</span></span>
-<span><span class="va">ybar_baseline</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">mu_hat_baseline</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">var_baseline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">wang_posterior</span>,<span class="fl">2</span>,<span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">10</span></span>
 <span></span>
-<span><span class="co"># calculate summary statistics, ybar and cov</span></span>
-<span><span class="va">ybar_wang</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">ybar_baseline</span>, <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">wang_posterior</span>,<span class="fl">2</span>,<span class="va">mean</span><span class="op">)</span> <span class="op">)</span></span>
+<span><span class="co"># calculate summary statistics, mu_hat and cov</span></span>
+<span><span class="va">mu_hat_wang</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">mu_hat_baseline</span>, <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">wang_posterior</span>,<span class="fl">2</span>,<span class="va">mean</span><span class="op">)</span> <span class="op">)</span></span>
 <span><span class="va">cov_wang</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">var_baseline</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span> <span class="op">)</span>,</span>
 <span>              <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">wang_posterior</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span>
 <span></span>
@@ -433,8 +445,8 @@ fitting the RaCE-NMA model.</p>
 <p>The following forest plot displays the relative treatment effects of
 the 11 treatments in the study, as estimated by Wang et. al (2022).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_forestplot.html">create_forestplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">wang_posterior</span><span class="op">)</span>, </span>
-<span>                  names <span class="op">=</span> <span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/forestplot_muhat.html">forestplot_muhat</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">wang_posterior</span><span class="op">)</span>, </span>
+<span>                 names <span class="op">=</span> <span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="700"></p>
 <p>Now, we proceed through the analysis pipeline.</p>
 <div class="section level3">
@@ -444,9 +456,9 @@ the 11 treatments in the study, as estimated by Wang et. al (2022).</p>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>,</mo><mn>000</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">10{,}000\times 2</annotation></semantics></math>
 MCMC iterations.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mcmc_results_casestudy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span></span>
-<span>  ybar <span class="op">=</span> <span class="va">ybar_wang</span>, cov <span class="op">=</span> <span class="va">cov_wang</span>,</span>
-<span>  num_iters <span class="op">=</span> <span class="fl">10000</span>, nu_reps <span class="op">=</span> <span class="fl">2</span>, chains <span class="op">=</span> <span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">1</span></span>
+<code class="sourceCode R"><span><span class="va">mcmc_results_casestudy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span></span>
+<span>  mu_hat <span class="op">=</span> <span class="va">mu_hat_wang</span>, cov <span class="op">=</span> <span class="va">cov_wang</span>,</span>
+<span>  iter <span class="op">=</span> <span class="fl">10000</span>, nu_iter <span class="op">=</span> <span class="fl">2</span>, chains <span class="op">=</span> <span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Estimating chain 1 of 2."</span></span>
 <span><span class="co">#&gt; [1] "Estimating chain 2 of 2."</span></span></code></pre></div>
@@ -456,10 +468,10 @@ MCMC iterations.</p>
 </h3>
 <p>Next, we view trace plots and convergence diagnostics.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/createtrace_mu.html">createtrace_mu</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_mu.html">traceplot_mu</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/createtrace_K.html">createtrace_K</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_K.html">traceplot_K</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-20-2.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_Rhat.html">calculate_Rhat</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span>
@@ -489,13 +501,13 @@ pipeline below.</p>
 converged, but are shown for demonstration purposes. Please see the
 Reproducibility tab for accurate results based on this data.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_clustermatrix.html">create_clustermatrix</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>, names <span class="op">=</span> <span class="va">treatments</span>, label_ranks <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/clusterplot_ranks.html">clusterplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>, names <span class="op">=</span> <span class="va">treatments</span>, label_ranks <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/create_cumulativeranking.html">create_cumulativeranking</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cumulativeprobplot_ranks.html">cumulativeprobplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tutorial_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>,names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>,names<span class="op">=</span><span class="va">treatments</span>,level<span class="op">=</span><span class="fl">0.50</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Treatment    SUCRA MNBT (50% CI)</span></span>
 <span><span class="co">#&gt; 1   G-Benda-G 0.993630      0 (0, 0)</span></span>
 <span><span class="co">#&gt; 2  R-Benda-R4 0.942055      0 (0, 1)</span></span>

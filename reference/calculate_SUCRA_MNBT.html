@@ -18,7 +18,7 @@ MCMC draws from a standard NMA model or a fitted RaCE-NMA model."><!-- mathjax -
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RaCE.NMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9100</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@ MCMC draws from a standard NMA model or a fitted RaCE-NMA model.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_SUCRA_MNBT</span><span class="op">(</span>data <span class="op">=</span> <span class="cn">NULL</span>, mcmc <span class="op">=</span> <span class="cn">NULL</span>, credible <span class="op">=</span> <span class="fl">0.5</span>, names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_SUCRA_MNBT</span><span class="op">(</span>data <span class="op">=</span> <span class="cn">NULL</span>, mcmc <span class="op">=</span> <span class="cn">NULL</span>, level <span class="op">=</span> <span class="fl">0.5</span>, names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -76,8 +76,8 @@ MCMC draws from a standard NMA model or a fitted RaCE-NMA model.</p>
 <dd><p>MCMC draws from the RaCE NMA model, in the form of the model output of the <code>mcmc_RCMVN</code> function.</p></dd>
 
 
-<dt id="arg-credible">credible<a class="anchor" aria-label="anchor" href="#arg-credible"></a></dt>
-<dd><p>The <code>credible</code> level for the interval estimate of MNBT. Defaults to 0.50.</p></dd>
+<dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
+<dd><p>The <code>level</code> level for the interval estimate of MNBT. Defaults to 0.50.</p></dd>
 
 
 <dt id="arg-names">names<a class="anchor" aria-label="anchor" href="#arg-names"></a></dt>
@@ -91,15 +91,15 @@ MCMC draws from a standard NMA model or a fitted RaCE-NMA model.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="mcmc_RCMVN.html">mcmc_RCMVN</a></span><span class="op">(</span>ybar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, s<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span><span class="op">)</span>, mu0<span class="op">=</span><span class="fl">0.5</span>, sigma0<span class="op">=</span><span class="fl">5</span>, tau<span class="op">=</span><span class="fl">0.5</span>,chains<span class="op">=</span><span class="fl">2</span>,seed<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span>mu_hat<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, s<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span><span class="op">)</span>, seed<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Estimating chain 1 of 2."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Estimating chain 2 of 2."</span>
 <span class="r-in"><span><span class="fu">calculate_SUCRA_MNBT</span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Treatment     SUCRA MNBT (50% CI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         2 0.9942889      0 (0, 0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         1 0.9942444      0 (0, 0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         4 0.3289333      2 (2, 2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         3 0.3286667      2 (2, 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1 0.9876833      0 (0, 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2 0.9874000      0 (0, 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         4 0.3202167      2 (2, 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         3 0.3200333      2 (2, 2)</span>
 </code></pre></div>
     </div>
   </div>
