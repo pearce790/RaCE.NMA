@@ -129,7 +129,12 @@ CIs) via the aptly-named <code>create_forestplot</code> function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/forestplot_muhat.html">forestplot_muhat</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">toy_data</span>, level <span class="op">=</span> <span class="fl">0.95</span>, </span>
 <span>                  order_by_average <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="Figure 1: Forest plot of estimated relative treatment effects in a toy example dataset, based on a standard NMA model." width="700"><p class="caption">
+Figure 1: Forest plot of estimated relative treatment effects in a toy
+example dataset, based on a standard NMA model.
+</p>
+</div>
 <p>We observe that the first three treatments have narrow and
 well-separated credible intervals of relative efficacy. The fourth
 treatment, however, has a very wide interval to indicate high
@@ -295,7 +300,12 @@ statistic for each <code>mu</code> parameter. We display and interpret
 each plot below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_mu.html">traceplot_mu</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="Figure 2: Trace plots of relative treatment effects in a toy example dataset, based on the RaCE-NMA model." width="700"><p class="caption">
+Figure 2: Trace plots of relative treatment effects in a toy example
+dataset, based on the RaCE-NMA model.
+</p>
+</div>
 <p>We observe acceptable mixing and convergence in the trace plots for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>.
 Ideally, the two chains would like similar to each other, with each
@@ -312,7 +322,12 @@ this type of behavior. Furthermore, since the chains both exhibit
 similar patterns, we are satisfied.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_K.html">traceplot_K</a></span><span class="op">(</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="Figure 3: Trace plot of the number of rank-clusters, K, in a toy example dataset, based on the RaCE-NMA model." width="700"><p class="caption">
+Figure 3: Trace plot of the number of rank-clusters, K, in a toy example
+dataset, based on the RaCE-NMA model.
+</p>
+</div>
 <p>We again observe acceptable mixing and convergence in the trace plot
 for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>.
@@ -362,12 +377,12 @@ interpretation below.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/clusterplot_ranks.html">clusterplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span>, label_ranks <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="tutorial_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="Posterior rank probabilities for each intervention. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks." width="700"><p class="caption">
-Posterior rank probabilities for each intervention. Ranks are displayed
-on the ordinal scale (1 = best). Interventions are grouped into rank
-clusters representing non-exclusive superiority sets; multiple
-interventions within the same cluster may share identical posterior
-ranks.
+<img src="tutorial_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="Figure 4: Posterior rank probabilities for each intervention in a toy example dataset, based on the RaCE-NMA model. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks." width="700"><p class="caption">
+Figure 4: Posterior rank probabilities for each intervention in a toy
+example dataset, based on the RaCE-NMA model. Ranks are displayed on the
+ordinal scale (1 = best). Interventions are grouped into rank clusters
+representing non-exclusive superiority sets; multiple interventions
+within the same cluster may share identical posterior ranks.
 </p>
 </div>
 <p>The model estimates a 0.97 probability that Treatment 1 is in first
@@ -386,7 +401,12 @@ example, we see that Treatment 4 has a 0.80 probability of being in
 first or second place.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cumulativeprobplot_ranks.html">cumulativeprobplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_toy</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="Figure 5: Cumulative ranking probability curves for each intervention in a toy example dataset, based on the RaCE-NMA model." width="700"><p class="caption">
+Figure 5: Cumulative ranking probability curves for each intervention in
+a toy example dataset, based on the RaCE-NMA model.
+</p>
+</div>
 <p>The third function creates a table displaying the SUCRA value and the
 Median Number of Better Treatments (MNBT) for each treatment (with a
 corresponding credible interval). The credible level may be specified
@@ -409,21 +429,21 @@ included in the <code>RaCE.NMA</code> package and can be loaded using
 the following code:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"wang_posterior"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wang_posterior</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     R-CHOP-R    R-Benda  R-Benda-R R-Benda-R4     R-CVP     R-CVP-R   R-2(Len)</span></span>
-<span><span class="co">#&gt; 1 -0.4711188 -0.3783300 -0.9862301  -1.619193 0.3206447  0.12632840 -0.3138701</span></span>
-<span><span class="co">#&gt; 2 -0.4248054 -0.4265043 -1.0598369  -1.454095 0.2244113  0.01871014 -0.3899421</span></span>
-<span><span class="co">#&gt; 3 -0.3775619 -0.4694452 -0.9866381  -1.267246 0.3776061  0.24043637 -0.2453396</span></span>
-<span><span class="co">#&gt; 4 -0.5138314 -0.4040540 -1.0063014  -1.423337 0.2161720 -0.02002774 -0.5677317</span></span>
-<span><span class="co">#&gt; 5 -0.4872747 -0.2886939 -0.8230394  -1.017027 0.2229437 -0.05790896 -0.4187176</span></span>
-<span><span class="co">#&gt; 6 -0.3216286 -0.3649380 -0.7690168  -1.227404 0.2818887  0.27643867 -0.2829749</span></span>
-<span><span class="co">#&gt;       G-CVP-G   G-CHOP-G G-Benda-G</span></span>
-<span><span class="co">#&gt; 1 -0.10701641 -0.6979653 -1.294057</span></span>
-<span><span class="co">#&gt; 2 -0.16624487 -0.5717649 -1.432865</span></span>
-<span><span class="co">#&gt; 3  0.12289764 -0.4154261 -1.241868</span></span>
-<span><span class="co">#&gt; 4  0.19159024 -0.6859625 -1.288299</span></span>
-<span><span class="co">#&gt; 5 -0.25061236 -0.6099303 -1.157254</span></span>
-<span><span class="co">#&gt; 6  0.08449136 -0.5813818 -1.090934</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wang_posterior</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   R-CHOP-R R-Benda R-Benda-R R-Benda-R4 R-CVP R-CVP-R R-2(Len) G-CVP-G G-CHOP-G</span></span>
+<span><span class="co">#&gt; 1   -0.471  -0.378    -0.986     -1.619 0.321   0.126   -0.314  -0.107   -0.698</span></span>
+<span><span class="co">#&gt; 2   -0.425  -0.427    -1.060     -1.454 0.224   0.019   -0.390  -0.166   -0.572</span></span>
+<span><span class="co">#&gt; 3   -0.378  -0.469    -0.987     -1.267 0.378   0.240   -0.245   0.123   -0.415</span></span>
+<span><span class="co">#&gt; 4   -0.514  -0.404    -1.006     -1.423 0.216  -0.020   -0.568   0.192   -0.686</span></span>
+<span><span class="co">#&gt; 5   -0.487  -0.289    -0.823     -1.017 0.223  -0.058   -0.419  -0.251   -0.610</span></span>
+<span><span class="co">#&gt; 6   -0.322  -0.365    -0.769     -1.227 0.282   0.276   -0.283   0.084   -0.581</span></span>
+<span><span class="co">#&gt;   G-Benda-G</span></span>
+<span><span class="co">#&gt; 1    -1.294</span></span>
+<span><span class="co">#&gt; 2    -1.433</span></span>
+<span><span class="co">#&gt; 3    -1.242</span></span>
+<span><span class="co">#&gt; 4    -1.288</span></span>
+<span><span class="co">#&gt; 5    -1.157</span></span>
+<span><span class="co">#&gt; 6    -1.091</span></span></code></pre></div>
 <p>It is important to note that <code>wang_posterior</code> only
 includes relative treatment effects for non-baseline treatments. An 11th
 treatment, “R-CHOP”, was the baseline with a relative treatment effect
@@ -447,7 +467,13 @@ the 11 treatments in the study, as estimated by Wang et. al (2022).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/forestplot_muhat.html">forestplot_muhat</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">wang_posterior</span><span class="op">)</span>, </span>
 <span>                 names <span class="op">=</span> <span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="Figure 6: Forest plot of estimated relative treatment effects in a network meta-analysis by Wang et. al (2022), based on a standard NMA model." width="700"><p class="caption">
+Figure 6: Forest plot of estimated relative treatment effects in a
+network meta-analysis by Wang et. al (2022), based on a standard NMA
+model.
+</p>
+</div>
 <p>Now, we proceed through the analysis pipeline.</p>
 <div class="section level3">
 <h3 id="model-estimation-1">1. Model Estimation<a class="anchor" aria-label="anchor" href="#model-estimation-1"></a>
@@ -469,10 +495,20 @@ MCMC iterations.</p>
 <p>Next, we view trace plots and convergence diagnostics.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_mu.html">traceplot_mu</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="Figure 7: Trace plots of relative treatment effects in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model." width="700"><p class="caption">
+Figure 7: Trace plots of relative treatment effects in a network
+meta-analysis by Wang et. al (2022), based on the RaCE-NMA model.
+</p>
+</div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/traceplot_K.html">traceplot_K</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-20-2.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="Figure 8: Trace plot of the number of rank-clusters, K, in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model." width="700"><p class="caption">
+Figure 8: Trace plot of the number of rank-clusters, K, in a network
+meta-analysis by Wang et. al (2022), based on the RaCE-NMA model.
+</p>
+</div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_Rhat.html">calculate_Rhat</a></span><span class="op">(</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Potential scale reduction factors:</span></span>
@@ -502,10 +538,25 @@ converged, but are shown for demonstration purposes. Please see the
 Reproducibility tab for accurate results based on this data.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/clusterplot_ranks.html">clusterplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>, names <span class="op">=</span> <span class="va">treatments</span>, label_ranks <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="Figure 9: Posterior rank probabilities for each intervention in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks." width="700"><p class="caption">
+Figure 9: Posterior rank probabilities for each intervention in a
+network meta-analysis by Wang et. al (2022), based on the RaCE-NMA
+model. Ranks are displayed on the ordinal scale (1 = best).
+Interventions are grouped into rank clusters representing non-exclusive
+superiority sets; multiple interventions within the same cluster may
+share identical posterior ranks.
+</p>
+</div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cumulativeprobplot_ranks.html">cumulativeprobplot_ranks</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>, names<span class="op">=</span><span class="va">treatments</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tutorial_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="700"></p>
+<div class="figure">
+<img src="tutorial_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="Figure 10: Cumulative ranking probability curves for each intervention in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model." width="700"><p class="caption">
+Figure 10: Cumulative ranking probability curves for each intervention
+in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA
+model.
+</p>
+</div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_SUCRA_MNBT.html">calculate_SUCRA_MNBT</a></span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc_results_casestudy</span>,names<span class="op">=</span><span class="va">treatments</span>,level<span class="op">=</span><span class="fl">0.50</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Treatment    SUCRA MNBT (50% CI)</span></span>
