@@ -50,7 +50,7 @@ The data contains $10{,}000$ rows and 4 columns. Each column represented a treat
 
 To visualize these posterior draws, we create a forest plot (with 95\% CIs) via the aptly-named `create_forestplot` function:
 
-```{r fig.asp=0.45}
+```{r fig.asp=0.45, fig.cap="Figure 1: Forest plot of estimated relative treatment effects in a toy example dataset, based on a standard NMA model."}
 forestplot_muhat(data = toy_data, level = 0.95, 
                   order_by_average = FALSE)
 ```
@@ -143,19 +143,19 @@ mcmc_results_toy <- mcmc_raceNMA(
 
 The package contains three functions to assess if the MCMC chains have converged and mixed. The first two produce trace plots of `mu` and `K`, the primary model parameters. The third calculates the $\hat{R}$ statistic for each `mu` parameter. We display and interpret each plot below.
 
-```{r}
+```{r, fig.cap="Figure 2: Trace plots of relative treatment effects in a toy example dataset, based on the RaCE-NMA model."}
 traceplot_mu(mcmc_results_toy)
 ```
 
 We observe acceptable mixing and convergence in the trace plots for $\mu$. Ideally, the two chains would like similar to each other, with each exhibiting a "white noise pattern". This is certainly true for $\mu_1$, $\mu_2$, and $\mu_3$. For $\mu_4$, we notice some "jumps" in value across iterations. Based on our toy data, in which treatment 4 has extremely high uncertainty, we expect this type of behavior. Furthermore, since the chains both exhibit similar patterns, we are satisfied.
 
-```{r}
+```{r, fig.cap="Figure 3: Trace plot of the number of rank-clusters, K, in a toy example dataset, based on the RaCE-NMA model."}
 traceplot_K(mcmc_results_toy)
 ```
 
 We again observe acceptable mixing and convergence in the trace plot for $K$. That is, the two chains are indistinguishable and exhibit a seemingly random pattern between the values $3$ and $4$.
 
-```{r}
+```{r, fig.cap="Table 1: R-hat statistics for the relative treatment effects in a toy example dataset, based on the RaCE-NMA model."}
 calculate_Rhat(mcmc_results_toy, level = 0.9)
 ```
 The $\hat{R}$ statistic is a standard convergence diagnostic statistic used to assess MCMC chains. A standard rule of thumb is to ensure that $\hat{R}<1.1$. We see that the point estimate and 90% confidence intervals for all $\mu$ parameters are $\leq1.1$, indicating acceptable convergence.
@@ -168,7 +168,7 @@ Posterior rank probabilities for each intervention. Ranks are displayed on the o
 
 The first is to create a clustering probability matrix.  In the figure, each row represents a treatment and each column a rank level. The color of the corresponding cell is the estimated posterior probability that a treatment belongs to a specific rank. Note that the `label_ranks` input allows the user to specify which rank levels in the graphic are labeled with a *numerical* probability (corresponding to the color shown). See the figure and corresponding interpretation below.
 
-```{r fig.asp=0.6, fig.cap="Posterior rank probabilities for each intervention. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks."}
+```{r fig.asp=0.6, fig.cap="Figure 4: Posterior rank probabilities for each intervention in a toy example dataset, based on the RaCE-NMA model. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks."}
 clusterplot_ranks(mcmc=mcmc_results_toy, label_ranks = 1:4)
 ```
 
@@ -177,13 +177,13 @@ The model estimates a 0.97 probability that Treatment 1 is in first place. Simul
 
 The second function creates a cumulative ranking probability curve for each treatment. In words, the plot displays the probability that each treatment is *at least* in a specific rank place. For example, we see that Treatment 4 has a 0.80 probability of being in first or second place.
 
-```{r fig.asp=0.4}
+```{r fig.asp=0.4, fig.cap="Figure 5: Cumulative ranking probability curves for each intervention in a toy example dataset, based on the RaCE-NMA model."}
 cumulativeprobplot_ranks(mcmc=mcmc_results_toy)
 ```
 
 The third function creates a table displaying the SUCRA value and the Median Number of Better Treatments (MNBT) for each treatment (with a corresponding credible interval). The credible level may be specified using the `credible` argument.
 
-```{r}
+```{r, fig.cap="Table 2: SUCRA and MNBT statistics for each intervention in a toy example dataset, based on the RaCE-NMA model."}
 calculate_SUCRA_MNBT(mcmc=mcmc_results_toy, level = 0.5)
 ```
 
@@ -193,7 +193,7 @@ Next, we demonstrate the package on a real NMA study provided by Wang et. al (20
 
 ```{r}
 data("wang_posterior")
-head(wang_posterior)
+head(wang_posterior) %>% round(3)
 ```
 
 It is important to note that `wang_posterior` only includes relative treatment effects for non-baseline treatments. An 11th treatment, "R-CHOP", was the baseline with a relative treatment effect of 0 by construction. Thus, for technical reasons described in the paper, we will need to define summary statistics that can be used when fitting the RaCE-NMA model.
@@ -214,7 +214,7 @@ treatments <- c("R-CHOP", names(wang_posterior))
 
 The following forest plot displays the relative treatment effects of the 11 treatments in the study, as estimated by Wang et. al (2022).
 
-```{r fig.asp=0.5}
+```{r fig.asp=0.5, fig.cap="Figure 6: Forest plot of estimated relative treatment effects in a network meta-analysis by Wang et. al (2022), based on a standard NMA model."}
 forestplot_muhat(data = cbind(0,wang_posterior), 
                  names = treatments)
 ```
@@ -236,9 +236,13 @@ mcmc_results_casestudy <- mcmc_raceNMA(
 
 Next, we view trace plots and convergence diagnostics.
 
-```{r}
+```{r, fig.cap="Figure 7: Trace plots of relative treatment effects in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model."}
 traceplot_mu(mcmc_results_casestudy, names=treatments)
+```
+```{r, fig.cap="Figure 8: Trace plot of the number of rank-clusters, K, in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model."}
 traceplot_K(mcmc_results_casestudy)
+```
+```{r, fig.cap="Table 3: R-hat statistics for the relative treatment effects in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model."}
 calculate_Rhat(mcmc_results_casestudy, names=treatments)
 ```
 
@@ -248,12 +252,12 @@ We observe that chains have not run long enough (refer to the Reproducibility ta
 
 Disclaimer: The results below are based on chains which have not converged, but are shown for demonstration purposes. Please see the Reproducibility tab for accurate results based on this data.
 
-```{r fig.asp=0.6}
+```{r fig.asp=0.6, fig.cap="Figure 9: Posterior rank probabilities for each intervention in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model. Ranks are displayed on the ordinal scale (1 = best). Interventions are grouped into rank clusters representing non-exclusive superiority sets; multiple interventions within the same cluster may share identical posterior ranks."}
 clusterplot_ranks(mcmc=mcmc_results_casestudy, names = treatments, label_ranks = 1)
 ```
-```{r fig.asp=0.4}
+```{r fig.asp=0.4, fig.cap="Figure 10: Cumulative ranking probability curves for each intervention in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model."}
 cumulativeprobplot_ranks(mcmc=mcmc_results_casestudy, names=treatments)
 ```
-```{r}
+```{r, fig.cap="Table 4: SUCRA and MNBT statistics for each intervention in a network meta-analysis by Wang et. al (2022), based on the RaCE-NMA model."}
 calculate_SUCRA_MNBT(mcmc=mcmc_results_casestudy,names=treatments,level=0.50)
 ```
