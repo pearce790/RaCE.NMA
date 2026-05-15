@@ -48,6 +48,7 @@ A list containing updated values for g, nu, and K.
 This function implements a reversible jump MCMC procedure for updating the parameter partition in Bayesian Rank-Clustered Estimation for Network Meta-Analysis models in the case when we assume independence between treatment effects. For internal use only.
 }
 \examples{
-sample_partition_independence(mu_hat=c(1,1,1),J=3,nu=1,g=c(1,1,1),K=1,mu0=1,sigma0=1,s=c(1,1,1),tau=0.1)
+sample_partition_independence(mu_hat=c(1,1,1),J=3,nu=1,g=c(1,1,1),
+K=1,mu0=1,sigma0=1,s=c(1,1,1),tau=0.1)
 
 }
