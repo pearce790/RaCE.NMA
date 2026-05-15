@@ -6,7 +6,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-9313-271X")),
     person("Shouhao", "Zhou", , "szhou1@pennstatehealth.psu.edu", role = c("aut"),
             comment = c(ORCID = "0000-0002-8124-5047")))
-Description: This package implements the RaCE-NMA (Rank-Clustered
+Description: An implementation of the RaCE-NMA (Rank-Clustered
     Estimation for Network Meta-Analysis) model for post-hoc clustering
     of treatments or interventions by rank in network  meta-analysis
     data. Functions for model estimation, assessment, and displaying 
