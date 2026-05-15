@@ -1,3 +1,3 @@
-# RaCE.NMA (1.0.0)
+# RaCE.NMA (development version)
 
 * Initial CRAN submission.
