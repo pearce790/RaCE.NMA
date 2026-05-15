@@ -28,3 +28,4 @@ Imports:
 Suggests: knitr, rmarkdown, devtools, cowplot, gridExtra
 VignetteBuilder: knitr
 URL: https://pearce790.github.io/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA/
+BugReports: https://github.com/pearce790/RaCE.NMA/issues
