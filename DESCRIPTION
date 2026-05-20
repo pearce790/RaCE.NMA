@@ -1,6 +1,6 @@
 Package: RaCE.NMA
 Title: Rank-Clustered Estimation for Network Meta-Analysis
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Michael", "Pearce", , "michaelpearce@reed.edu", role = c("aut", "cre","cph"),
            comment = c(ORCID = "0000-0002-9313-271X")),
