@@ -71,7 +71,7 @@ The `RaCE.NMA` packages contains a primary model-fitting function, `mcmc_RCMVN`.
 
 If available, we recommend inputting the full posterior of the relative treatment effect from a previous NMA analysis into the `mcmc_RCMVN` function. In this case, the `posterior` argument should be provided an $N\times J$ matrix, where the (i,j) entry indicates the relative treatment effect of treatment $j$ in MCMC draw $i$. An example of this functionality is provided below:
 
-```{r eval=F}
+```{r eval=FALSE}
 mcmc_raceNMA(posterior = toy_data)
 ```
 
@@ -83,12 +83,12 @@ Alternatively, one may provide summary statistics of the model posterior (instea
   + `cov` or `s`: A $J\times J$ covariance matrix of relative treatment effects *or* a vector of length $J$ of treatment-specific standard deviations of relative treatment effects.
   
 An example of this functionality is provided below:
-```{r eval=T}
+```{r eval=TRUE}
 mu_hat_toy <- apply(toy_data, 2, mean)
 cov_toy <- cov(toy_data)
 s_toy <- apply(toy_data, 2, sd)
 ```
-```{r eval=F}
+```{r eval=FALSE}
 mcmc_raceNMA(mu_hat = mu_hat_toy, cov = cov_toy) # example with mu_hat and cov
 mcmc_raceNMA(mu_hat = mu_hat_toy, s   = s_toy  ) # example with mu_hat and s
 ```
@@ -108,7 +108,7 @@ Next, we may specify the following hyperparameters:
   
 The following code demonstrates how one could specify these hyperparameters directly in the estimation function:
 
-```{r eval=F}
+```{r eval=FALSE}
 mcmc_raceNMA(
   posterior = toy_data, # results of a standard NMA model
   mu0 = mean(mu_hat_toy), sigma0 = sqrt(10*var(mu_hat_toy)), # model hyperparameters
@@ -130,7 +130,7 @@ Last, we may specify parameters that control how the MCMC chains are run:
 
 The following code demonstrates how one could specify some of these settings directly in the estimation function:
 
-```{r cache=TRUE}
+```{r}
 mcmc_results_toy <- mcmc_raceNMA(
   posterior = toy_data, # results of a standard NMA model
   mu0 = mean(mu_hat_toy), sigma0 = sqrt(10*var(mu_hat_toy)), # model hyperparameters
@@ -193,7 +193,7 @@ Next, we demonstrate the package on a real NMA study provided by Wang et. al (20
 
 ```{r}
 data("wang_posterior")
-head(wang_posterior) %>% round(3)
+round(head(wang_posterior), 3)
 ```
 
 It is important to note that `wang_posterior` only includes relative treatment effects for non-baseline treatments. An 11th treatment, "R-CHOP", was the baseline with a relative treatment effect of 0 by construction. Thus, for technical reasons described in the paper, we will need to define summary statistics that can be used when fitting the RaCE-NMA model.

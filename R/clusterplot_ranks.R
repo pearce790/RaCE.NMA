@@ -14,8 +14,8 @@
 #' @return A ggplot of a posterior clustering matrix for the interventions.
 #'
 #' @examples
-#' data("wang_posterior")
-#' mcmc <- mcmc_raceNMA(posterior=wang_posterior,iter=2000)
+#' data("toy_data")
+#' mcmc <- mcmc_raceNMA(posterior=toy_data,iter=500)
 #' clusterplot_ranks(mcmc=mcmc,names=paste0("Treatment ",1:10),label_ranks=1:3)
 #' @export
 clusterplot_ranks <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){

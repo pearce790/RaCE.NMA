@@ -15,7 +15,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  warning = FALSE
+  warning = FALSE,
+  eval=FALSE
 )
 ```
 
@@ -28,7 +29,7 @@ library(gridExtra)
 library(reshape2)
 ```
 
-In this vignette, we provide code to reproduce the analyses presented in the paper associated with this R package. Specifically, we reproduce two simulation studies (Sections 3.1 and 3.2) and a case study (Section 4). We assume knowledge of the associated R package functions; please refer to the "Tutorial" and "Reference" pages for more information.
+In this vignette, we provide code to reproduce the analyses presented in the paper associated with this R package. Specifically, we reproduce two simulation studies (Sections 3.1 and 3.2) and a case study (Section 4). We assume knowledge of the associated R package functions; please refer to the "Tutorial" and "Reference" pages for more information. No figures are produced; see paper.
 
 ## Reproduction of Simulation Study 1 (Section 3.1)
 
