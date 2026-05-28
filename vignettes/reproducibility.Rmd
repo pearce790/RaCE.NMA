@@ -77,7 +77,7 @@ for(iter in 1:20){
         mcmc <- mcmc_raceNMA(mu_hat = mu_hat,s=rep(s,J),mu=mean(mu_hat),
                              sigma0=max(1,4*sd(mu_hat)),nu0=mu_hat,
                              tau=1,iter=3000,nu_iter=2,chains=4,
-                             burn_prop=0.5,thin=3,suppressPrint=TRUE)
+                             burn_prop=0.5,thin=3,verbose = FALSE)
         
         equal <- posterior_equal <- matrix(NA,nrow=J,ncol=J)
         for(i in 1:(J-1)){for(j in (i+1):J){
@@ -145,7 +145,7 @@ The following code reproduces Table 1: First, we fit the RaCE model to the simul
 ```{r cache=TRUE}
 mcmc <- mcmc_raceNMA(mu_hat = mu_hat, s = s, 
                    iter = 50000, nu_iter = 2, chains = 4, 
-                   burn_prop = 0.5,thin = 1,suppressPrint = TRUE)
+                   burn_prop = 0.5,thin = 1,verbose = FALSE)
 
 posterior_equal <- matrix(NA,nrow=J,ncol=J)
 for(i in 1:(J-1)){for(j in (i+1):J){
@@ -230,7 +230,7 @@ Next, we fit the RaCE model to estimated relative treatment effects from Wang et
 mcmc <- mcmc_raceNMA(mu_hat = mu_hat, cov = cov, 
                    mu0 = mean(mu_hat), sigma0 = sqrt(10*var(mu_hat)),
                    iter = 50000, nu_iter = 5, chains = 4, 
-                   seed = 1, suppressPrint = TRUE)
+                   seed = 1, verbose = FALSE)
 ```
 
 The following code chunk reproduces Figure 6, Figure 7, and Table 2: First, we calculate the values underpinning each graphic. Then, we create each in turn.

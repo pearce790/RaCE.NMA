@@ -62,7 +62,7 @@ sample_partition_independence <- function (mu_hat, J, nu, g, K, mu0, sigma0, s, 
       nu <- sort(nu_new)
       K <- K_new
       if (any(nu_new[g_new] != nu[g])) {
-        print("Something wrong!")
+        stop("Indexing error in death procedure. Check highest-level function inputs and re-run MCMC chain.")
       }
     }
   } else {
@@ -104,7 +104,7 @@ sample_partition_independence <- function (mu_hat, J, nu, g, K, mu0, sigma0, s, 
       nu <- sort(nu_new)
       K <- K_new
       if (any(nu_new[g_new] != nu[g])) {
-        print("Something wrong!")
+        stop("Indexing error in death procedure. Check highest-level function inputs and re-run MCMC chain.")
       }
     }
   }

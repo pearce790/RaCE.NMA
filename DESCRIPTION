@@ -10,7 +10,8 @@ Description: An implementation of the RaCE-NMA (Rank-Clustered
     Estimation for Network Meta-Analysis) model for post-hoc clustering
     of treatments or interventions by rank in network  meta-analysis
     data. Functions for model estimation, assessment, and displaying 
-    results are provided.
+    results are provided. For more details, see Pearce and Zhou (2025) 
+    <doi:10.1017/rsm.2025.10049>.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

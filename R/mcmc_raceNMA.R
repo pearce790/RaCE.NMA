@@ -20,7 +20,7 @@
 #' @param burn_prop A numeric between 0 and 1 indicating the proportion of MCMC samples in each chain to be removed as burn-in.
 #' @param thin A numeric indicating that only every \code{thin}-th sample should be retained, to save computational memory.
 #' @param seed A numeric indicating the random seed that should be set before running the first MCMC chain.
-#' @param suppressPrint A boolean indicating if the function should not print progress updates as the MCMC chains run.
+#' @param verbose A boolean indicating if the function should print progress updates as the MCMC chains run. Default to \code{TRUE}.
 #'
 #' @return A (\code{chains}x\code{iter}/\code{thin})x(3J+3) matrix of posterior draws, one row per posterior sample of mu, nu, and g, with additional columns indicating the MCMC chain index, iteration index, and number of non-empty partition clusters K of each posterior sample.
 #'
@@ -29,7 +29,7 @@
 #' head(mcmc)
 #' @export
 mcmc_raceNMA <- function(posterior = NULL, mu_hat = NULL, cov = NULL, s = NULL, mu0 = NULL, sigma0 = NULL, tau = NULL, nu0 = NULL,
-                       iter = 4000, nu_iter = 5, chains=2, burn_prop=0.5, thin=1, seed=NULL, suppressPrint=FALSE){
+                       iter = 4000, nu_iter = 5, chains = 2, burn_prop = 0.5, thin = 1, seed = NULL, verbose = TRUE){
 
   if(!is.null(posterior)){
     J <- ncol(posterior)
@@ -40,7 +40,7 @@ mcmc_raceNMA <- function(posterior = NULL, mu_hat = NULL, cov = NULL, s = NULL, 
   if (!is.null(seed)) {set.seed(seed)}
   counter <- 1
   mcmc <- replicate(n = chains,{
-    if(!suppressPrint){print(paste0("Estimating chain ", counter, " of ", chains,"."))}
+    if(verbose){print(paste0("Estimating chain ", counter, " of ", chains,"."))}
     counter <<- counter + 1
     res <- fit_raceNMA(posterior=posterior, mu_hat=mu_hat, cov=cov, s=s, mu0 = mu0, sigma0 = sigma0,
                      tau = tau, nu0 = nu0, iter = iter, nu_iter = nu_iter)

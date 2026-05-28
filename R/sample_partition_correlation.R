@@ -60,7 +60,7 @@ sample_partition_correlation <- function (mu_hat, J, nu, g, K, mu0, sigma0, cov,
       nu <- sort(nu_new)
       K <- K_new
       if (any(nu_new[g_new] != nu[g])) {
-        print("Something wrong!")
+        stop("Indexing error in birth procedure. Check highest-level function inputs and re-run MCMC chain.")
       }
     }
   } else {
@@ -100,7 +100,7 @@ sample_partition_correlation <- function (mu_hat, J, nu, g, K, mu0, sigma0, cov,
       nu <- sort(nu_new)
       K <- K_new
       if (any(nu_new[g_new] != nu[g])) {
-        print("Something wrong!")
+        stop("Indexing error in death procedure. Check highest-level function inputs and re-run MCMC chain.")
       }
     }
   }

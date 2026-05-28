@@ -19,7 +19,7 @@ mcmc_raceNMA(
   burn_prop = 0.5,
   thin = 1,
   seed = NULL,
-  suppressPrint = FALSE
+  verbose = TRUE
 )
 }
 \arguments{
@@ -51,7 +51,7 @@ mcmc_raceNMA(
 
 \item{seed}{A numeric indicating the random seed that should be set before running the first MCMC chain.}
 
-\item{suppressPrint}{A boolean indicating if the function should not print progress updates as the MCMC chains run.}
+\item{verbose}{A boolean indicating if the function should print progress updates as the MCMC chains run. Default to \code{TRUE}.}
 }
 \value{
 A (\code{chains}x\code{iter}/\code{thin})x(3J+3) matrix of posterior draws, one row per posterior sample of mu, nu, and g, with additional columns indicating the MCMC chain index, iteration index, and number of non-empty partition clusters K of each posterior sample.

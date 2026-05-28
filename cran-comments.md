@@ -1,13 +1,14 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Improved formatting in the NEWS file.
+* Added a reference to the source paper in the DESCRIPTION file.
 
-* Updated the example in clusterplot_ranks() to run 
-  faster.
+* Removed print functions from sample_partition_correlation() and sample_partition_independence() functions 
+  and replaced them with stop functions that include more informative error messages.
+  
+* Changed "suppressPrint=FALSE" option in mcmc_raceNMA() function to "verbose=TRUE", to better comply with R style.
 
-* Updated the "reproducibility" and "tutorial" vignettes 
-  to run faster.
+* Updated reproducibility vignette accordingly.
 
 ## R CMD check results
 
