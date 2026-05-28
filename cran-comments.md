@@ -10,6 +10,8 @@ This is a resubmission. In this version I have:
 
 * Updated reproducibility vignette accordingly.
 
+* Minor change to example code for clusterplot_ranks() function to make it run in <5 seconds.
+
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note

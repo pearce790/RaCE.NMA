@@ -23,6 +23,6 @@ This function creates a posterior clustering matrix for the interventions in the
 }
 \examples{
 data("toy_data")
-mcmc <- mcmc_raceNMA(posterior=toy_data,iter=500)
+mcmc <- mcmc_raceNMA(posterior=toy_data,iter=500,nu_iter=2,chains=1)
 clusterplot_ranks(mcmc=mcmc,names=paste0("Treatment ",1:10),label_ranks=1:3)
 }
