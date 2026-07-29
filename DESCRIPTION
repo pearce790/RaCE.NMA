@@ -26,7 +26,14 @@ Imports:
     coda,
     reshape2,
     ggplot2
-Suggests: knitr, rmarkdown, devtools, cowplot, gridExtra
+Suggests: 
+    knitr,
+    rmarkdown,
+    devtools,
+    cowplot,
+    gridExtra,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://pearce790.github.io/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA/
 BugReports: https://github.com/pearce790/RaCE.NMA/issues
+Config/testthat/edition: 3

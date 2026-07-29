@@ -20,6 +20,7 @@
 #' @export
 clusterplot_ranks <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){
   if(!is.null(data)){
+    if(all(names(data)[1:3]==c("chain","iteration","K"))){stop("It seems that you have supplied mcmc_raceNMA output instead of data. Please update your input arguments.")}
     J <- ncol(data)
     if(is.null(names)){
       names <- paste(1:J)
@@ -45,6 +46,7 @@ clusterplot_ranks <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){
     }
   }
   if(!is.null(mcmc)){
+    if(any(names(mcmc)[1:3]!=c("chain","iteration","K"))){stop("It seems that you have supplied data instead of mcmc_raceNMA output. Please update your input arguments.")}
     J <- (ncol(mcmc)-3)/3
     posterior_mu <- mcmc[,grep("mu",names(mcmc))]
     posterior_ranks <- t(apply(posterior_mu,1,function(mu){rank(mu,ties.method = "min")}))

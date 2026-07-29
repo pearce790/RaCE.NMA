@@ -21,6 +21,7 @@ traceplot_mu <- function(mcmc,names=NULL){
   if(is.null(names)){
     names(mu_posterior)[3:ncol(mu_posterior)] <- paste0("Treatment ",1:J)
   }else{
+    if(length(names)!=length(grep("mu",names(mcmc)))){stop("Incorrect length of names argument")}
     names(mu_posterior)[3:ncol(mu_posterior)] <- names
   }
   mu_posterior <- melt(mu_posterior,id.vars = 1:2)

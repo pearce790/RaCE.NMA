@@ -16,10 +16,12 @@
 #' @export
 cumulativeprobplot_ranks <- function(data=NULL, mcmc=NULL, names=NULL){
   if(!is.null(data)){
+    if(all(names(data)[1:3]==c("chain","iteration","K"))){stop("It seems that you have supplied mcmc_raceNMA output instead of data. Please update your input arguments.")}
     J <- ncol(data)
     if(is.null(names)){
       names <- paste(1:J)
     }
+    if(length(names)!=ncol(data)){stop("Incorrect length of names argument")}
     data_ranks <- as.data.frame(t(apply(data,1,function(mu){rank(mu,ties.method="min")})))
     names(data_ranks) <- names
     data_meanorder <- order(apply(data_ranks,2,mean))
@@ -33,6 +35,7 @@ cumulativeprobplot_ranks <- function(data=NULL, mcmc=NULL, names=NULL){
       labs(x="Posterior Rank",y="Cumulative Probability",color=NULL)
   }
   if(!is.null(mcmc)){
+    if(any(names(mcmc)[1:3]!=c("chain","iteration","K"))){stop("It seems that you have supplied data instead of mcmc_raceNMA output. Please update your input arguments.")}
     J <- (ncol(mcmc)-3)/3
     posterior_mu <- mcmc[,grep("mu",names(mcmc))]
     posterior_ranks <- t(apply(posterior_mu,1,function(mu){rank(mu,ties.method = "min")}))
@@ -44,10 +47,12 @@ cumulativeprobplot_ranks <- function(data=NULL, mcmc=NULL, names=NULL){
                                                            levels=paste0("mu",posterior_meanorder),
                                                            labels=paste0("Treatment ",posterior_meanorder))
     }else{
+      if(length(names)!=length(grep("mu",names(mcmc)))){stop("Incorrect length of names argument")}
       posterior_rank_cumulative_probability$Var2 <- factor(posterior_rank_cumulative_probability$Var2,
                                                            levels=paste0("mu",posterior_meanorder),
                                                            labels=names[posterior_meanorder])
     }
+
     g <- ggplot(posterior_rank_cumulative_probability,aes(x=Var1,y=value,group=Var2,color=Var2))+
       geom_line()+theme_minimal()+
       scale_x_continuous(breaks=1:J)+

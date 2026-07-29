@@ -17,6 +17,7 @@
 #' @export
 calculate_SUCRA_MNBT <- function(data=NULL,mcmc=NULL,level=0.50,names=NULL){
   if(!is.null(data)){
+    if(all(names(data)[1:3]==c("chain","iteration","K"))){stop("It seems that you have supplied mcmc_raceNMA output instead of data. Please update your input arguments.")}
     J <- ncol(data)
     if(is.null(names)){
       names <- paste(1:J)
@@ -36,6 +37,7 @@ calculate_SUCRA_MNBT <- function(data=NULL,mcmc=NULL,level=0.50,names=NULL){
     names(result)[3] <- paste0("MNBT (",level*100,"% CI)")
   }
   if(!is.null(mcmc)){
+    if(any(names(mcmc)[1:3]!=c("chain","iteration","K"))){stop("It seems that you have supplied data instead of mcmc_raceNMA output. Please update your input arguments.")}
     mcmc_mu <- mcmc[,grep("mu",names(mcmc))]
     J <- ncol(mcmc_mu)
     if(is.null(names)){

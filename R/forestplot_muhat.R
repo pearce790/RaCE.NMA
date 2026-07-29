@@ -18,6 +18,7 @@
 #' @export
 forestplot_muhat <- function(data=NULL,mcmc=NULL,names=NULL,level=0.95,order_by_average=TRUE){
   if(!is.null(data)){
+    if(all(names(data)[1:3]==c("chain","iteration","K"))){stop("It seems that you have supplied mcmc_raceNMA output instead of data. Please update your input arguments.")}
     data_mean <- apply(data,2,mean)
     data_quantiles <- apply(data,2,function(mu){quantile(mu,c((1-level)/2,(1+level)/2))})
     data_summary <- as.data.frame(t(rbind(data_mean,data_quantiles)))
