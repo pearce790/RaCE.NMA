@@ -1,6 +1,6 @@
 Package: RaCE.NMA
 Title: Rank-Clustered Estimation for Network Meta-Analysis
-Version: 1.0.3
+Version: 1.1.0
 Authors@R: c(
     person("Michael", "Pearce", , "michaelpearce@reed.edu", role = c("aut", "cre","cph"),
            comment = c(ORCID = "0000-0002-9313-271X")),
@@ -34,6 +34,6 @@ Suggests:
     gridExtra,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
-URL: https://pearce790.github.io/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA
+URL: https://pearce790.github.io/RaCE.NMA/, https://github.com/pearce790/RaCE.NMA
 BugReports: https://github.com/pearce790/RaCE.NMA/issues
 Config/testthat/edition: 3
