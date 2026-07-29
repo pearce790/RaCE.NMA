@@ -1,3 +1,8 @@
+# RaCE.NMA 1.1.0
+
+* Added unit tests for all top-level functions.
+* Added warnings/messages, as appropriate, for functions allowing either "data" or "mcmc" inputs when incorrect inputs detected
+
 # RaCE.NMA 1.0.3
 
 * Decreasing runtime of an example.
