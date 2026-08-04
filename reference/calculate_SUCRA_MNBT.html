@@ -73,7 +73,7 @@ MCMC draws from a standard NMA model or a fitted RaCE-NMA model.</p>
 
 
 <dt id="arg-mcmc">mcmc<a class="anchor" aria-label="anchor" href="#arg-mcmc"></a></dt>
-<dd><p>MCMC draws from the RaCE NMA model, in the form of the model output of the <code>mcmc_RCMVN</code> function.</p></dd>
+<dd><p>MCMC draws from the RaCE NMA model, in the form of the model output of the <code>mcmc_raceNMA</code> function.</p></dd>
 
 
 <dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
@@ -92,14 +92,14 @@ MCMC draws from a standard NMA model or a fitted RaCE-NMA model.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">mcmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="mcmc_raceNMA.html">mcmc_raceNMA</a></span><span class="op">(</span>mu_hat<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, s<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span>,<span class="fl">.1</span><span class="op">)</span>, seed<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Estimating chain 1 of 2."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Estimating chain 2 of 2."</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Estimating chain 1 of 2.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Estimating chain 2 of 2.</span>
 <span class="r-in"><span><span class="fu">calculate_SUCRA_MNBT</span><span class="op">(</span>mcmc<span class="op">=</span><span class="va">mcmc</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Treatment     SUCRA MNBT (50% CI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1 0.9876833      0 (0, 0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2 0.9874000      0 (0, 0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         4 0.3202167      2 (2, 2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         3 0.3200333      2 (2, 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         2 0.9863500      0 (0, 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         1 0.9862333      0 (0, 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         4 0.3199833      2 (2, 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         3 0.3192667      2 (2, 2)</span>
 </code></pre></div>
     </div>
   </div>
