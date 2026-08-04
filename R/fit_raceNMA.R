@@ -1,4 +1,4 @@
-#' Fit a Bayesian Rank-Clustered Estimation model for Network Meta-Analysis (RaCE-NMA). Recommended for internal use only; use mcmc_RCMVN instead.
+#' Fit a Bayesian Rank-Clustered Estimation model for Network Meta-Analysis (RaCE-NMA). Recommended for internal use only; use mcmc_raceNMA instead.
 #'
 #' This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis.
 #'
@@ -12,7 +12,6 @@
 #' @importFrom stats rnorm
 #' @importFrom stats runif
 #' @importFrom stats var
-#'
 #'
 #' @param posterior A matrix of posterior draws of relative intervention effects based on a previous NMA. The (i,j) is the ith draw of the effect of intervention j.
 #' @param mu_hat A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j. Ignored if \code{posterior} is supplied.
@@ -75,9 +74,16 @@ fit_raceNMA <-  function(posterior=NULL, mu_hat=NULL, cov=NULL, s=NULL, mu0=NULL
   if(is.null(mu0)){mu0 <- mean(mu_hat)}
   if(is.null(sigma0)){sigma0 <- sqrt(10*var(mu_hat))}
 
-  nu_samples <- matrix(NA, nrow = iter * nu_iter, ncol = J)
-  g_samples <- matrix(NA, nrow = 0, ncol = J)
-  K_samples <- c()
+  ## pre-compute Cholesky factor of `cov` once; reuse it for every MVN density
+  if(corr){
+    logdmvn <- make_logdmvnorm(cov)
+  }
+
+  ## pre-allocate all sample containers to their final size.
+  n_samples <- iter * nu_iter
+  nu_samples <- matrix(NA_real_, nrow = n_samples, ncol = J)
+  g_samples  <- matrix(NA_integer_, nrow = n_samples, ncol = J)
+  K_samples  <- integer(n_samples)
   curr <- 1
   if (is.null(tau)){
     tau <- 0.5*max(abs(diff(sort(mu_hat))))
@@ -114,14 +120,17 @@ fit_raceNMA <-  function(posterior=NULL, mu_hat=NULL, cov=NULL, s=NULL, mu0=NULL
     ## Update nu
     nu_curr <- matrix(data = NA, nrow = nu_iter, ncol = K)
     if(corr){
+      loglik_curr <- logdmvn(mu_hat, nu[g])
       for(nu_it in 1:nu_iter){
         for(k in 1:K){
           nu_prop <- nu
           nu_prop[k] <- nu[k]+rnorm(1,mean=0,sd=tau)
-          logtransition_prob <- (dmvnorm(mu_hat,mean=nu_prop[g],sigma=cov,log=T)+dnorm(nu_prop[k],mu0,sigma0,log=T))-
-            (dmvnorm(mu_hat,mean=nu[g],sigma=cov,log=T)+dnorm(nu[k],mu0,sigma0,log=T))
+          loglik_prop <- logdmvn(mu_hat, nu_prop[g])
+          logtransition_prob <- (loglik_prop + dnorm(nu_prop[k],mu0,sigma0,log=TRUE)) -
+            (loglik_curr + dnorm(nu[k],mu0,sigma0,log=TRUE))
           if(logtransition_prob > log(runif(1))){
             nu[k] <- nu_prop[k]
+            loglik_curr <- loglik_prop
           }
         }
         nu_curr[nu_it,] <- nu
@@ -138,14 +147,18 @@ fit_raceNMA <-  function(posterior=NULL, mu_hat=NULL, cov=NULL, s=NULL, mu0=NULL
     }
 
     ## Save results; update counter
-    g_samples <- rbind(g_samples, matrix(rep(g, nu_iter), ncol = J, byrow = T))
-    K_samples <- c(K_samples, rep(K, nu_iter))
-    nu_samples[curr:(curr + nu_iter - 1), 1:K] <- nu_curr
+    idx <- curr:(curr + nu_iter - 1)
+    g_samples[idx, ] <- rep(g, each = nu_iter)
+    K_samples[idx] <- K
+    nu_samples[idx, 1:K] <- nu_curr
     curr <- curr + nu_iter
   }
-  mu_samples <- matrix(sapply(1:nrow(nu_samples),function(it) {
-    nu_samples[it, g_samples[it, ]]
-  }), nrow = nrow(nu_samples), byrow = T)
+
+  ## Build mu (single vectorised matrix lookup)
+  row_idx <- rep(seq_len(n_samples), times = J)
+  mu_samples <- matrix(nu_samples[cbind(row_idx, as.vector(g_samples))],
+                       nrow = n_samples, ncol = J)
+
   return(list(mu = mu_samples,
               nu = nu_samples,
               g = g_samples,

@@ -15,7 +15,7 @@ forestplot_muhat(
 \arguments{
 \item{data}{A NxJ matrix of data to display as a forest plot, where N is the number of observations and J the number of treatments. This feature is designed for use to display a forest plot of results from a standard NMA study.}
 
-\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
+\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.}
 
 \item{names}{A vector of intervention names (optional)}
 

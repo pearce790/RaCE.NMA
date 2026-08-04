@@ -9,7 +9,7 @@ cumulativeprobplot_ranks(data = NULL, mcmc = NULL, names = NULL)
 \arguments{
 \item{data}{A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.}
 
-\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
+\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.}
 
 \item{names}{A vector of intervention names (optional)}
 }

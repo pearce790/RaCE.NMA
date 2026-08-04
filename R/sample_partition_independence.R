@@ -21,6 +21,7 @@
 #' K=1,mu0=1,sigma0=1,s=c(1,1,1),tau=0.1)
 #'
 #' @export
+#' @keywords internal
 sample_partition_independence <- function (mu_hat, J, nu, g, K, mu0, sigma0, s, tau = tau, b_g = 0.5, d_g = 0.5){
   logprior_partition <- log(rep(1,J))
   S_g <- unlist(lapply(1:K, function(k) {sum(g == k)}))

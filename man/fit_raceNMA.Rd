@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_raceNMA.R
 \name{fit_raceNMA}
 \alias{fit_raceNMA}
-\title{Fit a Bayesian Rank-Clustered Estimation model for Network Meta-Analysis (RaCE-NMA). Recommended for internal use only; use mcmc_RCMVN instead.}
+\title{Fit a Bayesian Rank-Clustered Estimation model for Network Meta-Analysis (RaCE-NMA). Recommended for internal use only; use mcmc_raceNMA instead.}
 \usage{
 fit_raceNMA(
   posterior = NULL,

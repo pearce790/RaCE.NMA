@@ -6,7 +6,7 @@
 #' @importFrom dplyr select
 #' @import utils
 #'
-#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
+#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.
 #'
 #' @return A ggplot of trace plots for the K parameter.
 #'

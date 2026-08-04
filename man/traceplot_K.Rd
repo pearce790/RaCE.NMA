@@ -7,7 +7,7 @@
 traceplot_K(mcmc)
 }
 \arguments{
-\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
+\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.}
 }
 \value{
 A ggplot of trace plots for the K parameter.

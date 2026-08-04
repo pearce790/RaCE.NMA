@@ -19,6 +19,7 @@ mcmc_raceNMA(
   burn_prop = 0.5,
   thin = 1,
   seed = NULL,
+  cores = 1,
   verbose = TRUE
 )
 }
@@ -27,7 +28,7 @@ mcmc_raceNMA(
 
 \item{mu_hat}{A vector of estimated average relative intervention effects based on a previous NMA. The jth entry is the effect of intervention j. Ignored if \code{posterior} is supplied.}
 
-\item{cov}{A variance covariance matrix of relative intervention effects based on a previous NMA. The (i,j) entry is the covariane between intervention i and j's effects. Ignored if \code{posterior} is supplied.}
+\item{cov}{A variance covariance matrix of relative intervention effects based on a previous NMA. The (i,j) entry is the covariance between intervention i and j's effects. Ignored if \code{posterior} is supplied.}
 
 \item{s}{A vector of the estimated standard deviations of each intervention. The jth entry is the standard deviation of intervention j. Ignored if \code{posterior} is supplied.}
 
@@ -49,7 +50,9 @@ mcmc_raceNMA(
 
 \item{thin}{A numeric indicating that only every \code{thin}-th sample should be retained, to save computational memory.}
 
-\item{seed}{A numeric indicating the random seed that should be set before running the first MCMC chain.}
+\item{seed}{A numeric indicating the random seed used to generate the per-chain random number streams.}
+
+\item{cores}{A numeric indicating how many CPU cores to use when drawing chains. The default, \code{1}, draws chains sequentially. Values above 1 draw chains in parallel; \code{cores} is silently capped at \code{chains}. Results do not depend on \code{cores}.}
 
 \item{verbose}{A boolean indicating if the function should print progress updates as the MCMC chains run. Default to \code{TRUE}.}
 }
@@ -57,9 +60,15 @@ mcmc_raceNMA(
 A (\code{chains}x\code{iter}/\code{thin})x(3J+3) matrix of posterior draws, one row per posterior sample of mu, nu, and g, with additional columns indicating the MCMC chain index, iteration index, and number of non-empty partition clusters K of each posterior sample.
 }
 \description{
-This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis. The function has input parameters to permit drawing multiple MCMC chains, as well as chain thinning and burn-in.
+This function fits a Bayesian RaCE-NMA model to data from a previous network meta-analysis. The function has input parameters to permit drawing multiple MCMC chains, as well as chain thinning and burn-in. Chains are independent and may be drawn in parallel across multiple CPU cores via the \code{cores} argument.
+}
+\details{
+Each chain is assigned its own L'Ecuyer-CMRG random number stream, derived deterministically
+from \code{seed}. Chain \code{i} therefore produces the same draws whether it was run
+sequentially or on a parallel worker, so \code{cores} affects only run time.
 }
 \examples{
 mcmc <- mcmc_raceNMA(mu_hat=c(0,0,1,1), s=c(.1,.1,.1,.1), seed=1)
 head(mcmc)
+
 }

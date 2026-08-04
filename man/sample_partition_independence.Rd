@@ -52,3 +52,4 @@ sample_partition_independence(mu_hat=c(1,1,1),J=3,nu=1,g=c(1,1,1),
 K=1,mu0=1,sigma0=1,s=c(1,1,1),tau=0.1)
 
 }
+\keyword{internal}

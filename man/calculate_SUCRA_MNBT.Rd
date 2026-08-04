@@ -9,7 +9,7 @@ calculate_SUCRA_MNBT(data = NULL, mcmc = NULL, level = 0.5, names = NULL)
 \arguments{
 \item{data}{A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.}
 
-\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.}
+\item{mcmc}{MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.}
 
 \item{level}{The \code{level} level for the interval estimate of MNBT. Defaults to 0.50.}
 

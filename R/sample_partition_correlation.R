@@ -13,14 +13,18 @@
 #' @param tau The standard deviation of the Metropolis Hastings proposal distribution.
 #' @param b_g The probability of "birth"ing a new partition cluster, if possible. Default is 0.5.
 #' @param d_g The probability of "death"ing an existing partition cluster, if possible. Default is 0.5.
+#' @param logdmvn An optional function of \code{(x, mean)} returning the multivariate normal log-density with covariance \code{cov}, as built by \code{make_logdmvnorm}. Supplying it avoids re-factorising \code{cov} on every call. If \code{NULL}, one is built from \code{cov}.
 #'
 #' @return A list containing updated values for g, nu, and K.
 #'
 #' @examples
-#' sample_partition_correlation(mu_hat=c(1,1,1),J=3,nu=1,g=c(1,1,1),K=1,mu0=1,sigma0=1,tau=0.1)
+#' sample_partition_correlation(mu_hat=c(1,1,1),J=3,nu=1,g=c(1,1,1),K=1,mu0=1,
+#'  sigma0=1,cov=diag(rep(.1,3)),tau=0.1)
 #'
 #' @export
-sample_partition_correlation <- function (mu_hat, J, nu, g, K, mu0, sigma0, cov, tau = tau, b_g = 0.5, d_g = 0.5){
+#' @keywords internal
+sample_partition_correlation <- function (mu_hat, J, nu, g, K, mu0, sigma0, cov, tau = tau, b_g = 0.5, d_g = 0.5, logdmvn = NULL){
+  if(is.null(logdmvn)){logdmvn <- make_logdmvnorm(cov)}
   logprior_partition <- log(rep(1,J))
   S_g <- unlist(lapply(1:K, function(k) {sum(g == k)}))
   if (rbinom(1, 1, b_g) == 1) {
@@ -46,7 +50,7 @@ sample_partition_correlation <- function (mu_hat, J, nu, g, K, mu0, sigma0, cov,
         logprob_accept <- -Inf
       }else {
         logprob_accept <-
-          dmvnorm(x=mu_hat,mean=nu_new[g_new],sigma=cov,log=T) - dmvnorm(x=mu_hat,mean=nu[g],sigma=cov,log=T) +
+          logdmvn(mu_hat, nu_new[g_new]) - logdmvn(mu_hat, nu[g]) +
           sum(dnorm(nu_new[c(k, K+1)], mu0, sigma0, log=T)) - dnorm(nu[k], mu0, sigma0, log=T) +
           logprior_partition[K + 1] - logprior_partition[K] +
           log(d_g) + log(sum(S_g >= 2)) + log(2^(S_g[k]) - 2) - log(b_g) - log(K + 1 - 1) - log(2) -  dnorm(u,mean=0,sd=tau,log=T) +
@@ -85,7 +89,7 @@ sample_partition_correlation <- function (mu_hat, J, nu, g, K, mu0, sigma0, cov,
       }))
       K_new <- K-1
       logprob_accept <-
-        dmvnorm(x=mu_hat,mean=nu_new[g_new],sigma=cov,log=T) - dmvnorm(x=mu_hat,mean=nu[g],sigma=cov,log=T) +
+        logdmvn(mu_hat, nu_new[g_new]) - logdmvn(mu_hat, nu[g]) +
         dnorm(nu_new[which_merge[1]], mu0, sigma0, log=T) - sum(dnorm(nu[which_merge], mu0, sigma0, log=T)) +
         logprior_partition[K - 1] - logprior_partition[K] +
         log(b_g) + log(K-1) + log(2) + dnorm(u,mean=0,sd=tau,log=T) - log(d_g) - log(sum(S_gnew >= 2)) - log(2^(S_gnew[which_merge[1]]) - 2) +

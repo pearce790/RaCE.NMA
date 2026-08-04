@@ -12,6 +12,6 @@ toy_data
 }
 \description{
 The dataset includes relative treatment effects for 4 treatments across 10k posterior
-draws, as studied in Simulation Study 2 of Pearce and Zhou (2025).
+draws, as studied in Simulation Study 2 of Pearce and Zhou (2026).
 }
 \keyword{datasets}

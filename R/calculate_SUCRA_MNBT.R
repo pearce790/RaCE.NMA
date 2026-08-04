@@ -6,7 +6,7 @@
 #' @import dplyr
 #'
 #' @param data A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.
-#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
+#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.
 #' @param level The \code{level} level for the interval estimate of MNBT. Defaults to 0.50.
 #' @param names A vector of intervention names (optional)
 #' @return A table containing SUCRA and MNBT values for each treatment, ordered by descending SUCRA values.
@@ -17,6 +17,7 @@
 #' @export
 calculate_SUCRA_MNBT <- function(data=NULL,mcmc=NULL,level=0.50,names=NULL){
   if(!is.null(data)){
+    if(is.matrix(data)){data <- as.data.frame(data)}
     if(all(names(data)[1:3]==c("chain","iteration","K"))){stop("It seems that you have supplied mcmc_raceNMA output instead of data. Please update your input arguments.")}
     J <- ncol(data)
     if(is.null(names)){
@@ -27,7 +28,7 @@ calculate_SUCRA_MNBT <- function(data=NULL,mcmc=NULL,level=0.50,names=NULL){
     data_ranks_probs_cumulative <- apply(data_ranks_probs,2,cumsum)
 
 
-    SUCRA = apply(data_ranks_probs_cumulative[1:(J-1),],2,mean)
+    SUCRA = apply(data_ranks_probs_cumulative[1:(J-1),,drop=FALSE],2,mean)
     MNBT = apply(data_ranks,2,function(ranks){
       values <- quantile(ranks-1,c(0.5,(1-level)/2,1-(1-level)/2))
       paste0(values[1]," (",values[2],", ",values[3],")")
@@ -37,6 +38,7 @@ calculate_SUCRA_MNBT <- function(data=NULL,mcmc=NULL,level=0.50,names=NULL){
     names(result)[3] <- paste0("MNBT (",level*100,"% CI)")
   }
   if(!is.null(mcmc)){
+    if(is.matrix(mcmc)){mcmc <- as.data.frame(mcmc)}
     if(any(names(mcmc)[1:3]!=c("chain","iteration","K"))){stop("It seems that you have supplied data instead of mcmc_raceNMA output. Please update your input arguments.")}
     mcmc_mu <- mcmc[,grep("mu",names(mcmc))]
     J <- ncol(mcmc_mu)
@@ -48,7 +50,7 @@ calculate_SUCRA_MNBT <- function(data=NULL,mcmc=NULL,level=0.50,names=NULL){
     mcmc_ranks_probs_cumulative <- apply(mcmc_ranks_probs,2,cumsum)
 
 
-    SUCRA = apply(mcmc_ranks_probs_cumulative[1:(J-1),],2,mean)
+    SUCRA = apply(mcmc_ranks_probs_cumulative[1:(J-1),,drop=FALSE],2,mean)
     MNBT = apply(mcmc_ranks,2,function(ranks){
       values <- quantile(ranks-1,c(0.5,(1-level)/2,1-(1-level)/2))
       paste0(values[1]," (",values[2],", ",values[3],")")

@@ -25,7 +25,8 @@ Imports:
     mvtnorm,
     coda,
     reshape2,
-    ggplot2
+    ggplot2,
+    parallel
 Suggests: 
     knitr,
     rmarkdown,

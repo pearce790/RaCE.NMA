@@ -5,7 +5,7 @@
 #' @import ggplot2
 #'
 #' @param data A NxJ matrix of data to display as a forest plot, where N is the number of observations and J the number of treatments. This feature is designed for use to display a forest plot of results from a standard NMA study.
-#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
+#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.
 #' @param names A vector of intervention names (optional)
 #' @param level A numeric indicating the desired credible level to be displayed, as a proportion. Defaults to 0.95.
 #' @param order_by_average A boolean indicating if plot should order treatments by their average treatment effect.
@@ -18,6 +18,7 @@
 #' @export
 forestplot_muhat <- function(data=NULL,mcmc=NULL,names=NULL,level=0.95,order_by_average=TRUE){
   if(!is.null(data)){
+    if(is.matrix(data)){data <- as.data.frame(data)}
     if(all(names(data)[1:3]==c("chain","iteration","K"))){stop("It seems that you have supplied mcmc_raceNMA output instead of data. Please update your input arguments.")}
     data_mean <- apply(data,2,mean)
     data_quantiles <- apply(data,2,function(mu){quantile(mu,c((1-level)/2,(1+level)/2))})
@@ -47,6 +48,7 @@ forestplot_muhat <- function(data=NULL,mcmc=NULL,names=NULL,level=0.95,order_by_
     }
   }
   if(!is.null(mcmc)){
+    if(is.matrix(mcmc)){mcmc <- as.data.frame(mcmc)}
     posterior_mu <- mcmc[,grep("mu",names(mcmc))]
     posterior_mu_mean <- apply(posterior_mu,2,mean)
     posterior_mu_quantiles <- apply(posterior_mu,2,function(mu){

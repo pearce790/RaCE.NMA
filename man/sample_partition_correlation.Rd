@@ -15,7 +15,8 @@ sample_partition_correlation(
   cov,
   tau = tau,
   b_g = 0.5,
-  d_g = 0.5
+  d_g = 0.5,
+  logdmvn = NULL
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ sample_partition_correlation(
 \item{b_g}{The probability of "birth"ing a new partition cluster, if possible. Default is 0.5.}
 
 \item{d_g}{The probability of "death"ing an existing partition cluster, if possible. Default is 0.5.}
+
+\item{logdmvn}{An optional function of \code{(x, mean)} returning the multivariate normal log-density with covariance \code{cov}, as built by \code{make_logdmvnorm}. Supplying it avoids re-factorising \code{cov} on every call. If \code{NULL}, one is built from \code{cov}.}
 }
 \value{
 A list containing updated values for g, nu, and K.
@@ -48,6 +51,8 @@ A list containing updated values for g, nu, and K.
 This function implements a reversible jump MCMC procedure for updating the parameter partition in Bayesian Rank-Clustered Estimation for Network Meta-Analysis models in the case when we assume correlation among treatment effects. For internal use only.
 }
 \examples{
-sample_partition_correlation(mu_hat=c(1,1,1),J=3,nu=1,g=c(1,1,1),K=1,mu0=1,sigma0=1,tau=0.1)
+sample_partition_correlation(mu_hat=c(1,1,1),J=3,nu=1,g=c(1,1,1),K=1,mu0=1,
+ sigma0=1,cov=diag(rep(.1,3)),tau=0.1)
 
 }
+\keyword{internal}

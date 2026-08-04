@@ -1,10 +1,10 @@
 #' Calculate Gelman Diagnostics for Fitted RaCE NMA Models
 #'
-#' This function applies MCMC outputs from the mcmc_RCMVN package to the gelman.diag function in the coda package.
+#' This function applies MCMC outputs from the mcmc_raceNMA function to the gelman.diag function in the coda package.
 #'
 #' @import coda
 #'
-#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
+#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.
 #' @param names A vector of intervention names (optional)
 #' @param level The \code{level} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to 0.95.
 #' @param multivariate The \code{multivariate} parameter from the \code{gelman.diag} function in the \code{coda} package. Defaults to FALSE.

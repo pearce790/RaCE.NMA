@@ -53,9 +53,35 @@ test_that("correct output format", {
 })
 
 test_that("output correctness", {
-  expect_equal({
-    res <- mcmc_raceNMA(posterior=toy_data,seed=1,verbose = F,
-                        chains=1,iter=50)
-    res[1,4]
-  },-0.9047409,tolerance = 1e-5)
+  res <- mcmc_raceNMA(posterior=toy_data,seed=1,verbose = F,
+                      chains=1,iter=50)
+
+  expect_equal({res[1,4]},-0.9847569,tolerance = 1e-6)
+
+  mu_means <- colMeans(res[,paste0("mu",1:4)])
+  expected_means <- c(mu1=-0.999430254, mu2=0.007434866,
+                      mu3=1.013860323, mu4=-0.128857193)
+  expect_equal(mu_means, expected_means, tolerance = 1e-6)
+
+  expect_equal(mean(res$K), 4, tolerance = 1e-6)
+
+  last_row <- unname(unlist(res[nrow(res),paste0("mu",1:4)]))
+  expect_equal(last_row, c(-1.01160135,-0.03766098,0.85879089,1.13997159),
+               tolerance = 1e-6)
+})
+
+test_that("identical outputs across cores", {
+  res_1 <- mcmc_raceNMA(posterior=toy_data,seed=1,verbose = F,
+                      chains = 4, iter = 50,cores = 1)
+  res_2 <- mcmc_raceNMA(posterior=toy_data,seed=1,verbose = F,
+                        chains = 4, iter = 50,cores = 2)
+  expect_true(identical(res_1,res_2))
+})
+
+test_that("non-identical outputs across cores when seed unspecified", {
+  res_1_noseed <- mcmc_raceNMA(posterior=toy_data,verbose = F,
+                        chains = 4, iter = 50,cores = 1)
+  res_2_noseed <- mcmc_raceNMA(posterior=toy_data,verbose = F,
+                        chains = 4, iter = 50,cores = 2)
+  expect_false(identical(res_1_noseed,res_2_noseed))
 })

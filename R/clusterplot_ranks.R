@@ -7,7 +7,7 @@
 #' @importFrom dplyr filter
 #'
 #' @param data A NxJ matrix of data, where N is the number of observations and J the number of treatments. This feature is designed to display results from a standard NMA study.
-#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_RCMVN} function.
+#' @param mcmc MCMC draws from the RaCE NMA model, in the form of the model output of the \code{mcmc_raceNMA} function.
 #' @param names A vector of intervention names (optional)
 #' @param label_ranks A vector containing rank levels for which posterior rank probabilities should be displayed within the clustering matrix. Only non-zero probabilities are displayed. Defaults to \code{NULL}, indicating no probabilities are displayed as text.
 #'
@@ -20,6 +20,7 @@
 #' @export
 clusterplot_ranks <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){
   if(!is.null(data)){
+    if(is.matrix(data)){data <- as.data.frame(data)}
     if(all(names(data)[1:3]==c("chain","iteration","K"))){stop("It seems that you have supplied mcmc_raceNMA output instead of data. Please update your input arguments.")}
     J <- ncol(data)
     if(is.null(names)){
@@ -46,6 +47,7 @@ clusterplot_ranks <- function(data=NULL,mcmc=NULL,names=NULL,label_ranks=NULL){
     }
   }
   if(!is.null(mcmc)){
+    if(is.matrix(mcmc)){mcmc <- as.data.frame(mcmc)}
     if(any(names(mcmc)[1:3]!=c("chain","iteration","K"))){stop("It seems that you have supplied data instead of mcmc_raceNMA output. Please update your input arguments.")}
     J <- (ncol(mcmc)-3)/3
     posterior_mu <- mcmc[,grep("mu",names(mcmc))]
