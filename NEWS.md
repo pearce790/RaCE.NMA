@@ -1,6 +1,6 @@
 # RaCE.NMA 1.2.0
 
-* Added parallelization to mcmc_raceNMA() function via "cores" argument.
+* Added parallelization to mcmc_raceNMA() function via "cores" argument. Expect slight numerical differences with previous versions.
 * Minor modifications to fit_raceNMA() function to improve run time
 * Modified vignettes and unit tests correspondingly
 
